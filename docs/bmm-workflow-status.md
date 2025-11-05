@@ -22,7 +22,7 @@ PHASE_4_COMPLETE: false
 ## Next Action
 
 NEXT_ACTION: Generate or update sprint-status.yaml from epic files
-NEXT_COMMAND: dev-story
+NEXT_COMMAND: story-done
 NEXT_AGENT: sm
 
 ---
