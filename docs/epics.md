@@ -56,7 +56,7 @@ I want to be able to register for an account using my email,
 So that I can access the application.
 
 **Acceptance Criteria:**
-        1. A registration page is created with fields for email or other Firebase Authentication methods.2. User registration is handled by Firebase Authentication.
+        1. A registration page is created with fields for email and password.2. User registration is handled by Firebase Authentication.
 3. Upon successful registration, the user is redirected to the login page.
 
 **Prerequisites:** Story 1.1
