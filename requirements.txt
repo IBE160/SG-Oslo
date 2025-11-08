@@ -1,3 +1,7 @@
 fastapi
 uvicorn
 firebase-admin
+pdfminer.six
+python-docx
+pypdf
+ftfy

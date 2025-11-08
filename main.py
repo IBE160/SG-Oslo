@@ -1,9 +1,11 @@
+import os
+import uuid
+
 from fastapi import FastAPI, Request, Form, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 import firebase_admin
-from firebase_admin import credentials, auth
-import uuid
+from firebase_admin import credentials, firestore, auth
 
 app = FastAPI()
 
@@ -12,9 +14,21 @@ templates = Jinja2Templates(directory="templates")
 # Initialize Firebase
 cred = credentials.Certificate("path/to/your/firebase-service-account.json")
 firebase_admin.initialize_app(cred)
+db = firestore.client() # Initialize Firestore
+
+# Get Gemini API Key from environment variable
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise ValueError("GEMINI_API_KEY environment variable not set.")
 
 # In-memory session storage (for PoC)
 sessions = {}
+
+# Placeholder function to save data to Firestore
+def save_to_firestore(collection_name: str, data: dict):
+    doc_ref = db.collection(collection_name).document()
+    doc_ref.set(data)
+    return doc_ref.id
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
