@@ -13,7 +13,7 @@ WORKFLOW_PATH: greenfield-level-2.yaml
 
 CURRENT_PHASE: 4
 CURRENT_WORKFLOW: solutioning-gate-check - Complete
-CURRENT_AGENT: dev
+CURRENT_AGENT: sm
 PHASE_1_COMPLETE: true
 PHASE_2_COMPLETE: true
 PHASE_3_COMPLETE: true
@@ -22,7 +22,7 @@ PHASE_4_COMPLETE: false
 ## Next Action
 
 NEXT_ACTION: Generate or update sprint-status.yaml from epic files
-NEXT_COMMAND: story-done
+NEXT_COMMAND: retrospective
 NEXT_AGENT: sm
 
 ---
