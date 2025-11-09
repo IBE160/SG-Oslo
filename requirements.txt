@@ -5,3 +5,6 @@ pdfminer.six
 python-docx
 pypdf
 ftfy
+google-generativeai
+jinja2
+python-multipart

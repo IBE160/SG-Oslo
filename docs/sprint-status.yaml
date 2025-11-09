@@ -43,9 +43,9 @@ development_status:
   1-4-user-dashboard: done
   epic-1-retrospective: completed
   epic-2: contexted
-  2-1-file-upload: backlog
-  2-2-ai-content-generation: backlog
-  2-3-display-generated-content: backlog
-  2-4-quiz-interaction: backlog
-  2-5-save-study-set: backlog
-  epic-2-retrospective: optional
+  2-1-file-upload: done
+  2-2-ai-content-generation: done
+  2-3-display-generated-content: done
+  2-4-quiz-interaction: done
+  2-5-save-study-set: done
+  epic-2-retrospective: completed
