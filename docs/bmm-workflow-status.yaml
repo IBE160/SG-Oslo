@@ -33,7 +33,7 @@ workflow_status:
   document-project: pending
 
   # Phase 0: Discovery (Optional)
-  brainstorm-project: pending
+  brainstorm-project: docs/brainstorming-session-report-secure-app-architecture-2025-11-10.md
   product-brief: pending
 
   # Phase 1: Planning
