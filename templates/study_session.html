@@ -38,14 +38,15 @@
         <div id="quiz-content" class="mb-8">
             {% if study_set.quiz %}
                 <form id="quiz-form" class="space-y-6">
-                    {% for q_index, q in study_set.quiz %}
-                        <div class="bg-[#f0f5eb] p-5 rounded-lg shadow-sm quiz-question" id="question-{{ q_index }}">
-                            <p class="text-gray-800 font-medium mb-3"><strong>Q{{ q_index + 1 }}:</strong> {{ q.question }}</p>
+                    {% for q in study_set.quiz %}
+                        {% set outer_loop = loop %}
+                        <div class="bg-[#f0f5eb] p-5 rounded-lg shadow-sm quiz-question" id="question-{{ outer_loop.index0 }}">
+                            <p class="text-gray-800 font-medium mb-3"><strong>Q{{ outer_loop.index }}:</strong> {{ q.question }}</p>
                             <ul class="space-y-2">
-                                {% for opt_index, option in q.options %}
+                                {% for option in q.options %}
                                     <li>
                                         <label class="inline-flex items-center text-gray-700 cursor-pointer">
-                                            <input type="radio" id="q{{ q_index }}-opt{{ opt_index }}" name="question-{{ q_index }}" value="{{ option }}" class="form-radio h-4 w-4 text-[#5a7d4a] focus:ring-[#5a7d4a]">
+                                            <input type="radio" id="q{{ outer_loop.index0 }}-opt{{ loop.index0 }}" name="question-{{ outer_loop.index0 }}" value="{{ option }}" class="form-radio h-4 w-4 text-[#5a7d4a] focus:ring-[#5a7d4a]">
                                             <span class="ml-2">{{ option }}</span>
                                         </label>
                                     </li>

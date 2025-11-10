@@ -36,8 +36,15 @@
         <div class="container mx-auto flex justify-between items-center flex-wrap">
             <a href="/" class="text-2xl font-extrabold text-[#333] tracking-wide">StudyBuddy AI</a>
             <div class="flex items-center space-x-4">
-                <a href="/login" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Login</a>
-                <a href="/register" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Register</a>
+                {% if user %}
+                    <span class="text-[#333] text-lg">Welcome, {{ user.email }}</span>
+                    <form action="/logout" method="post">
+                        <button type="submit" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Logout</button>
+                    </form>
+                {% else %}
+                    <a href="/login" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Login</a>
+                    <a href="/register" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Register</a>
+                {% endif %}
             </div>
         </div>
     </nav>
