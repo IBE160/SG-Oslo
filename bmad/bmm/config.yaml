@@ -15,4 +15,8 @@ tea_use_mcp_enhancements: true
 user_name: ' BIP'
 communication_language: English
 document_output_language: English
+<<<<<<< HEAD
 output_folder: '{project-root}/docs'
+=======
+output_folder: "{project-root}/docs"
+>>>>>>> 7e8a4b57e8657584ad13003d3762f8cf463ee5a0
