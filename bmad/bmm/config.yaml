@@ -5,12 +5,12 @@
 
 project_name: ibe160
 user_skill_level: beginner
-tech_docs: '{project-root}/docs'
-dev_story_location: '{project-root}/docs/stories'
+tech_docs: "{project-root}/docs"
+dev_story_location: "{project-root}/docs/stories"
 tea_use_mcp_enhancements: true
 
 # Core Configuration Values
 user_name: BIP
 communication_language: English
 document_output_language: English
-output_folder: '{project-root}/docs'
+output_folder: "{project-root}/docs"

@@ -11,19 +11,19 @@ WORKFLOW_PATH: brownfield-level-2.yaml
 
 ## Current State
 
-CURRENT_PHASE: Documentation
-CURRENT_WORKFLOW: document-project
-CURRENT_AGENT: analyst
-PHASE_1_COMPLETE: false
-PHASE_2_COMPLETE: false
-PHASE_3_COMPLETE: false
+CURRENT_PHASE: 4
+CURRENT_WORKFLOW: solutioning-gate-check - Complete
+CURRENT_AGENT: sm
+PHASE_1_COMPLETE: true
+PHASE_2_COMPLETE: true
+PHASE_3_COMPLETE: true
 PHASE_4_COMPLETE: false
 
 ## Next Action
 
-NEXT_ACTION: Execute the 'document-project' workflow.
-NEXT_COMMAND: *document-project
-NEXT_AGENT: analyst
+NEXT_ACTION: Generate or update sprint-status.yaml from epic files
+NEXT_COMMAND: retrospective
+NEXT_AGENT: sm
 
 ---
 

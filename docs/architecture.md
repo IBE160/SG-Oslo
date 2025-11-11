@@ -84,6 +84,10 @@ This document outlines the architecture for the StudyBuddy AI project. The archi
 *   User passwords will not be stored in our database; they will be managed by Firebase Authentication.
 *   All user data will be stored securely in Firestore and Firebase Storage, with access controls to ensure that only the owner of the data can access it.
 
+### Credential Management
+
+Sensitive API keys and service account paths (e.g., `GEMINI_API_KEY`, `FIREBASE_SERVICE_ACCOUNT_PATH`) are not hardcoded or committed to version control. Instead, they are loaded from environment variables at runtime. This ensures that credentials remain secure and are not exposed in the codebase, especially when working with public repositories.
+
 ## Performance Considerations
 
 *   For the PoC, we will focus on a simple and clean implementation. Performance optimization will be a focus for future versions.
