@@ -2,14 +2,14 @@
 
 ## 1. Gruppeinformasjon
 
-**Gruppenavn:** [Navn på gruppen]
+**Gruppenavn:** [SG - Oslo]
 
 **Gruppemedlemmer:**
-- [Navn 1] - [Student-ID/E-post]
-- [Navn 2] - [Student-ID/E-post]
-- [Navn 3] - [Student-ID/E-post]
+- [Birgitte Bellsund] - [Student-ID/birgitte.bellsund@himolde.no]
+- [Hamdi Abdi Mohamed] - [Student-ID/hamdi.a.mohamed@himolde.no]
+- [Kine Marie Pettersen] - [Student-ID/kine.m.pettersen@himolde.no]
 
-**Dato:** [DD.MM.ÅÅÅÅ]
+**Dato:** [01.10.2025]
 
 ---
 
