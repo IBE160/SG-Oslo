@@ -2,12 +2,12 @@
 # This tracks progress through BMM methodology phases
 # Phase 3/4 (Implementation) is tracked separately in sprint-status.yaml
 
-# generated: 2025-11-10
-# project: ibe160
-# project_type: software
-# selected_track: method
-# field_type: brownfield
-# workflow_path: bmad/bmm/workflows/workflow-status/paths/method-brownfield.yaml
+# generated: {{generated}}
+# project: {{project_name}}
+# project_type: {{project_type}}
+# selected_track: {{selected_track}}
+# field_type: {{field_type}}
+# workflow_path: {{workflow_path_file}}
 
 # STATUS DEFINITIONS:
 # ==================
@@ -21,29 +21,30 @@
 #   - {file-path}: File created/found (e.g., "docs/product-brief.md")
 #   - skipped: Optional/conditional workflow that was skipped
 
-generated: "2025-11-10"
+generated: "2025-11-13"
 project: "ibe160"
 project_type: "software"
 selected_track: "method"
-field_type: "brownfield"
-workflow_path: "bmad/bmm/workflows/workflow-status/paths/method-brownfield.yaml"
+field_type: "greenfield"
+user_description: "The goal is to create an app that helps students study better. The app should be completely functional, easy to use and looking nice."
+brainstorm_requested: false
+research_requested: false
+product_brief_requested: true
+workflow_path: ".bmad/bmm/workflows/workflow-status/paths/method-greenfield.yaml"
 
 workflow_status:
-  # Phase Documentation
-  document-project: pending
-
   # Phase 0: Discovery (Optional)
-  brainstorm-project: pending
-  product-brief: pending
+  product-brief: optional  # agent: analyst
 
   # Phase 1: Planning
-  prd: pending
-  validate-prd: optional
+  prd: required  # agent: pm
+  validate-prd: optional  # agent: pm
+  create-design: conditional  # agent: ux-designer
 
   # Phase 2: Solutioning
-  create-architecture: pending
-  validate-architecture: optional
-  solutioning-gate-check: pending
+  create-architecture: required  # agent: architect
+  validate-architecture: optional  # agent: architect
+  solutioning-gate-check: required  # agent: architect
 
   # Phase 3: Implementation
-  sprint-planning: pending
+  sprint-planning: required  # agent: sm
