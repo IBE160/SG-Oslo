@@ -33,7 +33,7 @@ Each epic includes:
 
 ### Stories
 
-**Story 1.1: Project Setup**
+**Story 1.1: Project Setup (MVP)**
 
 As a developer,
 I want to set up the initial project structure with a FastAPI backend and a simple UI,
@@ -49,7 +49,8 @@ So that we have a foundation to build upon.
 
 ---
 
-**Story 1.2: User Registration**
+**Story 1.2: User Registration (MVP)**
+(FR007)
 
 As a new user,
 I want to be able to register for an account using my email,
@@ -63,7 +64,8 @@ So that I can access the application.
 
 ---
 
-**Story 1.3: User Login**
+**Story 1.3: User Login (MVP)**
+(FR007)
 
 As a registered user,
 I want to be able to log in to the application,
@@ -77,7 +79,8 @@ So that I can access my dashboard.
 
 ---
 
-**Story 1.4: User Dashboard**
+**Story 1.4: User Dashboard (MVP)**
+(FR006)
 
 As a logged-in user,
 I want to see a personal dashboard,
@@ -93,13 +96,31 @@ So that I can upload files and see my saved study sets.
 
 ---
 
+**Story 1.5: Data Privacy and Security (MVP)**
+(FR008, NFR03)
+
+As a user,
+I want to be sure that my personal data and uploaded documents are kept private and secure,
+So that I can trust the application with my information.
+
+**Acceptance Criteria:**
+1. User data is stored in a secure, access-controlled database (e.g., Firestore with security rules).
+2. Uploaded documents are stored in a private, access-controlled storage bucket.
+3. Only the authenticated user can access their own data and documents.
+4. The application's data handling practices are compliant with GDPR.
+
+**Prerequisites:** Story 1.3
+
+---
+
 ## Epic 2: AI-Powered Study Material Generation
 
 **Goal:** Implement the core functionality of the application, allowing users to upload documents and receive AI-generated study materials (summaries, flashcards, and quizzes). This epic will deliver the main value proposition of the application.
 
 ### Stories
 
-**Story 2.1: File Upload**
+**Story 2.1: File Upload (MVP)**
+(FR001, FR009, FR010, FR011)
 
 As a logged-in user,
 I want to be able to upload a PDF or DOCX file,
@@ -116,7 +137,8 @@ So that I can generate study materials from it.
 
 ---
 
-**Story 2.2: AI Content Generation**
+**Story 2.2: AI Content Generation (MVP)**
+(FR002, FR003, FR004, FR010)
 
 As a user,
 I want the system to automatically generate a summary, flashcards, and a quiz after I upload a file,
@@ -132,7 +154,7 @@ So that I can quickly start studying.
 
 ---
 
-**Story 2.3: Display Generated Content**
+**Story 2.3: Display Generated Content (MVP)**
 
 As a user,
 I want to be able to view the generated summary, flashcards, and quiz,
@@ -148,7 +170,7 @@ So that I can start studying.
 
 ---
 
-**Story 2.4: Quiz Interaction**
+**Story 2.4: Quiz Interaction (MVP)**
 
 As a user,
 I want to be able to answer the quiz questions and get immediate feedback,
@@ -163,7 +185,8 @@ So that I can test my knowledge.
 
 ---
 
-**Story 2.5: Save Study Set**
+**Story 2.5: Save Study Set (MVP)**
+(FR005)
 
 As a user,
 I want to be able to save a generated study set,

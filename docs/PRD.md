@@ -38,6 +38,10 @@ Students are currently facing a significant challenge in managing the large volu
 *   **FR010:** The system shall display a progress or status indicator during file upload and AI generation.
 *   **FR011:** The system shall handle invalid or unsupported files gracefully, without system crashes.
 
+#### Dependencies
+*   FR002, FR003, FR004, FR005, FR006 are dependent on FR001 (file upload).
+*   FR005, FR006 are dependent on FR007 (user sign-in).
+
 ### Non-Functional Requirements
 
 *   **NFR01 (Performance):** The system shall have a median response time of less than 5 seconds for the entire content generation process.
@@ -94,9 +98,16 @@ The user experience should feel fast, simple, and focused — minimizing frictio
 
 ## Out of Scope
 
-*   Sharing and collaboration features.
-*   Adjustable difficulty or detail level for the generated content.
-*   Support for multiple languages.
-*   Personalized quiz feeds or learning analytics.
-*   Detailed explanations for wrong quiz answers.
-*   Offline access to content.
+*   **Sharing and collaboration features:** (Reason: Focus on individual study experience for MVP)
+*   **Adjustable difficulty or detail level for the generated content:** (Reason: Simplify AI generation for MVP)
+*   **Support for multiple languages:** (Reason: Focus on a single language for MVP)
+*   **Personalized quiz feeds or learning analytics:** (Reason: Focus on core content generation for MVP)
+*   **Detailed explanations for wrong quiz answers:** (Reason: Simplify quiz interaction for MVP)
+*   **Offline access to content:** (Reason: Web-based application for MVP)
+
+---
+
+## References
+
+*   [Product Brief](./product-brief-studyBuddy-AI-2025-11-01.md)
+*   [Epics](./epics.md)
