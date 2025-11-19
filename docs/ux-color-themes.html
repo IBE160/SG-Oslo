@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy AI - UX Style Guide Visualizer</title>
+    <style>
+        :root {
+            --midnight-blue: #1A2A4F;
+            --vibrant-teal: #2DC6A1;
+            --warm-coral: #FF6F61;
+            --soft-lilac: #C7B8F3;
+            --off-white: #F7F7FA;
+            --slate-gray: #6C7486;
+            --ink-black: #0E0E12;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--off-white);
+            color: var(--slate-gray);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+        h1, h2, h3 {
+            color: var(--ink-black);
+            font-weight: 700;
+        }
+        h1 { font-size: 36px; }
+        h2 { font-size: 26px; }
+        h3 { font-size: 20px; font-weight: 500; }
+
+        .theme-section {
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        .palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .swatch {
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: left;
+            color: white;
+            font-weight: 500;
+        }
+        .swatch .name { font-weight: 700; font-size: 1.1rem; }
+        .swatch .hex { display: block; font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8; }
+        .swatch .usage { font-size: 0.8rem; margin-top: 1rem; line-height: 1.4; opacity: 0.9;}
+
+        .components {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .component-card {
+            background-color: var(--off-white);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+        
+        button, .btn {
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.8rem 1.75rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-primary { background-color: var(--vibrant-teal); color: white; }
+        .btn-primary:hover { background-color: #26a889; transform: scale(1.02); }
+        .btn-secondary { background-color: white; color: var(--slate-gray); border: 1px solid #e0e0e0; }
+        .btn-secondary:hover { border-color: var(--slate-gray); }
+
+        .alert {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+        }
+        .alert-success { background-color: #eaf8f4; color: #2DC6A1; border-color: #a7e3d5; }
+        .alert-warning { background-color: #fff4f2; color: #FF6F61; border-color: #ffb8b2; }
+        .alert-info { background-color: #f0effc; color: #5F42DB; border-color: #c7b8f3; }
+        .alert svg { flex-shrink: 0; }
+
+        .flashcard {
+            background-color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(14, 14, 18, 0.08);
+            text-align: center;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .flashcard .symbol {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            filter: grayscale(100%) opacity(0.3);
+        }
+        .flashcard .question { font-size: 1.2rem; font-weight: 500; color: var(--ink-black); }
+
+        .nav { display: flex; gap: 0.5rem; background-color: var(--midnight-blue); padding: 0.75rem; border-radius: 12px;}
+        .nav a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;}
+        .nav a.active, .nav a:hover { background-color: rgba(255,255,255,0.1); }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>StudyBuddy AI - UX Style Guide Visualizer</h1>
+        <p>This is the refined visual direction based on the UX Style Guide you provided. It combines the requested colors into a cohesive and professional theme.</p>
+
+        <div class="theme-section">
+            <h2>Color Palette</h2>
+            <div class="palette">
+                <div class="swatch" style="background-color: var(--midnight-blue);">
+                    <span class="name">Midnight Blue</span><span class="hex">#1A2A4F</span>
+                    <span class="usage">For core surfaces and backgrounds.</span>
+                </div>
+                <div class="swatch" style="background-color: var(--vibrant-teal);">
+                    <span class="name">Vibrant Teal</span><span class="hex">#2DC6A1</span>
+                    <span class="usage">For primary actions and highlights.</span>
+                </div>
+                <div class="swatch" style="background-color: var(--warm-coral);">
+                    <span class="name">Warm Coral</span><span class="hex">#FF6F61</span>
+                    <span class="usage">For notifications and friendly accents.</span>
+                </div>
+                <div class="swatch" style="background-color: var(--soft-lilac);">
+                    <span class="name">Soft Lilac</span><span class="hex">#C7B8F3</span>
+                    <span class="usage">For backgrounds or secondary highlights.</span>
+                </div>
+            </div>
+             <div class="palette">
+                <div class="swatch" style="background-color: var(--off-white); color: var(--slate-gray); border: 1px solid #dee2e6;">
+                    <span class="name">Off White</span><span class="hex">#F7F7FA</span>
+                    <span class="usage">Primary background color.</span>
+                </div>
+                <div class="swatch" style="background-color: var(--slate-gray);">
+                    <span class="name">Slate Gray</span><span class="hex">#6C7486</span>
+                    <span class="usage">For body text.</span>
+                </div>
+                <div class="swatch" style="background-color: var(--ink-black);">
+                    <span class="name">Ink Black</span><span class="hex">#0E0E12</span>
+                    <span class="usage">For headlines and high contrast text.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="theme-section">
+            <h2>Component Examples</h2>
+            <div class="components">
+                <div class="component-card">
+                    <h3>Buttons</h3>
+                    <button class="btn btn-primary">Primary Action</button>
+                    <br/><br/>
+                    <button class="btn btn-secondary">Secondary Action</button>
+                </div>
+                <div class="component-card">
+                    <h3>Alerts & Notifications</h3>
+                    <div class="alert alert-success">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        Great work! Your study set is ready.
+                    </div>
+                    <div class="alert alert-warning">
+                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                        Heads up! This is a large file.
+                    </div>
+                    <div class="alert alert-info">
+                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                         Did you know you can save your sets?
+                    </div>
+                </div>
+                <div class="component-card" style="background-color: var(--midnight-blue);">
+                    <h3 style="color: white;">Navigation</h3>
+                    <div class="nav">
+                        <a href="#" class="active">
+                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                           Home
+                        </a>
+                        <a href="#">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.2 15c.7-1.2 1-2.5.7-3.9-.6-2.4-2.4-4.2-4.8-4.8-.4-.1-.7-.2-1.1-.2h-8c-2.4 0-4.5 1.1-5.9 2.9S.3 12.3 1.1 14c.8 1.9 2.6 3.2 4.7 3.5.4.1.8.1 1.2.1h10c.5 0 .9-.1 1.3-.2 2.2-.7 3.8-2.3 4.6-4.2z"></path><path d="M12 6.5V12l3.5 3.5"></path></svg>
+                            Flashcards
+                        </a>
+                         <a href="#">
+                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                            Profile
+                        </a>
+                    </div>
+                </div>
+                 <div class="component-card">
+                    <h3>Flashcard</h3>
+                    <div class="flashcard">
+                        <div class="symbol">🧠</div>
+                        <div class="question">What is the capital of Norway?</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

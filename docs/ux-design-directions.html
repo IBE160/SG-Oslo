@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy AI - Design Direction Showcase (Revision 1)</title>
+    <style>
+        :root {
+            /* Revised Palette based on feedback */
+            --background-blue: #DEEAFC;
+            --header-white: #FFFFFF;
+            --vibrant-teal: #2DC6A1;
+            --warm-coral: #FF6F61;
+            --soft-lilac: #C7B8F3;
+            --slate-gray: #6C7486; /* Softer text */
+            --ink-black: #0E0E12; /* For high-contrast headlines */
+            --card-background: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-blue);
+            color: var(--slate-gray);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: var(--header-white);
+            color: var(--ink-black);
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--ink-black);
+        }
+        .hamburger-menu {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        .container {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .screen-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2.5rem;
+            color: var(--ink-black);
+        }
+        .direction-card {
+            background-color: var(--card-background);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .direction-card-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .direction-card-header h3 {
+            margin: 0;
+            color: var(--ink-black);
+            font-size: 1.8rem;
+        }
+        .direction-card-header p {
+            color: var(--slate-gray);
+            margin-top: 0.5rem;
+        }
+        .mockup-container {
+            padding: 2rem;
+            display: grid;
+            gap: 2rem;
+        }
+        .mockup-frame {
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .mockup-title {
+            font-weight: 600;
+            color: var(--ink-black);
+            font-size: 1.3rem;
+        }
+        
+        /* Component styles from previous version, adapted for new palette */
+        .button {
+            background-color: var(--vibrant-teal);
+            color: white;
+            padding: 0.8rem 1.75rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        .button:hover { transform: scale(1.03); }
+
+        .button-outline {
+            background-color: transparent;
+            color: var(--slate-gray);
+            border: 2px solid var(--slate-gray);
+            padding: 0.7rem 1.75rem;
+            border-radius: 12px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: 600;
+             transition: all 0.2s ease;
+        }
+         .button-outline:hover {
+            background-color: var(--slate-gray);
+            color: white;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        .bento-item {
+            background-color: #EDF5FD; /* Lighter blue from the new background */
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid var(--background-blue);
+            color: var(--slate-gray);
+        }
+        .bento-item h4 {
+            margin-top: 0;
+            font-size: 1.1rem;
+            color: var(--ink-black);
+        }
+
+        .progress-bar {
+            height: 12px;
+            background-color: #d0e1f0; /* Softer background for progress */
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            width: 75%; /* Example */
+            height: 100%;
+            background: linear-gradient(90deg, var(--warm-coral) 0%, var(--vibrant-teal) 100%);
+            border-radius: 6px;
+        }
+        .progress-text {
+            font-size: 0.9rem;
+            color: var(--vibrant-teal);
+            font-weight: 600;
+        }
+
+        .flashcard-mockup {
+            background-color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .flashcard-mockup .symbol {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--warm-coral);
+        }
+        .flashcard-mockup .question {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--ink-black);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-option-mockup {
+            display: block;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--slate-gray);
+            text-decoration: none;
+        }
+        .quiz-option-mockup:hover {
+            border-color: var(--vibrant-teal);
+            background-color: #f0fdf9;
+        }
+        .quiz-option-mockup.correct {
+            border-color: #2DC6A1;
+            background-color: #eaf8f4;
+            color: #2DC6A1;
+            font-weight: 600;
+        }
+        .quiz-option-mockup.incorrect {
+            border-color: #FF6F61;
+            background-color: #fff4f2;
+            color: #FF6F61;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">StudyBuddy</div>
+        <svg class="hamburger-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </div>
+
+    <div class="container">
+        <h2 class="screen-title">Refined Design Direction (v2)</h2>
+
+        <!-- Direction 2 Revised -->
+        <div class="design-direction-group">
+            <div class="direction-card">
+                <div class="direction-card-header">
+                    <h3>Dynamic & Engaging Dashboard</h3>
+                    <p>This revised design incorporates your feedback for a more pastel palette, a white header, and a light blue background.</p>
+                </div>
+                <div class="mockup-container">
+                    <div class="mockup-frame" style="background-color: transparent; box-shadow: none; padding: 0;">
+                        <div class="mockup-title">Hello, BIP! Keep up the great work!</div>
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill"></div>
+                        </div>
+                        <p class="progress-text">75% of Biology - Chapter 3 reviewed</p>
+                        <div style="margin-top: 1rem;">
+                            <a href="#" class="button">Continue Studying</a>
+                            <a href="#" class="button-outline" style="margin-left: 1rem;">Upload New</a>
+                        </div>
+                        <p style="margin-top: 2rem; font-weight: 600; color: var(--ink-black);">Your Recent Activity:</p>
+                        <div class="bento-grid">
+                            <div class="bento-item" style="border-color: var(--vibrant-teal);">
+                                <h4>🎉 Quiz Completed!</h4>
+                                <p>History - Renaissance</p>
+                            </div>
+                            <div class="bento-item" style="border-color: var(--soft-lilac);">
+                                <h4>📝 New Flashcards Generated</h4>
+                                <p>Physics - Electromagnetism</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="direction-card">
+                <div class="direction-card-header">
+                    <h3>Refined Study Session View</h3>
+                     <p>Showing the interactive quiz with the requested color feedback.</p>
+                </div>
+                <div class="mockup-container">
+                     <div class="mockup-frame" style="background-color: transparent; box-shadow: none; padding: 0;">
+                        <div class="mockup-title">Biology - Chapter 3: Quiz</div>
+                        <p style="font-weight: 600; color: var(--ink-black); margin-bottom: 1rem;">Question 3/6: Which organelle is responsible for generating most of the ATP in eukaryotic cells?</p>
+                        <a href="#" class="quiz-option-mockup">A. Nucleus</a>
+                        <a href="#" class="quiz-option-mockup correct">B. Mitochondria</a>
+                        <a href="#" class="quiz-option-mockup">C. Endoplasmic Reticulum</a>
+                        <a href="#" class="quiz-option-mockup incorrect">D. Ribosome</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
