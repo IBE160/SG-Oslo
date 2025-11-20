@@ -12,6 +12,7 @@ This document summarizes the key outcomes and decisions from the collaborative U
 -   **Explored Design Directions:** Generated and refined interactive HTML mockups to visualize and decide on the application's look and feel, settling on a **"Dynamic & Engaging"** direction with a pastel color palette.
 -   **Implemented Pastel Color Palette:** Updated the primary, secondary, and neutral colors across the design specification and visualizer to the new pastel scheme.
 -   **Defined Core UI Components:** Detailed the design and functionality of key UI elements including a dropdown hamburger menu, a logged-in user dropdown with content categories, quiz generation options (15-min and 1-hour deep dive), and enhanced flashcards with visual placeholders.
+-   **Documented Key User Journey:** Created a detailed user journey for the "Upload Document" flow, outlining user actions, system responses, and considerations from entry point to successful study tool generation.
 
 ## Key Deliverables
 
@@ -25,6 +26,9 @@ The following artifacts have been created and committed to the repository:
 
 3.  **Design Direction Showcase (`docs/ux-design-directions.html`)**
     *   An interactive HTML file presenting the refined design direction for key screens, including the Dashboard and Study Session View, based on user feedback.
+
+4.  **User Journey: Upload Document (`docs/user-journey-upload-document.md`)**
+    *   A detailed breakdown of the user's experience when uploading a document, covering steps, interactions, and potential considerations.
 
 ## Next Steps
 
