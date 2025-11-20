@@ -13,6 +13,7 @@ This document summarizes the key outcomes and decisions from the collaborative U
 -   **Implemented Pastel Color Palette:** Updated the primary, secondary, and neutral colors across the design specification and visualizer to the new pastel scheme.
 -   **Defined Core UI Components:** Detailed the design and functionality of key UI elements including a dropdown hamburger menu, a logged-in user dropdown with content categories, quiz generation options (15-min and 1-hour deep dive), and enhanced flashcards with visual placeholders.
 -   **Documented Key User Journey:** Created a detailed user journey for the "Upload Document" flow, outlining user actions, system responses, and considerations from entry point to successful study tool generation.
+-   **Documented 'Take a Quiz' User Journey:** Outlined the detailed user flow for selecting, starting, answering, and reviewing quizzes, including considerations for quiz types and feedback mechanisms.
 
 ## Key Deliverables
 
@@ -29,6 +30,9 @@ The following artifacts have been created and committed to the repository:
 
 4.  **User Journey: Upload Document (`docs/user-journey-upload-document.md`)**
     *   A detailed breakdown of the user's experience when uploading a document, covering steps, interactions, and potential considerations.
+
+5.  **User Journey: Take a Quiz (`docs/user-journey-take-quiz.md`)**
+    *   A detailed breakdown of the user's experience taking a quiz, from selection to completion and results review.
 
 ## Next Steps
 
