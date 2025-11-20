@@ -1,132 +1,181 @@
-# Decision Architecture
+# StudyBuddy AI - Technical Architecture Document
 
-## Executive Summary
+## 1. Introduction
+This document outlines the technical architecture for the StudyBuddy AI application, translating the UX design into a concrete implementation plan. It covers the technology stack, application structure, proposed file organization, and a preliminary database schema.
 
-This document outlines the architecture for the StudyBuddy AI project. The architecture is designed to be simple, scalable, and easy to build upon, with a focus on using modern, well-supported technologies. The core of the architecture is a FastAPI backend with a simple HTML/CSS frontend, using Firebase for data persistence, authentication, and file storage. The AI-powered features will be provided by Google Gemini, with OpenAI's GPT-4 as a backup.
+## 2. Technology Stack
 
-## Decision Summary
+### 2.1 Backend
+*   **Language:** Python
+*   **Framework:** FastAPI
+    *   **Reasoning:** High performance (ASGI), modern, easy to learn, robust for API development, automatic OpenAPI (Swagger) documentation.
+*   **Database:** PostgreSQL (for relational data)
+    *   **Reasoning:** Robust, open-source, ACID compliant, widely supported, good for structured user data and study set metadata.
+*   **ORM:** SQLAlchemy (with AsyncPG for async support)
+    *   **Reasoning:** Powerful and flexible ORM for Python, provides a high-level API for database interactions, supports async operations.
+*   **AI/ML Integration:**
+    *   Local models for initial processing or Hugging Face Transformers.
+    *   Potential integration with cloud-based LLM APIs (e.g., Google Gemini, OpenAI GPT) for more advanced text generation (summaries, quizzes) and image analysis for visual flashcards.
+*   **Authentication:** OAuth2 with JWT (JSON Web Tokens)
+    *   **Reasoning:** Standard and secure way to handle user authentication and authorization.
+*   **Cloud Storage Integration:** API integrations with Google Drive, OneDrive for user file uploads/storage.
 
-| Category | Decision | Version | Affects Epics | Rationale |
-| --- | --- | --- | --- | --- |
-| Project Structure | Custom FastAPI structure | N/A | 1, 2 | Simple and easy to understand for a PoC. |
-| Data Persistence | Firestore | N/A | 1, 2 | Easy to use, flexible, and integrates well with Firebase Authentication. |
-| API Pattern | REST API | N/A | 1, 2 | Simple, standard, and well-supported by FastAPI. |
-| Authentication | Firebase Authentication | N/A | 1 | Secure, easy to implement, and integrates with Firestore. |
-| File Storage | Firebase Storage | N/A | 2 | Part of the Firebase ecosystem, scalable, and reliable. |
-| AI Service | Google Gemini / OpenAI GPT-4 | N/A | 2 | Provides a primary and backup AI service for reliability. |
+### 2.2 Frontend
+*   **Framework:** HTML5 Templates (rendered by FastAPI)
+    *   **Reasoning:** Aligns with the "simple web UI" for an MVP, leveraging FastAPI's template capabilities.
+*   **Styling/Components:** Bootstrap 5 (with Material Design principles and custom theming)
+    *   **Reasoning:** Provides a robust, responsive, and accessible foundation, allowing for rapid UI development while maintaining a sleek aesthetic.
+*   **Interactivity:** Vanilla JavaScript for dynamic UI elements (e.g., hamburger menu, dropdowns, quiz interactions).
 
-## Project Structure
+## 3. Application Architecture
 
-```
-/
-├── main.py         # Main application file
-├── requirements.txt  # Python libraries
-├── static/           # CSS and JavaScript files
-│   └── styles.css
-└── templates/        # HTML files
-    ├── index.html
-    ├── login.html
-    └── dashboard.html
-```
+### 3.1 High-Level Overview
+The application will follow a client-server architecture with a clear separation of concerns between the backend API and the frontend presentation.
 
-## Epic to Architecture Mapping
-
-*   **Epic 1: Core Application Setup and User Authentication** -> This epic will be implemented in the `main.py` file and the `templates` folder, with user data being stored in Firestore.
-*   **Epic 2: AI-Powered Study Material Generation** -> This epic will involve the `main.py` file for the API endpoints, Firebase Storage for file uploads, and the integration with the Google Gemini and OpenAI APIs.
-
-## Technology Stack Details
-
-### Core Technologies
-
-*   **Backend:** FastAPI
-*   **Frontend:** HTML, CSS, JavaScript (served from FastAPI)
-*   **Database:** Firestore
-*   **Authentication:** Firebase Authentication
-*   **File Storage:** Firebase Storage
-*   **AI Service:** Google Gemini, OpenAI GPT-4
-
-### Integration Points
-
-*   The frontend will communicate with the backend via a REST API.
-*   The backend will communicate with Firestore, Firebase Authentication, and Firebase Storage using the official Firebase Python libraries.
-*   The backend will communicate with the Google Gemini and OpenAI APIs using their respective Python libraries.
-
-## Implementation Patterns
-
-*   **Naming Conventions:**
-    *   Python variables and functions: `snake_case`
-    *   HTML/CSS classes: `kebab-case`
-    *   API endpoints: `/api/v1/...`
-*   **Code Organization:**
-    *   API routes will be organized into separate files in a `routers` directory as the application grows.
-    *   Reusable functions will be placed in a `utils` directory.
-*   **Error Handling:**
-    *   The API will return standard HTTP status codes (e.g., 400 for bad requests, 500 for server errors).
-    *   Error messages will be clear and concise.
-*   **Logging:**
-    *   The application will use the standard Python `logging` module.
-    *   Logs will be written to the console.
-
-## Data Architecture
-
-*   **Users:** A `users` collection in Firestore will store user information (e.g., user ID, email).
-*   **Files:** A `files` collection in Firestore will store metadata about the uploaded files (e.g., file name, user ID, storage path).
-*   **Study Sets:** A `study_sets` collection in Firestore will store the generated content (summary, flashcards, quiz), linked to the user and the uploaded file.
-
-## API Contracts
-
-*   The API will use JSON for all request and response bodies.
-*   A detailed API specification (e.g., using OpenAPI/Swagger) will be created as part of the implementation of Epic 2.
-
-## Security Architecture
-
-*   All API endpoints that require authentication will be protected using Firebase Authentication.
-*   User passwords will not be stored in our database; they will be managed by Firebase Authentication.
-*   All user data will be stored securely in Firestore and Firebase Storage, with access controls to ensure that only the owner of the data can access it.
-
-## Performance Considerations
-
-*   For the PoC, we will focus on a simple and clean implementation. Performance optimization will be a focus for future versions.
-*   The AI content generation will be an asynchronous process to avoid blocking the main application thread.
-
-## Deployment Architecture
-
-*   For the PoC, the application can be deployed to a simple cloud service like Heroku or a small virtual private server (VPS).
-*   A more robust deployment architecture (e.g., using Docker and a cloud provider like Google Cloud or AWS) will be considered for future versions.
-
-## Development Environment
-
-### Prerequisites
-
-*   Python 3.9+
-*   A Google Firebase project.
-*   API keys for Google Gemini and OpenAI.
-
-### Setup Commands
-
-```bash
-# 1. Clone the repository
-git clone <repository_url>
-
-# 2. Create a virtual environment
-python -m venv venv
-source venv/bin/activate
-
-# 3. Install the dependencies
-pip install -r requirements.txt
-
-# 4. Run the application
-uvicorn main:app --reload
+```mermaid
+graph LR
+    User(Web Browser / Mobile App) --> Frontend(Frontend - HTML/JS/CSS)
+    Frontend -->|HTTP/REST API| Backend(Backend - FastAPI/Python)
+    Backend --> Database(Database - PostgreSQL)
+    Backend -->|API Calls| LLM_Service(LLM / AI Service - Gemini/HuggingFace/Custom)
+    Backend -->|API Calls| CloudStorage(Cloud Storage - GDrive/OneDrive)
 ```
 
-## Architecture Decision Records (ADRs)
+### 3.2 Backend Structure (FastAPI)
+*   **Main Application (`main.py`):** Entry point, routing, global middleware.
+*   **API Endpoints:**
+    *   `/auth`: User registration, login, logout, password reset.
+    *   `/users`: User profile management.
+    *   `/documents`: Document upload, management (CRUD).
+    *   `/study-sets`: Creation, retrieval, update, deletion of study sets.
+    *   `/flashcards`: Flashcard generation, management, study sessions.
+    *   `/quizzes`: Quiz generation, management, taking quizzes, results.
+    *   `/integrations`: Cloud storage connections.
+*   **Business Logic Layer:** Services responsible for core application logic, interacting with ORM and external APIs.
+*   **Data Access Layer:** Models and database session management using SQLAlchemy.
+*   **AI/ML Module:** Handles interactions with LLMs for text processing, summary, flashcard, and quiz generation.
 
-*   **ADR-001: Choice of Backend Framework:** We have chosen FastAPI as our backend framework due to its high performance, ease of use, and excellent support for asynchronous operations.
-*   **ADR-002: Choice of Database and Authentication:** We have chosen to use Firebase Firestore and Firebase Authentication to leverage the Firebase ecosystem, which provides a secure and easy-to-use solution for data persistence and user management.
-*   **ADR-003: Choice of File Storage:** We have chosen to use Firebase Storage for file uploads to keep our architecture consistent with the rest of the Firebase services.
+### 3.3 Frontend Structure (HTML Templates & JS)
+*   **Templates:** Jinja2 templates rendered by FastAPI for each major page (Home, How It Works, Features, Pricing, Login/Sign Up).
+*   **Static Assets:** CSS (Bootstrap, custom styles), JavaScript (Vanilla JS for interactivity), images.
+*   **Component-based Approach:** Reusable UI components (buttons, cards, navigation elements) will be developed and integrated into templates.
 
----
+## 4. Directory Structure (Proposed)
 
-_Generated by BMAD Decision Architecture Workflow v1.0_
-_Date: 2025-11-01_
-_For: BIP_
+```
+.
+├── app/
+│   ├── api/                 # FastAPI API endpoints
+│   ├── core/                # Core configurations, middleware
+│   ├── db/                  # Database models, migrations
+│   ├── services/            # Business logic
+│   ├── static/              # CSS, JS, images (static assets)
+│   ├── templates/           # Jinja2 HTML templates
+│   └── main.py              # FastAPI application entry point
+├── components/              # Reusable UI component HTML/CSS/JS snippets
+├── docs/                    # Architecture, UX, user journeys, etc.
+│   ├── architecture.md
+│   ├── ux-design-progress-summary.md
+│   ├── ux-design-specification.md
+│   ├── ux-color-themes.html
+│   ├── user-journey-upload-document.md
+│   ├── user-journey-take-quiz.md
+│   └── user-journey-authentication.md
+├── tests/                   # Unit and integration tests
+├── .env.example             # Environment variables
+├── Dockerfile               # Docker configuration
+├── requirements.txt         # Python dependencies
+├── README.md
+└── (other config files)
+```
+
+## 5. Preliminary Database Schema
+
+### 5.1 Entities
+
+*   **User:**
+    *   `id` (PK, UUID)
+    *   `email` (UNIQUE, String)
+    *   `hashed_password` (String)
+    *   `created_at` (DateTime)
+    *   `last_login_at` (DateTime)
+    *   `cloud_storage_connected` (Boolean)
+    *   `cloud_storage_provider` (String, e.g., 'google_drive', 'onedrive')
+    *   `cloud_storage_access_token` (String, ENCRYPTED)
+
+*   **Document:**
+    *   `id` (PK, UUID)
+    *   `user_id` (FK to User.id)
+    *   `filename` (String)
+    *   `file_path` (String) # Path in cloud storage or internal storage
+    *   `file_type` (String, e.g., 'pdf', 'docx')
+    *   `uploaded_at` (DateTime)
+    *   `status` (String, e.g., 'uploaded', 'processing', 'processed', 'failed')
+
+*   **StudySet:** (Represents the collection of generated tools from one document)
+    *   `id` (PK, UUID)
+    *   `document_id` (FK to Document.id, UNIQUE)
+    *   `user_id` (FK to User.id)
+    *   `title` (String, derived from document or user input)
+    *   `category` (String, user-definable, e.g., 'History 101')
+    *   `generated_at` (DateTime)
+
+*   **Summary:**
+    *   `id` (PK, UUID)
+    *   `study_set_id` (FK to StudySet.id)
+    *   `content` (Text)
+    *   `generated_at` (DateTime)
+
+*   **Flashcard:**
+    *   `id` (PK, UUID)
+    *   `study_set_id` (FK to StudySet.id)
+    *   `question` (Text)
+    *   `answer` (Text)
+    *   `image_url` (String, NULLABLE)
+    *   `symbol` (String, NULLABLE)
+    *   `difficulty` (Integer, 1-5)
+
+*   **Quiz:**
+    *   `id` (PK, UUID)
+    *   `study_set_id` (FK to StudySet.id)
+    *   `quiz_type` (String, e.g., '15_min', '1_hour')
+    *   `generated_at` (DateTime)
+
+*   **QuizQuestion:**
+    *   `id` (PK, UUID)
+    *   `quiz_id` (FK to Quiz.id)
+    *   `question_text` (Text)
+    *   `question_type` (String, e.g., 'multiple_choice', 'true_false')
+    *   `correct_answer` (Text)
+
+*   **QuizOption:** (For multiple-choice questions)
+    *   `id` (PK, UUID)
+    *   `quiz_question_id` (FK to QuizQuestion.id)
+    *   `option_text` (Text)
+    *   `is_correct` (Boolean)
+
+*   **UserQuizAttempt:**
+    *   `id` (PK, UUID)
+    *   `user_id` (FK to User.id)
+    *   `quiz_id` (FK to Quiz.id)
+    *   `started_at` (DateTime)
+    *   `completed_at` (DateTime, NULLABLE)
+    *   `score` (Integer, NULLABLE)
+    *   `total_questions` (Integer)
+
+*   **UserAnswer:**
+    *   `id` (PK, UUID)
+    *   `user_quiz_attempt_id` (FK to UserQuizAttempt.id)
+    *   `quiz_question_id` (FK to QuizQuestion.id)
+    *   `selected_option_id` (FK to QuizOption.id, NULLABLE)
+    *   `user_text_answer` (Text, NULLABLE)
+    *   `is_correct` (Boolean, NULLABLE)
+    *   `answered_at` (DateTime)
+
+## 6. Future Considerations
+*   **Scalability:** How will the architecture scale with increasing users and data? (e.g., message queues for AI processing, load balancing).
+*   **Security:** Detailed plan for data encryption, access control, and vulnerability management.
+*   **Deployment:** CI/CD pipelines, containerization (Docker, Kubernetes), cloud provider (AWS, GCP, Azure).
+*   **Monitoring & Logging:** Tools for application performance monitoring, error tracking, and logging.
+*   **Test Strategy:** Unit, integration, and end-to-end testing.
+*   **Admin Interface:** How will administrators manage users and content?

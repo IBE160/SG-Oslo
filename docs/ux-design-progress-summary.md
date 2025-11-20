@@ -12,10 +12,11 @@ This document summarizes the key outcomes and decisions from the collaborative U
 -   **Explored Design Directions:** Generated and refined interactive HTML mockups to visualize and decide on the application's look and feel, settling on a **"Dynamic & Engaging"** direction with a pastel color palette.
 -   **Implemented Pastel Color Palette:** Updated the primary, secondary, and neutral colors across the design specification and visualizer to the new pastel scheme.
 -   **Defined Core UI Components:** Detailed the design and functionality of key UI elements including a dropdown hamburger menu, a logged-in user dropdown with content categories, quiz generation options (15-min and 1-hour deep dive), and enhanced flashcards with visual placeholders.
--   **Documented Key User Journey:** Created a detailed user journey for the "Upload Document" flow, outlining user actions, system responses, and considerations from entry point to successful study tool generation.
--   **Documented 'Take a Quiz' User Journey:** Outlined the detailed user flow for selecting, starting, answering, and reviewing quizzes, including considerations for quiz types and feedback mechanisms.
--   **Documented 'Authentication' User Journey:** Mapped out the user flows for registration and login, including social login integration and password recovery considerations.
+-   **Documented Key User Journey: Upload Document:** Created a detailed user journey for the "Upload Document" flow, outlining user actions, system responses, and considerations from entry point to successful study tool generation.
+-   **Documented Key User Journey: Take a Quiz:** Outlined the detailed user flow for selecting, starting, answering, and reviewing quizzes, including considerations for quiz types and feedback mechanisms.
+-   **Documented Key User Journey: Authentication:** Mapped out the user flows for registration and login, including social login integration and password recovery considerations.
 -   **Initiated Component Library Development:** Created a dedicated directory and initial files for building out a comprehensive, reusable UI component library based on the established design system.
+-   **Established Technical Architecture:** Documented the core technology stack, application architecture, proposed file structure, and preliminary database schema for StudyBuddy AI.
 
 ## Key Deliverables
 
@@ -42,10 +43,15 @@ The following artifacts have been created and committed to the repository:
 7.  **Component Library (Initial Setup) (`components/index.html`, `components/styles.css`)**
     *   Initial setup of a reusable UI component library, including a showcase HTML file and a dedicated CSS file for custom component styles.
 
+8.  **Technical Architecture Document (`docs/architecture.md`)**
+    *   A comprehensive outline of the technology stack, application architecture, file structure, and preliminary database schema for the project.
+
 ## Next Steps
 
-With the foundational UX and visual design established, the project is well-positioned for the next phases, which could include:
+With the foundational UX, visual design, and initial technical architecture established, the project is well-positioned for the next phases, which could include:
 
 -   Developing high-fidelity mockups of all screens.
--   Designing detailed user journeys and interaction flows.
--   Creating a comprehensive component library based on the chosen design system and style guide.
+-   Continuing with detailed user journeys and interaction flows for remaining features.
+-   Building out the comprehensive component library.
+-   Detailed design of API endpoints and data models.
+-   Setting up the development environment.
