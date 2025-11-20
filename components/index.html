@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyBuddy AI - Component Library</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap CSS (example, actual version/CDN will be integrated during build) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Define CSS Variables based on our pastel palette */
+        :root {
+            --primary-pastel-blue: #AFCBFF;
+            --primary-pastel-mint: #BFF6E7;
+            --secondary-pastel-coral: #FFB9B5;
+            --secondary-pastel-lavender: #EBDDFF;
+            --neutral-off-white: #F7F7FA;
+            --neutral-black: #000000;
+            --neutral-warm-gray: #A7A7B0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--neutral-off-white);
+            color: var(--neutral-black);
+            margin: 0;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--neutral-black);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.75rem; font-weight: 500; }
+        p { margin-bottom: 1rem; }
+
+        /* General button styling, adapted from ux-color-themes.html */
+        .btn {
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.8rem 1.75rem;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-block;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn-primary-custom {
+            background-color: var(--primary-pastel-blue);
+            color: white;
+        }
+        .btn-primary-custom:hover {
+            background-color: #9ab4e6; /* Slightly darker pastel blue */
+            transform: scale(1.02);
+            color: white; /* Ensure text color remains white on hover */
+        }
+        .btn-secondary-custom {
+            background-color: white;
+            color: var(--neutral-warm-gray);
+            border: 1px solid #e0e0e0;
+        }
+        .btn-secondary-custom:hover {
+            border-color: var(--neutral-warm-gray);
+            color: var(--neutral-black); /* Darken text on hover */
+        }
+
+        /* Card styling */
+        .custom-card {
+            background-color: var(--neutral-off-white);
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Hamburger menu styling */
+        .hamburger-menu-showcase {
+            position: relative;
+            display: inline-block;
+            margin-right: 20px;
+        }
+        .hamburger-icon-showcase {
+            cursor: pointer;
+            padding: 10px;
+            background-color: var(--primary-pastel-blue);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.5rem;
+            line-height: 1;
+            display: inline-block;
+        }
+        .hamburger-dropdown-showcase {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            margin-top: 5px;
+        }
+        .hamburger-dropdown-showcase a {
+            color: var(--neutral-black);
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .hamburger-dropdown-showcase a:hover {
+            background-color: var(--primary-pastel-mint);
+        }
+        .hamburger-menu-showcase.active .hamburger-dropdown-showcase {
+            display: block;
+        }
+
+        /* User dropdown styling */
+        .user-dropdown-showcase {
+            position: relative;
+            display: inline-block;
+        }
+        .user-avatar-showcase {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-pastel-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        .user-dropdown-content-showcase {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            margin-top: 5px;
+            right: 0;
+        }
+        .user-dropdown-content-showcase a {
+            color: var(--neutral-black);
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .user-dropdown-content-showcase a:hover {
+            background-color: var(--primary-pastel-mint);
+        }
+        .user-dropdown-showcase.active .user-dropdown-content-showcase {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>StudyBuddy AI - Component Library Showcase</h1>
+        <p>This page demonstrates various UI components built for StudyBuddy AI, reflecting the approved design system and pastel color palette.</p>
+
+        <section id="buttons" class="mt-5">
+            <h2>Buttons</h2>
+            <div class="custom-card">
+                <h3>Primary & Secondary Buttons</h3>
+                <button class="btn btn-primary-custom me-2">Primary Action</button>
+                <button class="btn btn-secondary-custom">Secondary Action</button>
+            </div>
+        </section>
+
+        <section id="navigation" class="mt-5">
+            <h2>Navigation</h2>
+            <div class="custom-card">
+                <h3>Hamburger Menu</h3>
+                <div class="hamburger-menu-showcase">
+                    <div class="hamburger-icon-showcase" onclick="this.parentNode.classList.toggle('active')">☰</div>
+                    <div class="hamburger-dropdown-showcase">
+                        <a href="#">Login</a>
+                        <a href="#">Upload File</a>
+                        <a href="#">Create Flashcards</a>
+                        <a href="#">Create Quiz</a>
+                        <a href="#">About StudyBuddy</a>
+                        <a href="#">FAQ</a>
+                        <a href="#">Resources</a>
+                    </div>
+                </div>
+
+                <h3 class="mt-4">User Dropdown (Logged In)</h3>
+                <div class="user-dropdown-showcase">
+                    <div class="user-avatar-showcase" onclick="this.parentNode.classList.toggle('active')">BI</div>
+                    <div class="user-dropdown-content-showcase">
+                        <a href="#">Dashboard</a>
+                        <a href="#">History 101 (Flashcards)</a>
+                        <a href="#">Biology 205 (Quizzes)</a>
+                        <a href="#">Settings</a>
+                        <a href="#">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="forms" class="mt-5">
+            <h2>Forms & Inputs</h2>
+            <div class="custom-card">
+                <h3>Quiz Options</h3>
+                <div class="quiz-options">
+                    <div class="quiz-option">
+                        <input type="radio" id="quiz15min" name="quiz_type" value="15min">
+                        <label for="quiz15min">15 Min Quiz</label>
+                    </div>
+                    <div class="quiz-option">
+                        <input type="radio" id="quiz1hour" name="quiz_type" value="1hour" checked>
+                        <label for="quiz1hour">1 Hour Deep Dive</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="cards" class="mt-5">
+            <h2>Cards & Content Display</h2>
+            <div class="custom-card">
+                <h3>Flashcard Example</h3>
+                <div style="background-color: white; border-radius: 20px; padding: 2rem; box-shadow: 0 8px 32px rgba(14, 14, 18, 0.08); text-align: center; min-height: 180px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                    <img src="https://via.placeholder.com/64x64?text=🖼️" alt="Flashcard visual" style="margin-bottom: 1rem; border-radius: 8px;">
+                    <div style="font-size: 1.2rem; font-weight: 500; color: var(--neutral-black);">What is the capital of Norway?</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    <script>
+        // Basic interactivity for dropdowns (Hamburger Menu)
+        document.querySelectorAll('.hamburger-icon-showcase').forEach(item => {
+            item.addEventListener('click', event => {
+                event.stopPropagation();
+                item.parentNode.classList.toggle('active');
+            });
+        });
+
+        // Basic interactivity for dropdowns (User Dropdown)
+        document.querySelectorAll('.user-avatar-showcase').forEach(item => {
+            item.addEventListener('click', event => {
+                event.stopPropagation();
+                item.parentNode.classList.toggle('active');
+            });
+        });
+
+        // Close dropdowns if user clicks outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.hamburger-icon-showcase') && !event.target.matches('.user-avatar-showcase')) {
+                let hamburgerDropdowns = document.querySelectorAll('.hamburger-menu-showcase');
+                hamburgerDropdowns.forEach(function(openDropdown) {
+                    if (openDropdown.classList.contains('active')) {
+                        openDropdown.classList.remove('active');
+                    }
+                });
+
+                let userDropdowns = document.querySelectorAll('.user-dropdown-showcase');
+                userDropdowns.forEach(function(openDropdown) {
+                    if (openDropdown.classList.contains('active')) {
+                        openDropdown.classList.remove('active');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

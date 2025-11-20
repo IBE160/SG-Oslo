@@ -15,6 +15,7 @@ This document summarizes the key outcomes and decisions from the collaborative U
 -   **Documented Key User Journey:** Created a detailed user journey for the "Upload Document" flow, outlining user actions, system responses, and considerations from entry point to successful study tool generation.
 -   **Documented 'Take a Quiz' User Journey:** Outlined the detailed user flow for selecting, starting, answering, and reviewing quizzes, including considerations for quiz types and feedback mechanisms.
 -   **Documented 'Authentication' User Journey:** Mapped out the user flows for registration and login, including social login integration and password recovery considerations.
+-   **Initiated Component Library Development:** Created a dedicated directory and initial files for building out a comprehensive, reusable UI component library based on the established design system.
 
 ## Key Deliverables
 
@@ -37,6 +38,9 @@ The following artifacts have been created and committed to the repository:
 
 6.  **User Journey: Authentication (`docs/user-journey-authentication.md`)**
     *   A detailed breakdown of the user's experience for registration and login.
+
+7.  **Component Library (Initial Setup) (`components/index.html`, `components/styles.css`)**
+    *   Initial setup of a reusable UI component library, including a showcase HTML file and a dedicated CSS file for custom component styles.
 
 ## Next Steps
 
