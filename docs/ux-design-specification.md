@@ -214,6 +214,7 @@ The application will feature a clear and intuitive navigation system.
     *   **Create Flashcards:** A direct link to the flashcard creation functionality.
     *   **Create Quiz:** A direct link to the quiz creation functionality.
     *   **About StudyBuddy:** Information about the application.
+*   **FAQ:** Frequently Asked Questions about StudyBuddy.
 
 **User Dropdown (Logged-In State):**
 *   Once logged in, a user-specific dropdown menu will be available.
