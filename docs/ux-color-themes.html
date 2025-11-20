@@ -6,19 +6,19 @@
     <title>StudyBuddy AI - UX Style Guide Visualizer</title>
     <style>
         :root {
-            --midnight-blue: #1A2A4F;
-            --vibrant-teal: #2DC6A1;
-            --warm-coral: #FF6F61;
-            --soft-lilac: #C7B8F3;
-            --off-white: #F7F7FA;
-            --slate-gray: #6C7486;
-            --ink-black: #0E0E12;
+            --primary-pastel-blue: #AFCBFF;
+            --primary-pastel-mint: #BFF6E7;
+            --secondary-pastel-coral: #FFB9B5;
+            --secondary-pastel-lavender: #EBDDFF;
+            --neutral-off-white: #F7F7FA;
+            --neutral-black: #000000;
+            --neutral-warm-gray: #A7A7B0;
         }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--off-white);
-            color: var(--slate-gray);
+            background-color: var(--neutral-off-white);
+            color: var(--neutral-warm-gray);
             margin: 0;
             padding: 2rem;
             line-height: 1.6;
@@ -28,7 +28,7 @@
             margin: auto;
         }
         h1, h2, h3 {
-            color: var(--ink-black);
+            color: var(--neutral-black);
             font-weight: 700;
         }
         h1 { font-size: 36px; }
@@ -53,8 +53,14 @@
             border-radius: 12px;
             padding: 1.5rem 1rem;
             text-align: left;
-            color: white;
+            color: var(--neutral-black); /* Default text color for swatches */
             font-weight: 500;
+        }
+        .swatch.dark-text {
+            color: var(--neutral-black);
+        }
+        .swatch.light-text {
+            color: white;
         }
         .swatch .name { font-weight: 700; font-size: 1.1rem; }
         .swatch .hex { display: block; font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8; }
@@ -66,7 +72,7 @@
             gap: 2rem;
         }
         .component-card {
-            background-color: var(--off-white);
+            background-color: var(--neutral-off-white);
             border-radius: 16px;
             padding: 1.5rem;
         }
@@ -84,10 +90,10 @@
             text-align: center;
             text-decoration: none;
         }
-        .btn-primary { background-color: var(--vibrant-teal); color: white; }
-        .btn-primary:hover { background-color: #26a889; transform: scale(1.02); }
-        .btn-secondary { background-color: white; color: var(--slate-gray); border: 1px solid #e0e0e0; }
-        .btn-secondary:hover { border-color: var(--slate-gray); }
+        .btn-primary { background-color: var(--primary-pastel-blue); color: white; }
+        .btn-primary:hover { background-color: #9ab4e6; transform: scale(1.02); }
+        .btn-secondary { background-color: white; color: var(--neutral-warm-gray); border: 1px solid #e0e0e0; }
+        .btn-secondary:hover { border-color: var(--neutral-warm-gray); }
 
         .alert {
             display: flex;
@@ -98,10 +104,113 @@
             margin-bottom: 1rem;
             border: 1px solid transparent;
         }
-        .alert-success { background-color: #eaf8f4; color: #2DC6A1; border-color: #a7e3d5; }
-        .alert-warning { background-color: #fff4f2; color: #FF6F61; border-color: #ffb8b2; }
-        .alert-info { background-color: #f0effc; color: #5F42DB; border-color: #c7b8f3; }
+        .alert-success { background-color: #eaf8f4; color: #2DC6A1; border-color: #a7e3d5; } /* Using a placeholder green for now */
+        .alert-warning { background-color: #fff4f2; color: #FFB9B5; border-color: #ffb8b2; }
+        .alert-info { background-color: #f0effc; color: #EBDDFF; border-color: #c7b8f3; }
         .alert svg { flex-shrink: 0; }
+
+        .hamburger-menu {
+            position: relative;
+            display: inline-block;
+        }
+        .hamburger-icon {
+            cursor: pointer;
+            padding: 10px;
+            background-color: var(--primary-pastel-blue);
+            border-radius: 8px;
+            color: white;
+            font-size: 1.5rem;
+            line-height: 1;
+            display: inline-block;
+        }
+        .hamburger-dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            margin-top: 5px;
+        }
+        .hamburger-dropdown a {
+            color: var(--neutral-black);
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .hamburger-dropdown a:hover {
+            background-color: var(--primary-pastel-mint);
+        }
+        .hamburger-menu.active .hamburger-dropdown {
+            display: block;
+        }
+
+        .user-dropdown-menu {
+            position: relative;
+            display: inline-block;
+            margin-left: 1rem;
+        }
+        .user-avatar {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-pastel-blue);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        .user-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 180px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 8px;
+            padding: 10px 0;
+            margin-top: 5px;
+            right: 0; /* Align to the right */
+        }
+        .user-dropdown-content a {
+            color: var(--neutral-black);
+            padding: 8px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .user-dropdown-content a:hover {
+            background-color: var(--primary-pastel-mint);
+        }
+        .user-dropdown-menu.active .user-dropdown-content {
+            display: block;
+        }
+
+        .quiz-options {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .quiz-option input[type="radio"] {
+            display: none;
+        }
+        .quiz-option label {
+            padding: 0.75rem 1.25rem;
+            border: 1px solid var(--primary-pastel-blue);
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--primary-pastel-blue);
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .quiz-option input[type="radio"]:checked + label {
+            background-color: var(--primary-pastel-blue);
+            color: white;
+        }
 
         .flashcard {
             background-color: white;
@@ -120,9 +229,9 @@
             margin-bottom: 1rem;
             filter: grayscale(100%) opacity(0.3);
         }
-        .flashcard .question { font-size: 1.2rem; font-weight: 500; color: var(--ink-black); }
+        .flashcard .question { font-size: 1.2rem; font-weight: 500; color: var(--neutral-black); }
 
-        .nav { display: flex; gap: 0.5rem; background-color: var(--midnight-blue); padding: 0.75rem; border-radius: 12px;}
+        .nav { display: flex; gap: 0.5rem; background-color: var(--primary-pastel-blue); padding: 0.75rem; border-radius: 12px;}
         .nav a { color: white; text-decoration: none; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; display: flex; align-items: center; gap: 0.5rem;}
         .nav a.active, .nav a:hover { background-color: rgba(255,255,255,0.1); }
 
@@ -136,35 +245,35 @@
         <div class="theme-section">
             <h2>Color Palette</h2>
             <div class="palette">
-                <div class="swatch" style="background-color: var(--midnight-blue);">
-                    <span class="name">Midnight Blue</span><span class="hex">#1A2A4F</span>
-                    <span class="usage">For core surfaces and backgrounds.</span>
+                <div class="swatch light-text" style="background-color: var(--primary-pastel-blue);">
+                    <span class="name">Pastel Blue</span><span class="hex">#AFCBFF</span>
+                    <span class="usage">Primary accent, active states, key UI elements.</span>
                 </div>
-                <div class="swatch" style="background-color: var(--vibrant-teal);">
-                    <span class="name">Vibrant Teal</span><span class="hex">#2DC6A1</span>
-                    <span class="usage">For primary actions and highlights.</span>
+                <div class="swatch dark-text" style="background-color: var(--primary-pastel-mint);">
+                    <span class="name">Pastel Mint</span><span class="hex">#BFF6E7</span>
+                    <span class="usage">Secondary accent, highlights, subtle backgrounds.</span>
                 </div>
-                <div class="swatch" style="background-color: var(--warm-coral);">
-                    <span class="name">Warm Coral</span><span class="hex">#FF6F61</span>
-                    <span class="usage">For notifications and friendly accents.</span>
+                <div class="swatch dark-text" style="background-color: var(--secondary-pastel-coral);">
+                    <span class="name">Pastel Coral</span><span class="hex">#FFB9B5</span>
+                    <span class="usage">For notifications, warnings, or friendly accents.</span>
                 </div>
-                <div class="swatch" style="background-color: var(--soft-lilac);">
-                    <span class="name">Soft Lilac</span><span class="hex">#C7B8F3</span>
-                    <span class="usage">For backgrounds or secondary highlights.</span>
+                <div class="swatch dark-text" style="background-color: var(--secondary-pastel-lavender);">
+                    <span class="name">Pastel Lavender</span><span class="hex">#EBDDFF</span>
+                    <span class="usage">Subtle backgrounds, dividers, or tertiary elements.</span>
                 </div>
             </div>
              <div class="palette">
-                <div class="swatch" style="background-color: var(--off-white); color: var(--slate-gray); border: 1px solid #dee2e6;">
+                <div class="swatch dark-text" style="background-color: var(--neutral-off-white); border: 1px solid #dee2e6;">
                     <span class="name">Off White</span><span class="hex">#F7F7FA</span>
                     <span class="usage">Primary background color.</span>
                 </div>
-                <div class="swatch" style="background-color: var(--slate-gray);">
-                    <span class="name">Slate Gray</span><span class="hex">#6C7486</span>
-                    <span class="usage">For body text.</span>
+                <div class="swatch light-text" style="background-color: var(--neutral-black);">
+                    <span class="name">Black (Text)</span><span class="hex">#000000</span>
+                    <span class="usage">For headlines and primary text.</span>
                 </div>
-                <div class="swatch" style="background-color: var(--ink-black);">
-                    <span class="name">Ink Black</span><span class="hex">#0E0E12</span>
-                    <span class="usage">For headlines and high contrast text.</span>
+                <div class="swatch light-text" style="background-color: var(--neutral-warm-gray);">
+                    <span class="name">Warm Gray (Secondary Text)</span><span class="hex">#A7A7B0</span>
+                    <span class="usage">For body text and secondary information.</span>
                 </div>
             </div>
         </div>
@@ -193,7 +302,7 @@
                          Did you know you can save your sets?
                     </div>
                 </div>
-                <div class="component-card" style="background-color: var(--midnight-blue);">
+                <div class="component-card" style="background-color: var(--primary-pastel-blue);">
                     <h3 style="color: white;">Navigation</h3>
                     <div class="nav">
                         <a href="#" class="active">
@@ -213,12 +322,81 @@
                  <div class="component-card">
                     <h3>Flashcard</h3>
                     <div class="flashcard">
-                        <div class="symbol">🧠</div>
+                        <img src="https://via.placeholder.com/64x64?text=🖼️" alt="Flashcard visual" style="margin-bottom: 1rem; border-radius: 8px;">
                         <div class="question">What is the capital of Norway?</div>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <h3>Hamburger Menu (Logged out)</h3>
+                    <div class="hamburger-menu">
+                        <div class="hamburger-icon" onclick="this.parentNode.classList.toggle('active')">☰</div>
+                        <div class="hamburger-dropdown">
+                            <a href="#">Login</a>
+                            <a href="#">Upload File</a>
+                            <a href="#">Create Flashcards</a>
+                            <a href="#">Create Quiz</a>
+                            <a href="#">About StudyBuddy</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <h3>User Dropdown (Logged in)</h3>
+                    <div class="user-dropdown-menu">
+                        <div class="user-avatar" onclick="this.parentNode.classList.toggle('active')">BI</div>
+                        <div class="user-dropdown-content">
+                            <a href="#">Dashboard</a>
+                            <a href="#">History 101 (Flashcards)</a>
+                            <a href="#">Biology 205 (Quizzes)</a>
+                            <a href="#">Settings</a>
+                            <a href="#">Logout</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="component-card">
+                    <h3>Quiz Generation Options</h3>
+                    <div class="quiz-options">
+                        <div class="quiz-option">
+                            <input type="radio" id="quiz15min" name="quiz_type" value="15min">
+                            <label for="quiz15min">15 Min Quiz</label>
+                        </div>
+                        <div class="quiz-option">
+                            <input type="radio" id="quiz1hour" name="quiz_type" value="1hour" checked>
+                            <label for="quiz1hour">1 Hour Deep Dive</label>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        // Basic interactivity for dropdowns
+        document.querySelectorAll('.hamburger-icon').forEach(item => {
+            item.addEventListener('click', event => {
+                event.stopPropagation();
+                item.parentNode.classList.toggle('active');
+            });
+        });
+
+        document.querySelectorAll('.user-avatar').forEach(item => {
+            item.addEventListener('click', event => {
+                event.stopPropagation();
+                item.parentNode.classList.toggle('active');
+            });
+        });
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.hamburger-icon') && !event.target.matches('.user-avatar')) {
+                let dropdowns = document.querySelectorAll('.hamburger-menu, .user-dropdown-menu');
+                dropdowns.forEach(function(openDropdown) {
+                    if (openDropdown.classList.contains('active')) {
+                        openDropdown.classList.remove('active');
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>

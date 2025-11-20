@@ -174,18 +174,18 @@ The following applications were provided as inspiration for their aesthetic and 
 
 The color palette aims for a **fresh, modern, academic** look with pops of energizing color, balancing professionalism with engaging aesthetics.
 
-**Primary Colors:**
-*   **Midnight Blue (#1A2A4F):** Used for core surfaces, backgrounds, and primary text. Conveys trust, intelligence, and stability.
-*   **Vibrant Teal (#2DC6A1):** Used for highlights, primary actions (buttons), and elements requiring visual emphasis. Conveys energy, clarity, and innovation.
+**Primary Pastels:**
+*   **Pastel Blue (#AFCBFF):** A serene and calming blue, suitable for core UI elements, backgrounds, and primary information. Conveys trust and professionalism.
+*   **Pastel Mint (#BFF6E7):** A fresh and uplifting mint green, ideal for highlights, interactive elements, and accents that require a gentle visual emphasis. Conveys clarity and growth.
 
-**Secondary Colors:**
-*   **Warm Coral (#FF6F61):** Used sparingly for motivational messages, friendly accents, or urgent UI moments (e.g., notifications). Conveys motivation and warmth.
-*   **Soft Lilac (#C7B8F3):** Used for secondary elements, subtle backgrounds, empty states, or card accents. Conveys calm and balance.
+**Secondary Pastels:**
+*   **Pastel Coral (#FFB9B5):** A soft and inviting coral, to be used sparingly for motivational cues, friendly alerts, or elements requiring a warm, subtle call to action. Conveys warmth and approachability.
+*   **Pastel Lavender (#EBDDFF):** A delicate and soothing lavender, perfect for secondary elements, subtle backgrounds, or to provide visual balance without overwhelming the user. Conveys calm and creativity.
 
-**Neutral Palette:**
-*   **Off White (#F7F7FA):** The primary background color, providing a clean and minimal canvas.
-*   **Slate Gray (#6C7486):** Used for body text, ensuring high readability and a professional tone.
-*   **Ink Black (#0E0E12):** Used for headlines and high-contrast elements, providing strong visual impact.
+**Neutrals:**
+*   **Off White (#F7F7FA):** The primary background color, providing a clean, bright, and expansive canvas for content.
+*   **Black (Text Color) (#000000):** Used for primary text to ensure maximum readability and contrast against lighter backgrounds.
+*   **Warm Gray (Secondary Text) (#A7A7B0):** Employed for secondary text, metadata, and subtle UI elements to create hierarchy and reduce visual clutter without sacrificing readability.
 
 **Semantic Colors (for system feedback):**
 *   **Success:** A green tone, derived to complement the palette.
@@ -201,6 +201,27 @@ The color palette aims for a **fresh, modern, academic** look with pops of energ
 **Interactive Visualizations:**
 
 - Color Theme Explorer: [ux-color-themes.html](./ux-color-themes.html)
+
+### 2.4 Navigation
+
+The application will feature a clear and intuitive navigation system.
+
+**Hamburger Menu:**
+*   A hamburger menu will be present, providing access to the main sections of the application.
+*   The menu will be a dropdown and contain the following items:
+    *   **Login:** For users to sign in.
+    *   **Upload File:** The primary action for creating new study sets.
+    *   **Create Flashcards:** A direct link to the flashcard creation functionality.
+    *   **Create Quiz:** A direct link to the quiz creation functionality.
+    *   **About StudyBuddy:** Information about the application.
+
+**User Dropdown (Logged-In State):**
+*   Once logged in, a user-specific dropdown menu will be available.
+*   This menu will display categories of the user's created content (e.g., "History 101," "Biology 205").
+*   This allows for easy access and organization of study materials.
+
+**Login Button:**
+*   A "Login" button will be prominently displayed for users who are not signed in.
 
 ### 3.2 Typography
 
