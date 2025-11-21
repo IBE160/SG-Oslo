@@ -1,181 +1,76 @@
-# StudyBuddy AI - Technical Architecture Document
+# StudyBuddy AI: Technical Architecture
 
 ## 1. Introduction
-This document outlines the technical architecture for the StudyBuddy AI application, translating the UX design into a concrete implementation plan. It covers the technology stack, application structure, proposed file organization, and a preliminary database schema.
 
-## 2. Technology Stack
+This document outlines the technical architecture for the StudyBuddy AI application. The purpose of this system is to provide students with a personalized learning assistant that can answer questions, summarize uploaded documents, and generate quizzes based on the provided material.
 
-### 2.1 Backend
-*   **Language:** Python
-*   **Framework:** FastAPI
-    *   **Reasoning:** High performance (ASGI), modern, easy to learn, robust for API development, automatic OpenAPI (Swagger) documentation.
-*   **Database:** PostgreSQL (for relational data)
-    *   **Reasoning:** Robust, open-source, ACID compliant, widely supported, good for structured user data and study set metadata.
-*   **ORM:** SQLAlchemy (with AsyncPG for async support)
-    *   **Reasoning:** Powerful and flexible ORM for Python, provides a high-level API for database interactions, supports async operations.
-*   **AI/ML Integration:**
-    *   Local models for initial processing or Hugging Face Transformers.
-    *   Potential integration with cloud-based LLM APIs (e.g., Google Gemini, OpenAI GPT) for more advanced text generation (summaries, quizzes) and image analysis for visual flashcards.
-*   **Authentication:** OAuth2 with JWT (JSON Web Tokens)
-    *   **Reasoning:** Standard and secure way to handle user authentication and authorization.
-*   **Cloud Storage Integration:** API integrations with Google Drive, OneDrive for user file uploads/storage.
+## 2. Architectural Goals & Constraints
 
-### 2.2 Frontend
-*   **Framework:** HTML5 Templates (rendered by FastAPI)
-    *   **Reasoning:** Aligns with the "simple web UI" for an MVP, leveraging FastAPI's template capabilities.
-*   **Styling/Components:** Bootstrap 5 (with Material Design principles and custom theming)
-    *   **Reasoning:** Provides a robust, responsive, and accessible foundation, allowing for rapid UI development while maintaining a sleek aesthetic.
-*   **Interactivity:** Vanilla JavaScript for dynamic UI elements (e.g., hamburger menu, dropdowns, quiz interactions).
+### Goals:
+- **Scalability**: The system must handle a growing number of concurrent users and large document sizes.
+- **Modularity**: Components should be loosely coupled to allow for independent development, deployment, and scaling.
+- **Security**: User data and interactions must be secure; sensitive information must be protected.
+- **Maintainability**: The codebase should be easy to understand, modify, and extend.
+- **Performance**: The application must be responsive, with low latency for user interactions and AI-powered features.
 
-## 3. Application Architecture
+### Constraints:
+- The initial development will focus on a web-based application.
+- The system will leverage existing cloud services for AI/ML capabilities to expedite development.
+- The project will follow an agile development methodology.
 
-### 3.1 High-Level Overview
-The application will follow a client-server architecture with a clear separation of concerns between the backend API and the frontend presentation.
+## 3. System Architecture
 
-```mermaid
-graph LR
-    User(Web Browser / Mobile App) --> Frontend(Frontend - HTML/JS/CSS)
-    Frontend -->|HTTP/REST API| Backend(Backend - FastAPI/Python)
-    Backend --> Database(Database - PostgreSQL)
-    Backend -->|API Calls| LLM_Service(LLM / AI Service - Gemini/HuggingFace/Custom)
-    Backend -->|API Calls| CloudStorage(Cloud Storage - GDrive/OneDrive)
-```
+A high-level microservices-oriented architecture is proposed. The system is composed of four main components:
 
-### 3.2 Backend Structure (FastAPI)
-*   **Main Application (`main.py`):** Entry point, routing, global middleware.
-*   **API Endpoints:**
-    *   `/auth`: User registration, login, logout, password reset.
-    *   `/users`: User profile management.
-    *   `/documents`: Document upload, management (CRUD).
-    *   `/study-sets`: Creation, retrieval, update, deletion of study sets.
-    *   `/flashcards`: Flashcard generation, management, study sessions.
-    *   `/quizzes`: Quiz generation, management, taking quizzes, results.
-    *   `/integrations`: Cloud storage connections.
-*   **Business Logic Layer:** Services responsible for core application logic, interacting with ORM and external APIs.
-*   **Data Access Layer:** Models and database session management using SQLAlchemy.
-*   **AI/ML Module:** Handles interactions with LLMs for text processing, summary, flashcard, and quiz generation.
+1.  **Frontend Web Application**: A single-page application (SPA) that provides the user interface.
+2.  **Backend API Gateway**: A single entry point for all client requests, routing them to the appropriate downstream services.
+3.  **User & Document Service**: A microservice responsible for managing user authentication, profiles, and uploaded documents.
+4.  **AI Service**: A microservice that integrates with a large language model (LLM) to provide the core AI-powered features (Q&A, summarization, quiz generation).
+5.  **Database**: A persistent storage solution for user data, document metadata, and other application state.
 
-### 3.3 Frontend Structure (HTML Templates & JS)
-*   **Templates:** Jinja2 templates rendered by FastAPI for each major page (Home, How It Works, Features, Pricing, Login/Sign Up).
-*   **Static Assets:** CSS (Bootstrap, custom styles), JavaScript (Vanilla JS for interactivity), images.
-*   **Component-based Approach:** Reusable UI components (buttons, cards, navigation elements) will be developed and integrated into templates.
+![High-Level Architecture Diagram](https://via.placeholder.com/800x400.png?text=StudyBuddy+AI+High-Level+Architecture)
+*(Placeholder for a C4-style Context/Container diagram)*
 
-## 4. Directory Structure (Proposed)
+## 4. Component Breakdown
 
-```
-.
-├── app/
-│   ├── api/                 # FastAPI API endpoints
-│   ├── core/                # Core configurations, middleware
-│   ├── db/                  # Database models, migrations
-│   ├── services/            # Business logic
-│   ├── static/              # CSS, JS, images (static assets)
-│   ├── templates/           # Jinja2 HTML templates
-│   └── main.py              # FastAPI application entry point
-├── components/              # Reusable UI component HTML/CSS/JS snippets
-├── docs/                    # Architecture, UX, user journeys, etc.
-│   ├── architecture.md
-│   ├── ux-design-progress-summary.md
-│   ├── ux-design-specification.md
-│   ├── ux-color-themes.html
-│   ├── user-journey-upload-document.md
-│   ├── user-journey-take-quiz.md
-│   └── user-journey-authentication.md
-├── tests/                   # Unit and integration tests
-├── .env.example             # Environment variables
-├── Dockerfile               # Docker configuration
-├── requirements.txt         # Python dependencies
-├── README.md
-└── (other config files)
-```
+### Frontend Web Application
+- **Responsibilities**: Renders the UI, manages client-side state, and interacts with the Backend API Gateway.
+- **Technology**: React (Vite), TypeScript, Material-UI for components.
 
-## 5. Preliminary Database Schema
+### Backend API Gateway
+- **Responsibilities**: Authenticates requests, performs request validation, and routes traffic to internal services.
+- **Technology**: Node.js with Express.js or a dedicated cloud gateway service (e.g., AWS API Gateway).
 
-### 5.1 Entities
+### User & Document Service
+- **Responsibilities**: Handles user registration/login, stores user information, and manages metadata for uploaded documents. It will also handle storing the documents themselves, likely in a separate object storage.
+- **Technology**: Node.js with Express.js, TypeScript.
 
-*   **User:**
-    *   `id` (PK, UUID)
-    *   `email` (UNIQUE, String)
-    *   `hashed_password` (String)
-    *   `created_at` (DateTime)
-    *   `last_login_at` (DateTime)
-    *   `cloud_storage_connected` (Boolean)
-    *   `cloud_storage_provider` (String, e.g., 'google_drive', 'onedrive')
-    *   `cloud_storage_access_token` (String, ENCRYPTED)
+### AI Service
+- **Responsibilities**: Communicates with an external AI provider (e.g., Google Gemini API). It will abstract the complexities of the AI integration, providing a simple interface for the rest of the system.
+- **Technology**: Python with FastAPI for its performance and ease of use, which is well-suited for I/O-bound tasks like interacting with external APIs.
 
-*   **Document:**
-    *   `id` (PK, UUID)
-    *   `user_id` (FK to User.id)
-    *   `filename` (String)
-    *   `file_path` (String) # Path in cloud storage or internal storage
-    *   `file_type` (String, e.g., 'pdf', 'docx')
-    *   `uploaded_at` (DateTime)
-    *   `status` (String, e.g., 'uploaded', 'processing', 'processed', 'failed')
+### Database
+- **Responsibilities**: Stores user data (e.g., user profiles, credentials) and document metadata.
+- **Technology**: PostgreSQL for structured data (users, document info) and a cloud object storage (like AWS S3 or Google Cloud Storage) for the document files themselves.
 
-*   **StudySet:** (Represents the collection of generated tools from one document)
-    *   `id` (PK, UUID)
-    *   `document_id` (FK to Document.id, UNIQUE)
-    *   `user_id` (FK to User.id)
-    *   `title` (String, derived from document or user input)
-    *   `category` (String, user-definable, e.g., 'History 101')
-    *   `generated_at` (DateTime)
+## 5. Technology Stack
 
-*   **Summary:**
-    *   `id` (PK, UUID)
-    *   `study_set_id` (FK to StudySet.id)
-    *   `content` (Text)
-    *   `generated_at` (DateTime)
+- **Frontend**: React, TypeScript, Material-UI
+- **Backend**: Node.js/Express.js (Gateway, User Service), Python/FastAPI (AI Service)
+- **Database**: PostgreSQL, S3-compatible Object Storage
+- **AI/ML**: Google Cloud AI Platform (specifically, the Gemini family of models)
+- **Deployment**: Docker containers orchestrated by Kubernetes (or a simpler PaaS like Google Cloud Run/AWS Fargate).
 
-*   **Flashcard:**
-    *   `id` (PK, UUID)
-    *   `study_set_id` (FK to StudySet.id)
-    *   `question` (Text)
-    *   `answer` (Text)
-    *   `image_url` (String, NULLABLE)
-    *   `symbol` (String, NULLABLE)
-    *   `difficulty` (Integer, 1-5)
+## 6. Data Management
 
-*   **Quiz:**
-    *   `id` (PK, UUID)
-    *   `study_set_id` (FK to StudySet.id)
-    *   `quiz_type` (String, e.g., '15_min', '1_hour')
-    *   `generated_at` (DateTime)
+- **User Data**: Stored in a `users` table in PostgreSQL, including user ID, name, email, and hashed passwords.
+- **Document Metadata**: Stored in a `documents` table in PostgreSQL, linking documents to users and including information like filename, upload date, and processing status.
+- **Document Files**: The actual files (PDFs, text files) will be stored in a cloud object storage bucket. Access will be managed via pre-signed URLs to ensure security.
 
-*   **QuizQuestion:**
-    *   `id` (PK, UUID)
-    *   `quiz_id` (FK to Quiz.id)
-    *   `question_text` (Text)
-    *   `question_type` (String, e.g., 'multiple_choice', 'true_false')
-    *   `correct_answer` (Text)
+## 7. Deployment & Operations
 
-*   **QuizOption:** (For multiple-choice questions)
-    *   `id` (PK, UUID)
-    *   `quiz_question_id` (FK to QuizQuestion.id)
-    *   `option_text` (Text)
-    *   `is_correct` (Boolean)
-
-*   **UserQuizAttempt:**
-    *   `id` (PK, UUID)
-    *   `user_id` (FK to User.id)
-    *   `quiz_id` (FK to Quiz.id)
-    *   `started_at` (DateTime)
-    *   `completed_at` (DateTime, NULLABLE)
-    *   `score` (Integer, NULLABLE)
-    *   `total_questions` (Integer)
-
-*   **UserAnswer:**
-    *   `id` (PK, UUID)
-    *   `user_quiz_attempt_id` (FK to UserQuizAttempt.id)
-    *   `quiz_question_id` (FK to QuizQuestion.id)
-    *   `selected_option_id` (FK to QuizOption.id, NULLABLE)
-    *   `user_text_answer` (Text, NULLABLE)
-    *   `is_correct` (Boolean, NULLABLE)
-    *   `answered_at` (DateTime)
-
-## 6. Future Considerations
-*   **Scalability:** How will the architecture scale with increasing users and data? (e.g., message queues for AI processing, load balancing).
-*   **Security:** Detailed plan for data encryption, access control, and vulnerability management.
-*   **Deployment:** CI/CD pipelines, containerization (Docker, Kubernetes), cloud provider (AWS, GCP, Azure).
-*   **Monitoring & Logging:** Tools for application performance monitoring, error tracking, and logging.
-*   **Test Strategy:** Unit, integration, and end-to-end testing.
-*   **Admin Interface:** How will administrators manage users and content?
+- **CI/CD**: A CI/CD pipeline (e.g., using GitHub Actions) will be established to automate testing and deployment.
+- **Infrastructure**: The application will be deployed on a cloud provider (e.g., Google Cloud Platform or AWS).
+- **Containerization**: All backend services will be packaged as Docker containers.
+- **Orchestration**: Kubernetes will be used for managing container deployment, scaling, and networking.
+- **Monitoring**: Logging, metrics, and tracing will be implemented using tools like Prometheus, Grafana, and Jaeger to ensure system health and performance.
