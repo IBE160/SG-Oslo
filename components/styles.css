@@ -1,0 +1,47 @@
+/* Custom styles for StudyBuddy AI components */
+
+/* Extend/override Bootstrap if necessary, or add new component styles */
+
+/* Example: Customizing Bootstrap buttons */
+.btn-primary-custom {
+    background-color: var(--primary-pastel-blue);
+    color: white;
+}
+.btn-primary-custom:hover {
+    background-color: #9ab4e6; /* Slightly darker pastel blue */
+    transform: scale(1.02);
+    color: white;
+}
+.btn-secondary-custom {
+    background-color: white;
+    color: var(--neutral-warm-gray);
+    border: 1px solid #e0e0e0;
+}
+.btn-secondary-custom:hover {
+    border-color: var(--neutral-warm-gray);
+    color: var(--neutral-black);
+}
+
+/* Add more component-specific styles here */
+
+/* Quiz Options (from ux-color-themes.html, now in dedicated CSS) */
+.quiz-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.quiz-option input[type="radio"] {
+    display: none;
+}
+.quiz-option label {
+    padding: 0.75rem 1.25rem;
+    border: 1px solid var(--primary-pastel-blue);
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--primary-pastel-blue);
+    transition: background-color 0.2s, color 0.2s;
+}
+.quiz-option input[type="radio"]:checked + label {
+    background-color: var(--primary-pastel-blue);
+    color: white;
+}

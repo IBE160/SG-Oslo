@@ -1,85 +1,82 @@
-# Decision Architecture
+# StudyBuddy AI: Technical Architecture
 
-## Executive Summary
+## 1. Introduction
 
-This document outlines the architecture for the StudyBuddy AI project. The architecture is designed to be simple, scalable, and easy to build upon, with a focus on using modern, well-supported technologies. The core of the architecture is a FastAPI backend with a simple HTML/CSS frontend, using Firebase for data persistence, authentication, and file storage. The AI-powered features will be provided by Google Gemini, with OpenAI's GPT-4 as a backup.
+This document outlines the technical architecture for the StudyBuddy AI application. The purpose of this system is to provide students with a personalized learning assistant that can answer questions, summarize uploaded documents, and generate quizzes based on the provided material.
 
-## Decision Summary
+## 2. Architectural Goals & Constraints
 
-| Category | Decision | Version | Affects Epics | Rationale |
-| --- | --- | --- | --- | --- |
-| Project Structure | Custom FastAPI structure | N/A | 1, 2 | Simple and easy to understand for a PoC. |
-| Data Persistence | Firestore | N/A | 1, 2 | Easy to use, flexible, and integrates well with Firebase Authentication. |
-| API Pattern | REST API | N/A | 1, 2 | Simple, standard, and well-supported by FastAPI. |
-| Authentication | Firebase Authentication | N/A | 1 | Secure, easy to implement, and integrates with Firestore. |
-| File Storage | Firebase Storage | N/A | 2 | Part of the Firebase ecosystem, scalable, and reliable. |
-| AI Service | Google Gemini / OpenAI GPT-4 | N/A | 2 | Provides a primary and backup AI service for reliability. |
+### Goals:
+- **Scalability**: The system must handle a growing number of concurrent users and large document sizes.
+- **Modularity**: Components should be loosely coupled to allow for independent development, deployment, and scaling.
+- **Security**: User data and interactions must be secure; sensitive information must be protected.
+- **Maintainability**: The codebase should be easy to understand, modify, and extend.
+- **Performance**: The application must be responsive, with low latency for user interactions and AI-powered features.
 
-## Project Structure
+### Constraints:
+- The initial development will focus on a web-based application.
+- The system will leverage existing cloud services for AI/ML capabilities to expedite development.
+- The project will follow an agile development methodology.
 
-```
-/
-├── main.py         # Main application file
-├── requirements.txt  # Python libraries
-├── static/           # CSS and JavaScript files
-│   └── styles.css
-└── templates/        # HTML files
-    ├── index.html
-    ├── login.html
-    └── dashboard.html
-```
+## 3. System Architecture
 
-## Epic to Architecture Mapping
+A high-level microservices-oriented architecture is proposed. The system is composed of four main components:
 
-*   **Epic 1: Core Application Setup and User Authentication** -> This epic will be implemented in the `main.py` file and the `templates` folder, with user data being stored in Firestore.
-*   **Epic 2: AI-Powered Study Material Generation** -> This epic will involve the `main.py` file for the API endpoints, Firebase Storage for file uploads, and the integration with the Google Gemini and OpenAI APIs.
+1.  **Frontend Web Application**: A single-page application (SPA) that provides the user interface.
+2.  **Backend API Gateway**: A single entry point for all client requests, routing them to the appropriate downstream services.
+3.  **User & Document Service**: A microservice responsible for managing user authentication, profiles, and uploaded documents.
+4.  **AI Service**: A microservice that integrates with a large language model (LLM) to provide the core AI-powered features (Q&A, summarization, quiz generation).
+5.  **Database**: A persistent storage solution for user data, document metadata, and other application state.
 
-## Technology Stack Details
+![High-Level Architecture Diagram](https://via.placeholder.com/800x400.png?text=StudyBuddy+AI+High-Level+Architecture)
+*(Placeholder for a C4-style Context/Container diagram)*
 
-### Core Technologies
+## 4. Component Breakdown
 
-*   **Backend:** FastAPI
-*   **Frontend:** HTML, CSS, JavaScript (served from FastAPI)
-*   **Database:** Firestore
-*   **Authentication:** Firebase Authentication
-*   **File Storage:** Firebase Storage
-*   **AI Service:** Google Gemini, OpenAI GPT-4
+### Frontend Web Application
+- **Responsibilities**: Renders the UI, manages client-side state, and interacts with the Backend API Gateway.
+- **Technology**: React (Vite), TypeScript, Material-UI for components.
 
-### Integration Points
+### Backend API Gateway
+- **Responsibilities**: Authenticates requests, performs request validation, and routes traffic to internal services.
+- **Technology**: Node.js with Express.js or a dedicated cloud gateway service (e.g., AWS API Gateway).
 
-*   The frontend will communicate with the backend via a REST API.
-*   The backend will communicate with Firestore, Firebase Authentication, and Firebase Storage using the official Firebase Python libraries.
-*   The backend will communicate with the Google Gemini and OpenAI APIs using their respective Python libraries.
+### User & Document Service
+- **Responsibilities**: Handles user registration/login, stores user information, and manages metadata for uploaded documents. It will also handle storing the documents themselves, likely in a separate object storage.
+- **Technology**: Node.js with Express.js, TypeScript.
 
-## Implementation Patterns
+### AI Service
+- **Responsibilities**: Communicates with an external AI provider (e.g., Google Gemini API). It will abstract the complexities of the AI integration, providing a simple interface for the rest of the system.
+- **Technology**: Python with FastAPI for its performance and ease of use, which is well-suited for I/O-bound tasks like interacting with external APIs.
 
-*   **Naming Conventions:**
-    *   Python variables and functions: `snake_case`
-    *   HTML/CSS classes: `kebab-case`
-    *   API endpoints: `/api/v1/...`
-*   **Code Organization:**
-    *   API routes will be organized into separate files in a `routers` directory as the application grows.
-    *   Reusable functions will be placed in a `utils` directory.
-*   **Error Handling:**
-    *   The API will return standard HTTP status codes (e.g., 400 for bad requests, 500 for server errors).
-    *   Error messages will be clear and concise.
-*   **Logging:**
-    *   The application will use the standard Python `logging` module.
-    *   Logs will be written to the console.
+### Database
+- **Responsibilities**: Stores user data (e.g., user profiles, credentials) and document metadata.
+- **Technology**: PostgreSQL for structured data (users, document info) and a cloud object storage (like AWS S3 or Google Cloud Storage) for the document files themselves.
 
-## Data Architecture
+## 5. Technology Stack
 
-*   **Users:** A `users` collection in Firestore will store user information (e.g., user ID, email).
-*   **Files:** A `files` collection in Firestore will store metadata about the uploaded files (e.g., file name, user ID, storage path).
-*   **Study Sets:** A `study_sets` collection in Firestore will store the generated content (summary, flashcards, quiz), linked to the user and the uploaded file.
+- **Frontend**: React, TypeScript, Material-UI
+- **Backend**: Node.js/Express.js (Gateway, User Service), Python/FastAPI (AI Service)
+- **Database**: PostgreSQL, S3-compatible Object Storage
+- **AI/ML**: Google Cloud AI Platform (specifically, the Gemini family of models)
+- **Deployment**: Docker containers orchestrated by Kubernetes (or a simpler PaaS like Google Cloud Run/AWS Fargate).
 
-## API Contracts
+## 6. Data Management
 
-*   The API will use JSON for all request and response bodies.
-*   A detailed API specification (e.g., using OpenAPI/Swagger) will be created as part of the implementation of Epic 2.
+- **User Data**: Stored in a `users` table in PostgreSQL, including user ID, name, email, and hashed passwords.
+- **Document Metadata**: Stored in a `documents` table in PostgreSQL, linking documents to users and including information like filename, upload date, and processing status.
+- **Document Files**: The actual files (PDFs, text files) will be stored in a cloud object storage bucket. Access will be managed via pre-signed URLs to ensure security.
 
-## Security Architecture
+## 7. Deployment & Operations
 
+<<<<<<< HEAD
+- **CI/CD**: A CI/CD pipeline (e.g., using GitHub Actions) will be established to automate testing and deployment.
+- **Infrastructure**: The application will be deployed on a cloud provider (e.g., Google Cloud Platform or AWS).
+- **Containerization**: All backend services will be packaged as Docker containers.
+- **Orchestration**: Kubernetes will be used for managing container deployment, scaling, and networking.
+- **Monitoring**: Logging, metrics, and tracing will be implemented using tools like Prometheus, Grafana, and Jaeger to ensure system health and performance.
+
+### Security
 *   All API endpoints that require authentication will be protected using Firebase Authentication.
 *   User passwords will not be stored in our database; they will be managed by Firebase Authentication.
 *   All user data will be stored securely in Firestore and Firebase Storage, with access controls to ensure that only the owner of the data can access it.
@@ -134,3 +131,4 @@ uvicorn main:app --reload
 _Generated by BMAD Decision Architecture Workflow v1.0_
 _Date: 2025-11-01_
 _For: BIP_
+>>>>>>> BirgittePhase3_TechnicalArchitecture
