@@ -59,6 +59,8 @@ async def upload_document(file: UploadFile = File(...)):
         
         return {"summary": summary, "flashcards": flashcards, "quiz": quiz, "chunks": chunks}
 
+    except HTTPException: # Catch HTTPException explicitly and re-raise
+        raise
     except ValueError as e: # Catch ValueError specifically for unsupported file types
         os.remove(file_path) # Ensure cleanup even for ValueErrors
         raise HTTPException(
