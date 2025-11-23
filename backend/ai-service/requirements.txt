@@ -4,3 +4,4 @@ pypdf
 python-docx
 google-generativeai
 pytest
+httpx
