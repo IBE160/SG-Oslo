@@ -46,4 +46,4 @@ __pycache__/
 # Sensitive credentials
 serviceAccountKey.json
 /.logging/
-/backend/ai-service/venv/
+/backend/ai_service/venv/
