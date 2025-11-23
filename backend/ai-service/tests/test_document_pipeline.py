@@ -3,10 +3,8 @@ import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 
-# Assuming main.py and document_pipeline.py are in the same directory
-# We'll need to adjust imports or structure for actual FastAPI application testing
-from ..main import app # This might need adjustment based on project structure
-from ..document_pipeline import extract_text_from_pdf, extract_text_from_docx, chunk_text
+from backend.ai-service.main import app # Changed to absolute import
+from backend.ai-service.document_pipeline import extract_text_from_pdf, extract_text_from_docx, chunk_text # Changed to absolute import
 
 client = TestClient(app)
 
@@ -52,7 +50,7 @@ def test_upload_document_pdf_success(mock_generate_quiz, mock_generate_flashcard
     mock_generate_flashcards.return_value = [{"front": "Q1", "back": "A1"}]
     mock_generate_quiz.return_value = [{"question": "Q?", "options": ["A","B"], "answer": "A"}]
 
-    with open("tests/sample.pdf", "rb") as f: # You would need a real sample.pdf
+    with open("backend/ai-service/tests/sample.pdf", "rb") as f: # Updated path for absolute import
         response = client.post(
             "/upload-document/",
             files={"file": ("sample.pdf", f, "application/pdf")}
