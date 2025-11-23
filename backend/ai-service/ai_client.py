@@ -1,5 +1,6 @@
 import os
-from typing import List
+import json # Import json module
+from typing import List, Dict, Any
 
 import google.generativeai as genai
 
@@ -37,4 +38,44 @@ def generate_summary(text_chunks: List[str]) -> str:
         print(f"Error generating summary from AI service: {e}")
         # Depending on the desired error handling, you might want to return a specific error message
         # or just an empty string. For now, we re-raise the exception to be handled by the caller.
+        raise
+
+def generate_flashcards(text_chunks: List[str]) -> List[Dict[str, str]]:
+    """
+    Generates flashcards from a list of text chunks using the Gemini API.
+    The AI is instructed to return flashcards in a JSON array format.
+    """
+    if not text_chunks:
+        return []
+
+    full_text = " ".join(text_chunks)
+
+    prompt = f"""
+    Please generate a list of flashcards (question and answer pairs) from the following text.
+    Each flashcard should consist of a 'front' (question) and a 'back' (answer).
+    Return the flashcards as a JSON array of objects, where each object has 'front' and 'back' keys.
+
+    Example format:
+    [
+      {{"front": "Question 1", "back": "Answer 1"}},
+      {{"front": "Question 2", "back": "Answer 2"}}
+    ]
+
+    Text:
+    ---
+    {full_text}
+    ---
+    """
+
+    try:
+        response = model.generate_content(prompt)
+        # Assuming the AI returns a valid JSON string
+        flashcards = json.loads(response.text)
+        return flashcards
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON from AI for flashcards: {e}")
+        print(f"AI response text: {response.text}")
+        raise
+    except Exception as e:
+        print(f"Error generating flashcards from AI service: {e}")
         raise
