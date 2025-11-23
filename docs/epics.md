@@ -201,23 +201,101 @@ So that I can access it later.
 
 ---
 
-## Epic 3: [EPIC TITLE]
+## Epic 3: AI Processing Pipeline Development and Testing
 
-**Goal:** [BRIEF GOAL DESCRIPTION]
+**Goal:** Develop and test the end-to-end AI processing pipeline to reliably generate all three core study aids (Summary, Flashcards, and Quizzes) from a single uploaded document, meeting the MVP's quality and speed criteria.
 
 ### Stories
 
-**Story 3.1: [STORY TITLE]**
+**Story 3.1: Implement a Robust Document Processing Pipeline**
 
-As a [user type],
-I want [goal/desire],
-So that [benefit/value].
+As a developer,
+I want to implement a robust document processing pipeline,
+So that uploaded documents are efficiently prepared for AI processing.
 
 **Acceptance Criteria:**
-1. [Specific testable criterion]
-2. [Another specific criterion]
+1. The pipeline can extract text from both PDF and DOCX files.
+2. The pipeline can handle common document parsing errors gracefully.
+3. The pipeline can chunk large documents into smaller pieces for the AI model.
+4. The pipeline is asynchronous and does not block the main application thread.
 
-**Prerequisites:** [Dependencies]
+**Prerequisites:** Story 2.1
+
+---
+
+**Story 3.2: Integrate AI Service for Summary Generation**
+
+As a developer,
+I want to integrate the AI service for summary generation,
+So that users can receive a concise summary of their uploaded document.
+
+**Acceptance Criteria:**
+1. The AI service is called with the appropriate prompt for summary generation.
+2. The generated summary is stored in the database.
+3. The summary meets the MVP quality standards (e.g., coherent and relevant).
+
+**Prerequisites:** Story 3.1
+
+---
+
+**Story 3.3: Integrate AI Service for Flashcard Generation**
+
+As a developer,
+I want to integrate the AI service for flashcard generation,
+So that users can receive a set of flashcards for their uploaded document.
+
+**Acceptance Criteria:**
+1. The AI service is called with the appropriate prompt for flashcard generation.
+2. The generated flashcards are stored in the database in a structured format (e.g., JSON with "front" and "back" fields).
+3. The flashcards meet the MVP quality standards (e.g., relevant and well-formed questions and answers).
+
+**Prerequisites:** Story 3.1
+
+---
+
+**Story 3.4: Integrate AI Service for Quiz Generation**
+
+As a developer,
+I want to integrate the AI service for quiz generation,
+So that users can receive a quiz to test their knowledge on the uploaded document.
+
+**Acceptance Criteria:**
+1. The AI service is called with the appropriate prompt for quiz generation.
+2. The generated quiz is stored in the database in a structured format (e.g., JSON with questions, options, and correct answers).
+3. The quiz meets the MVP quality standards (e.g., relevant questions and correct answers).
+
+**Prerequisites:** Story 3.1
+
+---
+
+**Story 3.5: End-to-End Testing of the AI Pipeline**
+
+As a developer,
+I want to perform end-to-end testing of the AI pipeline,
+So that we can ensure the entire process from document upload to study aid generation is working correctly.
+
+**Acceptance Criteria:**
+1. A suite of test documents (PDF and DOCX) is created with varying content and length.
+2. Automated tests are written to simulate the document upload and processing flow.
+3. The tests verify that all three study aids are generated and stored correctly in the database.
+4. The tests verify that the generated content is displayed correctly on the "Study Session" page.
+
+**Prerequisites:** Story 3.2, 3.3, 3.4
+
+---
+
+**Story 3.6: Performance and Quality Testing**
+
+As a developer,
+I want to perform performance and quality testing of the AI pipeline,
+So that we can ensure the generated content meets the MVP's quality and speed criteria.
+
+**Acceptance Criteria:**
+1. The average time from document upload to study aid generation is measured and meets the MVP target (e.g., under 60 seconds).
+2. The quality of the generated summaries, flashcards, and quizzes is manually reviewed against a predefined rubric.
+3. The system can handle concurrent document uploads from multiple users without significant performance degradation.
+
+**Prerequisites:** Story 3.5
 
 ---
 
