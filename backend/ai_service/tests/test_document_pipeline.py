@@ -4,6 +4,7 @@ from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
 from docx import Document
 from pypdf import PdfReader # Import PdfReader
+import google.generativeai as genai # Import genai
 
 from backend.ai_service.main import app
 from backend.ai_service.document_pipeline import extract_text_from_pdf, extract_text_from_docx, chunk_text
@@ -47,11 +48,12 @@ def test_chunk_text():
 
 # --- Test FastAPI endpoint ---
 
-@patch('backend.ai_service.main.process_document') # Corrected patch path to mock in main.py
+@patch('backend.ai_service.main.process_document')
 @patch('backend.ai_service.ai_client.generate_summary')
 @patch('backend.ai_service.ai_client.generate_flashcards')
 @patch('backend.ai_service.ai_client.generate_quiz')
-def test_upload_document_pdf_success(mock_generate_quiz, mock_generate_flashcards, mock_generate_summary, mock_process_document, tmp_path):
+@patch('backend.ai_service.ai_client.genai.configure') # Patch genai.configure
+def test_upload_document_pdf_success(mock_genai_configure, mock_generate_quiz, mock_generate_flashcards, mock_generate_summary, mock_process_document, tmp_path):
     mock_process_document.return_value = ["chunk1", "chunk2"]
     mock_generate_summary.return_value = "This is a summary."
     mock_generate_flashcards.return_value = [{"front": "Q1", "back": "A1"}]
@@ -75,6 +77,7 @@ def test_upload_document_pdf_success(mock_generate_quiz, mock_generate_flashcard
     mock_generate_summary.assert_called_once_with(["chunk1", "chunk2"])
     mock_generate_flashcards.assert_called_once_with(["chunk1", "chunk2"])
     mock_generate_quiz.assert_called_once_with(["chunk1", "chunk2"])
+    mock_genai_configure.assert_called_once() # Assert that genai.configure was called
 
 def test_upload_document_unsupported_type():
     with patch('builtins.open', MagicMock()), \
