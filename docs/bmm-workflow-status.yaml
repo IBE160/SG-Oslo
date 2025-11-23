@@ -44,4 +44,4 @@ workflow_status:
   solutioning-gate-check: C:\Users\birgi\SG-Oslo\docs/architecture.md  # agent: architect
 
   # Phase 3: Implementation
-  sprint-planning: required  # agent: sm
+  sprint-planning: C:\Users\birgi\SG-Oslo\docs/sprint-plan-sprint-3.md  # agent: sm

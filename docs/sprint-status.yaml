@@ -49,3 +49,10 @@ development_status:
   2-4-quiz-interaction: done
   2-5-save-study-set: done
   epic-2-retrospective: completed
+  epic-3: contexted
+  3-1-document-pipeline: in-progress
+  3-2-summary-generation: in-progress
+  3-3-flashcard-generation: in-progress
+  3-4-quiz-generation: in-progress
+  3-5-end-to-end-testing: in-progress
+  3-6-performance-and-quality-testing: backlog
