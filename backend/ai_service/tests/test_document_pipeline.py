@@ -2,7 +2,8 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
-from docx import Document # Added import for Document
+from docx import Document
+from pypdf import PdfReader # Import PdfReader
 
 from backend.ai_service.main import app
 from backend.ai_service.document_pipeline import extract_text_from_pdf, extract_text_from_docx, chunk_text
@@ -11,16 +12,22 @@ client = TestClient(app)
 
 # --- Test document_pipeline functions ---
 
-def test_extract_text_from_pdf_success(tmp_path):
-    # Create a dummy PDF file (simplified for testing, real PDF creation is complex)
-    # The actual content validity is less important than that the function can process it without error
-    pdf_content = b"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj 3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R>>endobj 4 0 obj<</Length 55>>stream\nBT /F1 12 Tf 72 712 Td (Hello from PDF!) Tj ET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f\n0000000009 00000 n\n0000000074 00000 n\n0000000157 00000 n\n0000000287 00000 n\ntrailer<</Size 5/Root 1 0 R>>startxref 378\n%%EOF"
+@patch('backend.ai_service.document_pipeline.PdfReader') # Patch PdfReader
+def test_extract_text_from_pdf_success(mock_pdf_reader, tmp_path):
+    mock_instance = MagicMock()
+    mock_instance.pages = [MagicMock(), MagicMock()]
+    mock_instance.pages[0].extract_text.return_value = "Page 1 text."
+    mock_instance.pages[1].extract_text.return_value = "Page 2 text."
+    mock_pdf_reader.return_value = mock_instance
+
     pdf_file = tmp_path / "test.pdf"
-    pdf_file.write_bytes(pdf_content)
+    pdf_file.write_bytes(b"dummy pdf content") # Content no longer matters as much
 
     extracted_text = extract_text_from_pdf(str(pdf_file))
+    assert "Page 1 text." in extracted_text
+    assert "Page 2 text." in extracted_text
     assert isinstance(extracted_text, str)
-    assert len(extracted_text) > 0 # Assert that some text is extracted
+    assert len(extracted_text) > 0
 
 def test_extract_text_from_docx_success(tmp_path):
     doc = Document()
@@ -36,8 +43,7 @@ def test_chunk_text():
     chunks = chunk_text(long_text, chunk_size=50, overlap=10)
     assert len(chunks) > 1
     assert len(chunks[0]) == 50
-    # Check that there is overlap by ensuring the start of the second chunk is contained in the first
-    assert chunks[0][-10:] in chunks[1] # More robust check for overlap
+    assert chunks[0][-10:] in chunks[1]
 
 # --- Test FastAPI endpoint ---
 
@@ -45,17 +51,16 @@ def test_chunk_text():
 @patch('backend.ai_service.ai_client.generate_summary')
 @patch('backend.ai_service.ai_client.generate_flashcards')
 @patch('backend.ai_service.ai_client.generate_quiz')
-def test_upload_document_pdf_success(mock_generate_quiz, mock_generate_flashcards, mock_generate_summary, mock_process_document, tmp_path): # Added tmp_path
+def test_upload_document_pdf_success(mock_generate_quiz, mock_generate_flashcards, mock_generate_summary, mock_process_document, tmp_path):
     mock_process_document.return_value = ["chunk1", "chunk2"]
     mock_generate_summary.return_value = "This is a summary."
     mock_generate_flashcards.return_value = [{"front": "Q1", "back": "A1"}]
     mock_generate_quiz.return_value = [{"question": "Q?", "options": ["A","B"], "answer": "A"}]
 
-    # Create a dummy PDF file for the upload test
     test_pdf_file = tmp_path / "sample.pdf"
-    test_pdf_file.write_bytes(b"%PDF-1.4\n1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj 2 0 obj<</Type/Pages/Count 1/Kids[3 0 R]>>endobj 3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 4 0 R>>endobj 4 0 obj<</Length 55>>stream\nBT /F1 12 Tf 72 712 Td (Hello from PDF!) Tj ET\nendstream\nendobj\nxref\n0 5\n0000000000 65535 f\n0000000009 00000 n\n0000000074 00000 n\n0000000157 00000 n\n0000000287 00000 n\ntrailer<</Size 5/Root 1 0 R>>startxref 378\n%%EOF")
+    test_pdf_file.write_bytes(b"dummy pdf content for upload test")
 
-    with open(test_pdf_file, "rb") as f: # Use tmp_path for the file
+    with open(test_pdf_file, "rb") as f:
         response = client.post(
             "/upload-document/",
             files={"file": ("sample.pdf", f, "application/pdf")}
