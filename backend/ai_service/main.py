@@ -1,12 +1,12 @@
 import os
 import shutil
-from typing import Dict, Any, List # Import List for chunks return type hint
+from typing import Dict, Any, List
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from starlette.status import HTTP_400_BAD_REQUEST
 
 from .document_pipeline import process_document
-from .ai_client import generate_summary, generate_flashcards, generate_quiz # Import generate_quiz
+from .ai_client import generate_summary, generate_flashcards, generate_quiz
 
 app = FastAPI()
 
@@ -59,11 +59,17 @@ async def upload_document(file: UploadFile = File(...)):
         
         return {"summary": summary, "flashcards": flashcards, "quiz": quiz, "chunks": chunks}
 
+    except ValueError as e: # Catch ValueError specifically for unsupported file types
+        os.remove(file_path) # Ensure cleanup even for ValueErrors
+        raise HTTPException(
+            status_code=HTTP_400_BAD_REQUEST,
+            detail=f"Error processing document: {e}"
+        )
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"An unexpected error occurred: {e}") # Changed log message
         raise HTTPException(
             status_code=500,
-            detail=f"Error processing document: {e}"
+            detail=f"An unexpected error occurred: {e}"
         )
     finally:
         if os.path.exists(file_path):
