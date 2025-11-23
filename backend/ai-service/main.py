@@ -6,7 +6,7 @@ from fastapi import FastAPI, UploadFile, File, HTTPException
 from starlette.status import HTTP_400_BAD_REQUEST
 
 from .document_pipeline import process_document
-from .ai_client import generate_summary, generate_flashcards # Import generate_flashcards
+from .ai_client import generate_summary, generate_flashcards, generate_quiz # Import generate_quiz
 
 app = FastAPI()
 
@@ -53,8 +53,11 @@ async def upload_document(file: UploadFile = File(...)):
 
         # Generate flashcards from the text chunks
         flashcards = generate_flashcards(chunks)
+
+        # Generate quiz from the text chunks
+        quiz = generate_quiz(chunks)
         
-        return {"summary": summary, "flashcards": flashcards, "chunks": chunks}
+        return {"summary": summary, "flashcards": flashcards, "quiz": quiz, "chunks": chunks}
 
     except Exception as e:
         print(f"An error occurred: {e}")
