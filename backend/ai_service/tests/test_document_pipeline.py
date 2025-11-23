@@ -47,7 +47,7 @@ def test_chunk_text():
 
 # --- Test FastAPI endpoint ---
 
-@patch('backend.ai_service.document_pipeline.process_document')
+@patch('backend.ai_service.main.process_document') # Corrected patch path to mock in main.py
 @patch('backend.ai_service.ai_client.generate_summary')
 @patch('backend.ai_service.ai_client.generate_flashcards')
 @patch('backend.ai_service.ai_client.generate_quiz')
