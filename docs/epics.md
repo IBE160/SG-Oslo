@@ -201,6 +201,26 @@ So that I can access it later.
 
 ---
 
+## Epic 3: [EPIC TITLE]
+
+**Goal:** [BRIEF GOAL DESCRIPTION]
+
+### Stories
+
+**Story 3.1: [STORY TITLE]**
+
+As a [user type],
+I want [goal/desire],
+So that [benefit/value].
+
+**Acceptance Criteria:**
+1. [Specific testable criterion]
+2. [Another specific criterion]
+
+**Prerequisites:** [Dependencies]
+
+---
+
 ## Story Guidelines Reference
 
 **Story Format:**
