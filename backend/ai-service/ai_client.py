@@ -1,5 +1,5 @@
 import os
-import json # Import json module
+import json
 from typing import List, Dict, Any
 
 import google.generativeai as genai
@@ -78,4 +78,52 @@ def generate_flashcards(text_chunks: List[str]) -> List[Dict[str, str]]:
         raise
     except Exception as e:
         print(f"Error generating flashcards from AI service: {e}")
+        raise
+
+def generate_quiz(text_chunks: List[str]) -> List[Dict[str, Any]]:
+    """
+    Generates a quiz from a list of text chunks using the Gemini API.
+    The AI is instructed to return quiz questions in a JSON array format.
+    """
+    if not text_chunks:
+        return []
+
+    full_text = " ".join(text_chunks)
+
+    prompt = f"""
+    Please generate a multiple-choice quiz from the following text.
+    Each question should have a 'question', a list of 'options', and an 'answer' (the correct option).
+    Return the quiz as a JSON array of objects.
+
+    Example format:
+    [
+      {{
+        "question": "What is the capital of France?",
+        "options": ["Berlin", "Madrid", "Paris", "Rome"],
+        "answer": "Paris"
+      }},
+      {{
+        "question": "Which planet is known as the Red Planet?",
+        "options": ["Earth", "Mars", "Jupiter", "Venus"],
+        "answer": "Mars"
+      }}
+    ]
+
+    Text:
+    ---
+    {full_text}
+    ---
+    """
+
+    try:
+        response = model.generate_content(prompt)
+        # Assuming the AI returns a valid JSON string
+        quiz = json.loads(response.text)
+        return quiz
+    except json.JSONDecodeError as e:
+        print(f"Error decoding JSON from AI for quiz: {e}")
+        print(f"AI response text: {response.text}")
+        raise
+    except Exception as e:
+        print(f"Error generating quiz from AI service: {e}")
         raise
