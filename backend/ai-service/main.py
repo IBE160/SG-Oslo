@@ -1,12 +1,12 @@
 import os
 import shutil
-from typing import Dict, Any
+from typing import Dict, Any, List # Import List for chunks return type hint
 
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from starlette.status import HTTP_400_BAD_REQUEST
 
 from .document_pipeline import process_document
-from .ai_client import generate_summary
+from .ai_client import generate_summary, generate_flashcards # Import generate_flashcards
 
 app = FastAPI()
 
@@ -50,11 +50,13 @@ async def upload_document(file: UploadFile = File(...)):
         
         # Generate summary from the text chunks
         summary = generate_summary(chunks)
+
+        # Generate flashcards from the text chunks
+        flashcards = generate_flashcards(chunks)
         
-        return {"summary": summary, "chunks": chunks}
+        return {"summary": summary, "flashcards": flashcards, "chunks": chunks}
 
     except Exception as e:
-        # Log the exception for debugging
         print(f"An error occurred: {e}")
         raise HTTPException(
             status_code=500,
