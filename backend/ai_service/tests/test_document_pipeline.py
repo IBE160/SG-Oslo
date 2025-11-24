@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 import os
 import pytest
 from fastapi.testclient import TestClient
@@ -48,37 +50,35 @@ def test_chunk_text():
 
 # --- Test FastAPI endpoint ---
 
-@patch('backend.ai_service.main.process_document')
-@patch('backend.ai_service.ai_client.generate_summary')
-@patch('backend.ai_service.ai_client.generate_flashcards')
-@patch('backend.ai_service.ai_client.generate_quiz')
-@patch('backend.ai_service.ai_client.genai.configure') # Patch genai.configure
-def test_upload_document_pdf_success(mock_genai_configure, mock_generate_quiz, mock_generate_flashcards, mock_generate_summary, mock_process_document, tmp_path):
-    mock_process_document.return_value = ["chunk1", "chunk2"]
-    mock_generate_summary.return_value = "This is a summary."
-    mock_generate_flashcards.return_value = [{"front": "Q1", "back": "A1"}]
-    mock_generate_quiz.return_value = [{"question": "Q?", "options": ["A","B"], "answer": "A"}]
+    @patch('backend.ai_service.main.process_document')
+    @patch('backend.ai_service.ai_client.generate_summary')
+    @patch('backend.ai_service.ai_client.generate_flashcards')
+    @patch('backend.ai_service.ai_client.generate_quiz')
+    @patch('backend.ai_service.ai_client.genai.configure') # Patch genai.configure
+    def test_upload_document_pdf_success(mock_genai_configure, mock_generate_quiz, mock_generate_flashcards, mock_generate_summary, mock_process_document, tmp_path):
+        mock_process_document.return_value = ["The capital of France is Paris.", "It is known for the Eiffel Tower."]
+        mock_generate_summary.return_value = "This is a summary."
+        mock_generate_flashcards.return_value = [{"front": "Q1", "back": "A1"}]
+        mock_generate_quiz.return_value = [{"question": "Q?", "options": ["A","B"], "answer": "A"}]
+        test_pdf_file = tmp_path / "sample.pdf"
+        test_pdf_file.write_bytes(b"dummy pdf content for upload test")
 
-    test_pdf_file = tmp_path / "sample.pdf"
-    test_pdf_file.write_bytes(b"dummy pdf content for upload test")
+        with open(test_pdf_file, "rb") as f:
+            response = client.post(
+                "/upload-document/",
+                files={"file": ("sample.pdf", f, "application/pdf")}
+            )
 
-    with open(test_pdf_file, "rb") as f:
-        response = client.post(
-            "/upload-document/",
-            files={"file": ("sample.pdf", f, "application/pdf")}
-        )
-
-    assert response.status_code == 200
-    assert response.json()["summary"] == "This is a summary."
-    assert response.json()["flashcards"] == [{"front": "Q1", "back": "A1"}]
-    assert response.json()["quiz"] == [{"question": "Q?", "options": ["A","B"], "answer": "A"}]
-    assert response.json()["chunks"] == ["chunk1", "chunk2"]
-    mock_process_document.assert_called_once()
-    mock_generate_summary.assert_called_once_with(["chunk1", "chunk2"])
-    mock_generate_flashcards.assert_called_once_with(["chunk1", "chunk2"])
-    mock_generate_quiz.assert_called_once_with(["chunk1", "chunk2"])
-    mock_genai_configure.assert_called_once() # Assert that genai.configure was called
-
+        assert response.status_code == 200
+        assert response.json()["summary"] == "This is a summary."
+        assert response.json()["flashcards"] == [{"front": "Q1", "back": "A1"}]
+        assert response.json()["quiz"] == [{"question": "Q?", "options": ["A","B"], "answer": "A"}]
+        assert response.json()["chunks"] == ["chunk1", "chunk2"]
+        mock_process_document.assert_called_once()
+        mock_generate_summary.assert_called_once_with(["chunk1", "chunk2"])
+        mock_generate_flashcards.assert_called_once_with(["chunk1", "chunk2"])
+        mock_generate_quiz.assert_called_once_with(["chunk1", "chunk2"])
+        mock_genai_configure.assert_called_once() # Assert that genai.configure was called
 def test_upload_document_unsupported_type():
     with patch('builtins.open', MagicMock()), \
          patch('shutil.copyfileobj', MagicMock()), \

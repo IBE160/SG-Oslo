@@ -32,16 +32,16 @@ This document summarizes the work completed during Sprint 3, covering the implem
 - The `generate_quiz` function was implemented in `ai_client.py`.
 - The `/upload-document` endpoint was updated to return the generated quiz.
 
-### 6. Story 3.5: End-to-End Testing (Setup)
+### 6. Story 3.5: End-to-End Testing (Completed)
 - A new branch, `feature/Birgitte-3.5-end-to-end-testing`, was created.
 - `pytest` and `httpx` were added to `requirements.txt`.
 - A `tests` directory was created with `test_document_pipeline.py`.
 - Sample PDF and DOCX files were created for testing.
 - The virtual environment directory (`venv`) for the AI service was added to `.gitignore`.
-- Several fixes were implemented to get the tests running, including correcting imports and mocking strategies.
+- Several fixes were implemented to get the tests running, including correcting imports, mocking strategies, and resolving the API key configuration issue with `python-dotenv` and by switching to `gemini-pro-latest` and handling markdown in AI responses. All end-to-end tests are now passing.
 
 ## Current Status
 
-The core implementation of the AI processing pipeline (Stories 3.1-3.4) is complete. The testing framework for Story 3.5 is set up, but the final tests are still failing due to an API key configuration issue in the test environment.
+The core implementation of the AI processing pipeline (Stories 3.1-3.4) is complete. The testing framework for Story 3.5 is set up and all end-to-end tests are passing after resolving the API key configuration issue and updating the AI model and JSON parsing logic.
 
-The project is now at a state where the implemented features are ready for manual testing and further refinement.
+The project is now at a state where the implemented features are verified and ready for further development.

@@ -10,7 +10,13 @@ import google.generativeai as genai
 genai.configure(api_key=os.environ.get("GOOGLE_API_KEY"))
 
 # Initialize the generative model
-model = genai.GenerativeModel('gemini-pro')
+model = genai.GenerativeModel('gemini-pro-latest')
+
+def _strip_markdown_json(text: str) -> str:
+    """Strips markdown code block syntax from a string containing JSON."""
+    if text.startswith("```json") and text.endswith("```"):
+        return text[7:-3].strip()
+    return text
 
 def generate_summary(text_chunks: List[str]) -> str:
     """
@@ -69,8 +75,9 @@ def generate_flashcards(text_chunks: List[str]) -> List[Dict[str, str]]:
 
     try:
         response = model.generate_content(prompt)
-        # Assuming the AI returns a valid JSON string
-        flashcards = json.loads(response.text)
+        # Strip markdown before decoding JSON
+        cleaned_response_text = _strip_markdown_json(response.text)
+        flashcards = json.loads(cleaned_response_text)
         return flashcards
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from AI for flashcards: {e}")
@@ -117,8 +124,9 @@ def generate_quiz(text_chunks: List[str]) -> List[Dict[str, Any]]:
 
     try:
         response = model.generate_content(prompt)
-        # Assuming the AI returns a valid JSON string
-        quiz = json.loads(response.text)
+        # Strip markdown before decoding JSON
+        cleaned_response_text = _strip_markdown_json(response.text)
+        quiz = json.loads(cleaned_response_text)
         return quiz
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON from AI for quiz: {e}")
