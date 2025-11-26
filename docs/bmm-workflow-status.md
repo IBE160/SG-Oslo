@@ -21,8 +21,8 @@ PHASE_4_COMPLETE: true
 
 ## Next Action
 
-NEXT_ACTION: Start frontend development server
-NEXT_COMMAND: cd frontend && npm start
+NEXT_ACTION: Start the new frontend development server
+NEXT_COMMAND: cd new-frontend && npm start
 NEXT_AGENT: Gemini
 
 ---
