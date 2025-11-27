@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import Header from './Header';
 import Footer from './Footer';
+import DocumentUpload from './DocumentUpload';
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
       <div className="content-wrap">
         <Header />
         <main>
-          <p>Main Content</p>
+          <DocumentUpload />
         </main>
       </div>
       <Footer />
