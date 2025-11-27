@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Untracked directories from local development
+backend/
+new-frontend/
+__pycache__/
+
+# Sensitive files
+serviceAccountKey.json
