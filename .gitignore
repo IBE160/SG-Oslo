@@ -47,3 +47,10 @@ __pycache__/
 serviceAccountKey.json
 /.logging/
 /backend/ai_service/venv/
+
+# Frontend logs
+new-frontend/npm-start.log
+
+# Untracked project directories
+backend/
+new-frontend/
