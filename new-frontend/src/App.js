@@ -3,6 +3,7 @@ import './App.css';
 import Header from './Header';
 import Footer from './Footer';
 import DocumentUpload from './DocumentUpload';
+import DocumentList from './DocumentList';
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
         <Header />
         <main>
           <DocumentUpload />
+          <DocumentList />
         </main>
       </div>
       <Footer />
