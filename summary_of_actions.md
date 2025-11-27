@@ -24,3 +24,21 @@ This stage involved attempting to run the backend server.
 3.  **Environment Configuration:** Instructed user to set `FIREBASE_SERVICE_ACCOUNT_PATH` and `GEMINI_API_KEY` environment variables.
 4.  **Run Backend Server:** Attempted to run the backend server using `uvicorn`, but the command failed.
 5.  **Run Backend Server (Python):** Attempted to run the backend server using `python -m uvicorn`, but the operation was cancelled by the user.
+
+## Recent Actions (BirgittePhase4_FrontendSetup Branch)
+
+This section summarizes actions taken since checking out the `BirgittePhase4_FrontendSetup` branch.
+
+1.  **Branch Checkout**: Switched to `BirgittePhase4_FrontendSetup` branch.
+2.  **File Renaming**: Renamed `reflection-report-template.md` to `Reflection_Report_Birgitte.md`, committed, and pushed the change to remote.
+3.  **Frontend Setup & Server Management**:
+    *   Confirmed `new-frontend/` as a React project and installed its dependencies.
+    *   Successfully started the frontend development server (`npm start`) after resolving a port conflict (port 3000 was in use) and set it to run in the background.
+4.  **UI Component Implementation**:
+    *   Implemented the `Header` component (title and navigation).
+    *   Implemented a basic `NavigationBar` component.
+    *   Implemented a `Footer` component.
+    *   Implemented the `DocumentUpload` component (file input with drag-and-drop).
+    *   Implemented `DocumentList` and `DocumentCard` components (using mock data).
+5.  **Local Commits**: All implemented UI components and related changes (including CSS) were committed locally to the `BirgittePhase4_FrontendSetup` branch.
+6.  **Gitignore Updates**: Updated `.gitignore` on both `main` and `BirgittePhase4_FrontendSetup` branches to properly ignore `backend/`, `new-frontend/`, `__pycache__/`, `serviceAccountKey.json`, and `new-frontend/npm-start.log` for local development purposes, without pushing to remote `main`.
