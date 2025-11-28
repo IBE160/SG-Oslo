@@ -12,21 +12,25 @@
         {% endif %}
 
         <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Summary</h2>
-        <div id="summary-content" class="bg-[#FFFFFF] p-4 rounded-lg shadow-sm mb-8">
-            {% if study_set.summary %}
-                <p class="text-[#6C7486]">{{ study_set.summary }}</p>
-            {% else %}
-                <p class="text-gray-600">No summary available.</p>
-            {% endif %}
+        <div id="summary-content" class="bg-[#FFFFFF] p-4 rounded-lg shadow-sm mb-8 prose">
+            <!-- Summary will be rendered here by Showdown -->
         </div>
+        <div id="summary-markdown" style="display:none;">{{ study_set.summary }}</div>
+
 
         <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Flashcards</h2>
         <div id="flashcards-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {% if study_set.flashcards %}
                 {% for card in study_set.flashcards %}
-                    <div class="bg-[#EDF5FD] p-4 rounded-lg shadow-sm card-hover-effect">
-                        <p class="text-[#0E0E12] font-medium mb-2"><strong>Q:</strong> {{ card.question }}</p>
-                        <p class="text-[#6C7486]"><strong>A:</strong> {{ card.answer }}</p>
+                    <div class="flashcard card-hover-effect" onclick="this.classList.toggle('flipped')">
+                        <div class="flashcard-inner">
+                            <div class="flashcard-front bg-[#EDF5FD]">
+                                <p class="text-[#0E0E12] font-medium"><strong>Q:</strong> {{ card.question }}</p>
+                            </div>
+                            <div class="flashcard-back bg-[#d8f0e9]">
+                                <p class="text-[#0E0E12]"><strong>A:</strong> {{ card.answer }}</p>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             {% else %}
@@ -71,6 +75,12 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        // Render summary markdown
+        const summaryMarkdown = document.getElementById('summary-markdown').textContent;
+        const summaryContent = document.getElementById('summary-content');
+        const converter = new showdown.Converter();
+        summaryContent.innerHTML = converter.makeHtml(summaryMarkdown);
+
         const quizForm = document.getElementById('quiz-form');
         let score = 0;
         const totalQuestions = {{ study_set.quiz | length }};

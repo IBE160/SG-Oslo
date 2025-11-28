@@ -8,6 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts for Aptos Slab ExtraBold alternative (Merriweather Sans) -->
     <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@800&display=swap" rel="stylesheet">
+    <!-- Showdown CDN for Markdown rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/2.1.0/showdown.min.js"></script>
     <style>
         :root {
             --background-blue: #DEEAFC;
@@ -39,25 +41,80 @@
             transform: translateY(-5px);
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
+        /* Flashcard flip animation */
+        .flashcard {
+            perspective: 1000px;
+            cursor: pointer;
+            height: 150px; /* Or a fixed height that works for your content */
+        }
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 0.5rem;
+        }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen">
-    <nav class="bg-white bg-opacity-80 shadow-md p-4 relative z-10">
-        <div class="container mx-auto flex justify-between items-center flex-wrap">
-            <a href="/" class="text-2xl font-extrabold text-[#0E0E12] tracking-wide">StudyBuddy AI</a>
-            <div class="flex items-center space-x-4">
+    <nav class="bg-white bg-opacity-80 shadow-md p-4 relative z-20">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Hamburger Menu -->
+            <div class="flex items-center">
+                <button id="menu-btn" class="text-2xl text-[#0E0E12]">☰</button>
+            </div>
+
+            <!-- Centered Title -->
+            <div class="text-center">
+                <a href="/" class="text-3xl font-extrabold text-[#0E0E12] tracking-wide">StudyBuddy AI</a>
+            </div>
+
+            <!-- Right side content -->
+            <div class="flex items-center">
                 {% if user %}
-                    <span class="text-[#0E0E12] text-lg">Welcome, {{ user.email }}</span>
-                    <form action="/logout" method="post">
-                        <button type="submit" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Logout</button>
-                    </form>
+                    <a href="/dashboard" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Dashboard</a>
                 {% else %}
-                    <a href="/login" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Login</a>
-                    <a href="/register" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Register</a>
+                    <div class="hidden md:flex items-center">
+                        <a href="/login" class="text-[#0E0E12] hover:text-[#2DC6A1]">Login</a>
+                        <a href="/register" class="ml-4 bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Sign Up</a>
+                    </div>
                 {% endif %}
             </div>
         </div>
     </nav>
+
+    <!-- Dropdown Menu -->
+    <div id="menu" class="hidden absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg z-10">
+        <a href="/" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Home</a>
+        <a href="/how-it-works" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">How It Works</a>
+        <a href="/features" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Features</a>
+        <a href="/faq" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">FAQ</a>
+        <hr>
+        {% if not user %}
+        <a href="/login" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Login</a>
+        <a href="/register" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign Up</a>
+        {% endif %}
+    </div>
+
 
     <main class="flex-grow">
         {% block content %}
@@ -68,5 +125,24 @@
     <footer class="bg-[#0E0E12] text-white text-center p-4 shadow-inner">
         <p>&copy; 2025 StudyBuddy AI</p>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuBtn = document.getElementById('menu-btn');
+            const menu = document.getElementById('menu');
+
+            menuBtn.addEventListener('click', function(event) {
+                event.stopPropagation();
+                menu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', function(event) {
+                const isClickInside = menu.contains(event.target) || menuBtn.contains(event.target);
+                if (!isClickInside) {
+                    menu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
 </body>
 </html>

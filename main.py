@@ -122,7 +122,7 @@ async def generate_content_with_gemini(text: str, content_type: str):
     try:
         # Define prompts based on content type
         prompts = {
-            "summary": f"Please provide a detailed and easy-to-read summary of the following text. The summary should be well-structured, using Markdown for formatting (like headings and lists) where appropriate. Do not include any promotional text or artifacts from the document's table of contents or index. Ensure the output is clean and does not contain any special characters like '***'.\n\n{text}",
+            "summary": f"Please provide a detailed and easy-to-read summary of the following text. The summary should be well-structured, using Markdown for formatting. Use bullet points to list key information. Ensure there are line breaks between paragraphs and bullet points for readability. Do not use double asterisks for bolding. Do not include any promotional text or artifacts from the document's table of contents or index. Ensure the output is clean and does not contain any special characters like '***'.\n\n{text}",
             "flashcards": f"Generate a list of flashcards (question and answer pairs) from the following text. Provide the output as a JSON array of objects, where each object has 'question' and 'answer' keys:\n\n{text}",
             "quiz": f"Generate a multiple-choice quiz from the following text. Provide the output as a JSON array of objects, where each object has 'question', 'options' (an array of strings), and 'correct_answer' (string) keys:\n\n{text}"
         }
@@ -148,7 +148,7 @@ async def generate_content_with_gemini(text: str, content_type: str):
                 return []
         
         # Clean the summary text
-        summary_text = response.text.replace('***', '').strip()
+        summary_text = response.text.replace('***', '').replace('**', '').strip()
         return summary_text
 
     except Exception as e:
