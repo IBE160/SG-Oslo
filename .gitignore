@@ -54,3 +54,4 @@ new-frontend/npm-start.log
 # Untracked project directories
 backend/
 new-frontend/
+temp_uploads/
