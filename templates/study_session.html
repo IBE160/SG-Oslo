@@ -5,28 +5,28 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white p-8 rounded-2xl shadow-md">
-        <h1 class="text-3xl font-bold text-[#333] mb-6">Study Session: {{ study_set.document_name }}</h1>
+        <h1 class="text-3xl font-bold text-[#0E0E12] mb-6">Study Session: {{ study_set.document_name }}</h1>
 
         {% if message %}
-            <p class="text-green-500 mb-4">{{ message }}</p>
+            <p class="text-[#2DC6A1] mb-4">{{ message }}</p>
         {% endif %}
 
-        <h2 class="text-2xl font-semibold text-[#5a7d4a] mb-4">Summary</h2>
-        <div id="summary-content" class="bg-[#f0f5eb] p-4 rounded-lg shadow-sm mb-8">
+        <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Summary</h2>
+        <div id="summary-content" class="bg-[#FFFFFF] p-4 rounded-lg shadow-sm mb-8">
             {% if study_set.summary %}
-                <p class="text-gray-700">{{ study_set.summary }}</p>
+                <p class="text-[#6C7486]">{{ study_set.summary }}</p>
             {% else %}
                 <p class="text-gray-600">No summary available.</p>
             {% endif %}
         </div>
 
-        <h2 class="text-2xl font-semibold text-[#5a7d4a] mb-4">Flashcards</h2>
+        <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Flashcards</h2>
         <div id="flashcards-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {% if study_set.flashcards %}
                 {% for card in study_set.flashcards %}
-                    <div class="bg-[#e0e7d4] p-4 rounded-lg shadow-sm card-hover-effect">
-                        <p class="text-gray-800 font-medium mb-2"><strong>Q:</strong> {{ card.question }}</p>
-                        <p class="text-gray-700"><strong>A:</strong> {{ card.answer }}</p>
+                    <div class="bg-[#EDF5FD] p-4 rounded-lg shadow-sm card-hover-effect">
+                        <p class="text-[#0E0E12] font-medium mb-2"><strong>Q:</strong> {{ card.question }}</p>
+                        <p class="text-[#6C7486]"><strong>A:</strong> {{ card.answer }}</p>
                     </div>
                 {% endfor %}
             {% else %}
@@ -34,19 +34,19 @@
             {% endif %}
         </div>
 
-        <h2 class="text-2xl font-semibold text-[#5a7d4a] mb-4">Quiz</h2>
+        <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Quiz</h2>
         <div id="quiz-content" class="mb-8">
             {% if study_set.quiz %}
                 <form id="quiz-form" class="space-y-6">
                     {% for q in study_set.quiz %}
                         {% set outer_loop = loop %}
-                        <div class="bg-[#f0f5eb] p-5 rounded-lg shadow-sm quiz-question" id="question-{{ outer_loop.index0 }}">
-                            <p class="text-gray-800 font-medium mb-3"><strong>Q{{ outer_loop.index }}:</strong> {{ q.question }}</p>
+                        <div class="bg-[#FFFFFF] p-5 rounded-lg shadow-sm quiz-question" id="question-{{ outer_loop.index0 }}">
+                            <p class="text-[#0E0E12] font-medium mb-3"><strong>Q{{ outer_loop.index }}:</strong> {{ q.question }}</p>
                             <ul class="space-y-2">
                                 {% for option in q.options %}
                                     <li>
-                                        <label class="inline-flex items-center text-gray-700 cursor-pointer">
-                                            <input type="radio" id="q{{ outer_loop.index0 }}-opt{{ loop.index0 }}" name="question-{{ outer_loop.index0 }}" value="{{ option }}" class="form-radio h-4 w-4 text-[#5a7d4a] focus:ring-[#5a7d4a]">
+                                        <label class="inline-flex items-center text-[#6C7486] cursor-pointer">
+                                            <input type="radio" id="q{{ outer_loop.index0 }}-opt{{ loop.index0 }}" name="question-{{ outer_loop.index0 }}" value="{{ option }}" class="form-radio h-4 w-4 text-[#2DC6A1] focus:ring-[#2DC6A1]">
                                             <span class="ml-2">{{ option }}</span>
                                         </label>
                                     </li>
@@ -55,7 +55,7 @@
                             <div class="feedback mt-3 text-sm font-semibold" style="display: none;"></div>
                         </div>
                     {% endfor %}
-                    <button type="submit" class="hidden bg-[#5a7d4a] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#4a6b3d] btn-primary">Submit Quiz</button>
+                    <button type="submit" class="hidden bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Submit Quiz</button>
                 </form>
             {% else %}
                 <p class="text-gray-600">No quiz available.</p>
@@ -64,7 +64,7 @@
 
         <div class="flex justify-between items-center mt-8">
             <a href="/dashboard" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-400 btn-primary">Back to Dashboard</a>
-            <button id="save-study-set-button" data-study-set-id="{{ study_set.id }}" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Save Study Set</button>
+            <button id="save-study-set-button" data-study-set-id="{{ study_set.id }}" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Save Study Set</button>
         </div>
     </div>
 </div>
@@ -76,7 +76,7 @@
         const totalQuestions = {{ study_set.quiz | length }};
         const scoreDisplay = document.createElement('p');
         scoreDisplay.id = 'score-display';
-        scoreDisplay.className = 'text-lg font-bold text-[#333] mb-4';
+        scoreDisplay.className = 'text-lg font-bold text-[#0E0E12] mb-4';
         scoreDisplay.textContent = `Score: ${score} / ${totalQuestions}`;
         if (quizForm) {
             quizForm.prepend(scoreDisplay); // Display score at the top of the quiz form
@@ -97,11 +97,11 @@
                     // Prevent multiple selections for the same question from affecting score
                     if (!questionDiv.dataset.answered) {
                         if (selectedAnswer === correctAnswer) {
-                            feedbackDiv.style.color = 'green';
+                            feedbackDiv.style.color = 'var(--vibrant-teal)';
                             feedbackDiv.textContent = 'Correct!';
                             score++;
                         } else {
-                            feedbackDiv.style.color = 'red';
+                            feedbackDiv.style.color = 'var(--warm-coral)';
                             feedbackDiv.textContent = `Incorrect. The correct answer was: ${correctAnswer}`;
                         }
                         questionDiv.dataset.answered = 'true'; // Mark question as answered

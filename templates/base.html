@@ -9,10 +9,20 @@
     <!-- Google Fonts for Aptos Slab ExtraBold alternative (Merriweather Sans) -->
     <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --background-blue: #DEEAFC;
+            --header-white: #FFFFFF;
+            --vibrant-teal: #2DC6A1;
+            --warm-coral: #FF6F61;
+            --soft-lilac: #C7B8F3;
+            --slate-gray: #6C7486;
+            --ink-black: #0E0E12;
+            --card-background: #FFFFFF;
+        }
         body {
             font-family: 'Merriweather Sans', sans-serif;
-            background-color: #B7C8A3; /* Light olive green */
-            color: #333; /* Dark gray text */
+            background-color: var(--background-blue);
+            color: var(--slate-gray);
         }
         /* Custom styles for hover effects if not fully covered by Tailwind */
         .btn-primary {
@@ -34,16 +44,16 @@
 <body class="flex flex-col min-h-screen">
     <nav class="bg-white bg-opacity-80 shadow-md p-4 relative z-10">
         <div class="container mx-auto flex justify-between items-center flex-wrap">
-            <a href="/" class="text-2xl font-extrabold text-[#333] tracking-wide">StudyBuddy AI</a>
+            <a href="/" class="text-2xl font-extrabold text-[#0E0E12] tracking-wide">StudyBuddy AI</a>
             <div class="flex items-center space-x-4">
                 {% if user %}
-                    <span class="text-[#333] text-lg">Welcome, {{ user.email }}</span>
+                    <span class="text-[#0E0E12] text-lg">Welcome, {{ user.email }}</span>
                     <form action="/logout" method="post">
-                        <button type="submit" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Logout</button>
+                        <button type="submit" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Logout</button>
                     </form>
                 {% else %}
-                    <a href="/login" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Login</a>
-                    <a href="/register" class="bg-[#5a7d4a] text-white px-4 py-2 rounded-lg hover:bg-[#4a6b3d] btn-primary">Register</a>
+                    <a href="/login" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Login</a>
+                    <a href="/register" class="bg-[#2DC6A1] text-white px-4 py-2 rounded-lg hover:bg-[#24a284] btn-primary">Register</a>
                 {% endif %}
             </div>
         </div>
@@ -55,7 +65,7 @@
         {% endblock %}
     </main>
 
-    <footer class="bg-[#333] text-white text-center p-4 shadow-inner">
+    <footer class="bg-[#0E0E12] text-white text-center p-4 shadow-inner">
         <p>&copy; 2025 StudyBuddy AI</p>
     </footer>
 </body>

@@ -5,22 +5,22 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8 flex justify-center items-center min-h-[calc(100vh-120px)]">
     <div class="bg-white p-8 rounded-2xl shadow-md w-full max-w-md">
-        <h2 class="text-3xl font-bold text-[#333] text-center mb-6">Register</h2>
+        <h2 class="text-3xl font-bold text-[#0E0E12] text-center mb-6">Register</h2>
         {% if error %}
-            <p class="text-red-500 text-center mb-4">{{ error }}</p>
+            <p class="text-[#FF6F61] text-center mb-4">{{ error }}</p>
         {% endif %}
         <form action="/register" method="post" class="space-y-4">
             <div>
-                <label for="email" class="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-                <input type="email" id="email" name="email" required class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#5a7d4a]">
+                <label for="email" class="block text-[#6C7486] text-sm font-bold mb-2">Email:</label>
+                <input type="email" id="email" name="email" required class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-[#6C7486] leading-tight focus:outline-none focus:shadow-outline focus:border-[#2DC6A1]">
             </div>
             <div>
-                <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password:</label>
-                <input type="password" id="password" name="password" required class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline focus:border-[#5a7d4a]">
+                <label for="password" class="block text-[#6C7486] text-sm font-bold mb-2">Password:</label>
+                <input type="password" id="password" name="password" required class="shadow appearance-none border rounded-lg w-full py-2 px-3 text-[#6C7486] mb-3 leading-tight focus:outline-none focus:shadow-outline focus:border-[#2DC6A1]">
             </div>
-            <button type="submit" class="bg-[#5a7d4a] text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-[#4a6b3d] btn-primary">Register</button>
+            <button type="submit" class="bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg w-full hover:bg-[#24a284] btn-primary">Register</button>
         </form>
-        <p class="text-center text-gray-600 text-sm mt-6">Already have an account? <a href="/login" class="text-[#5a7d4a] hover:underline">Login here</a></p>
+        <p class="text-center text-gray-600 text-sm mt-6">Already have an account? <a href="/login" class="text-[#2DC6A1] hover:underline">Login here</a></p>
     </div>
 </div>
 {% endblock %}
