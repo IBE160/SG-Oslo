@@ -40,10 +40,22 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Untracked directories from local development
-backend/
-new-frontend/
+# Python cache
 __pycache__/
 
 # Sensitive files
 serviceAccountKey.json
+
+# Sensitive credentials
+/.logging/
+/backend/ai_service/venv/
+
+# Frontend logs
+new-frontend/npm-start.log
+
+# Untracked project directories
+backend/
+new-frontend/
+temp_uploads/
+uvicorn_stdout.log
+uvicorn_stderr.log
