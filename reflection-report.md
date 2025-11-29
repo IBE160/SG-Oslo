@@ -5,9 +5,9 @@
 **Gruppenavn:** [Navn på gruppen]
 
 **Gruppemedlemmer:**
-- [Navn 1] - [Student-ID/E-post]
-- [Navn 2] - [Student-ID/E-post]
-- [Navn 3] - [Student-ID/E-post]
+- Birgitte Bellsund - 201583/birgitte.bellsund@himolde.no 
+- Hamdi Abdi Mohamed - Student-ID/hamdi.a.mohamed@himolde.no
+- Kine Marie Pettersen - Student-ID/kine.m.pettersen@himolde.no
 
 **Dato:** 16.11.2025
 
@@ -31,26 +31,27 @@ Gruppen startet med fire medlemmer, men i uke 45 valgte Sara å avslutte deltake
 
 Samarbeidsverktøy: Vi brukte VS Code til utvikling, GitHub til versjonskontroll og pull requests med kodegjennomgang, og Teams til kommunikasjon, møter og avklaringer.
 
-KI ble brukt som en sentral støtte gjennom hele utviklingsprosessen. Vi benyttet Gemini-integrasjonen i Visual Studio Code aktivt for å kommunisere med agenter, gjennomføre idémyldring og få forslag til kodeforbedringer. Dette var særlig nyttig i tidlige faser, hvor vi testet ulike tilnærminger og løste tekniske utfordringer i sanntid. Ved siden av dette brukte vi også ChatGPT som en støttespiller, spesielt ved feilsøking og tolkning av feilmeldinger. ChatGPT viste seg å være et effektivt verktøy for å forklare hva feilmeldingene betydde, foreslå mulige løsninger og hjelpe oss å forstå hvorfor koden ikke fungerte som forventet. Kombinasjonen av Gemini og ChatGPT ga oss dermed både idéutvikling, teknisk støtte og læring underveis.
+KI ble brukt som en sentral støtte gjennom hele utviklingsprosessen. Vi benyttet Gemini-integrasjonen i Visual Studio Code aktivt for å kommunisere med agenter, gjennomføre idémyldring og få forslag til kodeforbedringer. Dette var særlig nyttig i tidlige faser, hvor vi testet ulike tilnærminger og løste tekniske utfordringer i sanntid. Ved siden av dette brukte vi også ChatGPT som en støttespiller, spesielt ved feilsøking og tolkning av feilmeldinger. ChatGPT viste seg å være et effektivt verktøy for å forklare hva feilmeldingene betydde, foreslå mulige løsninger og hjelpe chúng tôi å forstå hvorfor koden ikke fungerte som forventet. Kombinasjonen av Gemini og ChatGPT ga oss dermed både idéutvikling, teknisk støtte og læring underveis.
 
 ### 2.3 Teknologi og verktøy
-[Liste over de viktigste teknologiene og verktøyene dere brukte]
-- Frontend: [f.eks. NextJS, HTML/CSS]
-- Backend: [f.eks. Python/FastAPI]
-- Database: [f.eks. Supabase, MongoDB, PostgreSQL]
-- KI-verktøy: [f.eks. Claude Code, Gemini CLI, GPT-5 Codex]
-- Andre verktøy: [f.eks. VS Code, BMAD etc]
+For denne appen har vi tatt i bruk følgende teknologi og verktøy: 
+- Frontend: React (Vite), TypeScript, Material-UI:  
+- Backend: Node.js/Express.js (API Gateway, Brukerdata) 
+- AI Service: Python/FastAPI 
+- KI-verktøy: Google Gemini API, Google Cloud AI
+- Database: PostgreSQL, S3-objektlagring 
+- DevOps: Docker, Kubernetes, GitHub Actions 
 
 ### 2.4 Utviklingsfaser
 [Beskriv de ulike fasene i utviklingen]
 
 **Fase 1: Planlegging**
-- [Hva gjorde dere i denne fasen?]
-- [Hvordan brukte dere KI her? Husk å lagre promptene deres! Inkluder ALLE stegene dere gjorde.]
+I denne fasen tok vi i bruk BMADs agent for å brainstorme med SCAMPER-metoden for å komme frem til nye funskjoner og forbedringer for StudyBuddy. Disse forbedringene fokuserte blant annet på en smartere måte å organisere generert læringsmateriale(quiz, sammendrag, flashcards), økt brukerengasjement og en enklere systemarkitektur. De mest relevante resultatene fra brainstormingen var et AI-drevet Topic Map som automatisk strukturerer læringsmateriale. Videre kom vi frem til micro-læring med korte og fleksible økter i tillegg til lengre økter. Et annet resultat fra brainstormingen besto i å introdusere skylagring hos bruker istedenfor intern applagring, noe som reduserer kompleksitet og ekstra arbeid og kostnad ift lagring av materiale. I tillegg kom vi frem til en omvendt arbeidsflyt der AI først kartlegger brukerens mål før en skreddersydd studieplan blir laget. Disse forslagene bidro til å skape en mer adaptiv, effektiv og personlig læringsopplevelse i StudyBuddy AI. 
 
 **Fase 2: Utvikling**
-- [Hva gjorde dere i denne fasen?]
-- [Hvordan brukte dere KI her? Husk å lagre promptene deres! Inkluder ALLE stegene dere gjorde.]
+I utviklingsfasen startet arbeidet med å synkronisere det lokale repositoriet med main-grenen og identifisere "Install frontend dependencies" som neste steg i arbeidsflyten. Et innledende forsøk på npm install feilet i frontend-mappen grunnet manglende package.json, noe som ble løst ved å opprette en midlertidig fil med basisavhengigheter for å fullføre installasjonen. Etter vellykket installasjon ble de midlertidige filene umiddelbart fjernet igjen. 
+
+Deretter ble fokuset flyttet til å etablere en ny React-applikasjon i mappen new-frontend ved bruk av create-react-app. Gjennom hele prosessen ble statusfilen bmm-workflow-status.md kontinuerlig oppdatert for å reflektere fullføringen av fasen og angi det neste logiske steget: å starte utviklingsserveren for den nyopprettede frontend-applikasjonen. Til slutt ble alle endringer, inkludert den komplette frontend-applikasjonen, committet til repositoriet. 
 
 -- -
 
@@ -59,15 +60,20 @@ KI ble brukt som en sentral støtte gjennom hele utviklingsprosessen. Vi benytte
 ### 3.1 Tekniske utfordringer
 [Beskriv 2-3 konkrete tekniske problemer dere møtte]
 
-**Utfordring 1: [Tittel]**
-- Problem: [Beskriv problemet]
-- Løsning: [Hvordan løste dere det?]
-- KI sin rolle: [Hvordan hjalp eller hindret KI dere?]
+**Utfordring 1: [Grense på Gemini CLI ]**
+- Problem: Maksimumskvoten for Gemini CLI ble nådd, noe som medførte stopp i bruk til neste dag. Dette skjedde etter intensiv bruk og ga en feilmelding om at kvoten var oppbrukt. Vi måtte vente i 24 timer for å få tilgang til en full økt igjen.  
+- Løsning: Det var ingen rask løsning – vi måtte vente ut perioden før tilgangen ble gjenopprettet.  
+- KI sin rolle: KI hjalp med å informere om kvotegrenser og ga beskjed om ventetid, men videre arbeid ble stanset og det ble ikke gitt noe assistanse ift å omgå grensen eller få bedre ressursutnyttelse, kun standard beskjed om å vente. 
 
-**Utfordring 2: [Tittel]**
-- Problem: [Beskriv problemet]
-- Løsning: [Hvordan løste dere det?]
-- KI sin rolle: [Hvordan hjalp eller hindret KI dere?]
+**Utfordring 2: [Tester feiler]**
+- Problem: En eller flere tester mislyktes fordi API-nøkkelen manglet eller var plassert feil. Dette førte til mislykket autentisering og stoppet videre testing.   
+- Løsning: Problemet ble løst ved å spørre eksterne KI-chatboter. Svaret var at API-nøkkelen måtte ligge i riktig mappe eller .env-fil, for eksempel i en .gemini-mappe med en tilhørende .env-fil, eller legges inn som en miljøvariabel for at Gemini CLI skal fungere korrekt.  
+- KI sin rolle: Det var en dårlig løsning å prøve å forstå gjennom Gemini CLI sine svar hva som var årsak til feilene eller konkrete løsningsforslag. I stedet var det langt mer effektivt å få direkte svar og løsninger fra eksterne AI-chatboter, som ga nyttige tips om korrekt plassering av nøkkelen og feilkildene og som løste problemet. 
+
+**Utfordring 3: [Gemin CLI bekrefteles loop]**
+- Problem: Noen ganger satte gemini seg fast i en loop der gemini utfører en oppgave og vil at bruker skal bekrefte med [yes/y]. Når man bekrefter dette blir svaret satt i en kø og gemini bare går uten at oppgaven blir utført. Selv når man avbryter og prøver igjen løser det seg ikke.    
+- øsning: Bruke gemini chatbot for å høre hva som er problemet og få en kommando som gjør at gemini ikke trenger en ekstra bekreftelse fra bruker. 
+- KI sin rolle:  
 
 ### 3.2 Samarbeidsutfordringer
 En av de største samarbeidsutfordringene i prosjektet var at gruppemedlemmene hadde forskjellig erfaringsnivå innen programmering. Noen hadde tidligere erfaring med utviklingsprosjekter, mens andre var helt nye i faget. Dette skapte et behov for ekstra tålmodighet og gjensidig støtte i gruppen, spesielt i de tekniske fasene av arbeidet. For å sikre læringsutbytte for alle, ble det besluttet at hvert medlem skulle få prøve seg på flere deler av prosessen – fra koding til testing og dokumentasjon – slik at alle fikk en helhetlig forståelse av systemet.
@@ -155,13 +161,19 @@ Selv om KI ofte kom med nyttige forslag, kunne den også begrense kreativiteten.
 
 ### 6.1 Kodekvalitet og vedlikehold
 - Hvordan påvirker KI-generert kode langsiktig vedlikehold?
+  - KI-generert kode vil trolig kreve mer dokumentasjon og sørge for at den bruker samme type standard som programmerere selv ville brukt (for eksempel ingen typiske code smells) 
 - Er KI-kode like forståelig som menneskeskrevet kode?
+  - KI-generert kode er ofte mindre intuitiv og vanskeligere å vedlikeholde enn menneskeskrevet kode, selv om den er funksjonell. Videre kan det tenkes at utviklere har en tendens til å være mindre kritiske i sin gransking av KI-kode, da de mangler den naturlige ansvarsfølelsen eller eierskapet de har til egen kode. Dette skaper en risiko for at man lettere fraskriver seg ansvaret ved feil, ved å skylde på KI-verktøyet fremfor å ta eierskap for å ha godkjent og implementert koden i prosessen.  
 - Utfordringer med å debugge KI-generert kode
+  - Når man selv ikke har laget koden kan det være vanskelig å vite akkurat hvordan KI har tenkt og hvorfor det har blitt generert ulike løsninger. Dermed kan det også være vanskeligere å debugge den.  
 
 ### 6.2 Standarder og beste praksis
 - Følger KI alltid beste praksis og industristandarder?
-- Eksempler på hvor KI foreslo utdaterte eller dårlige løsninger
+  - Ikke nødvendigvis. KI utivkler seg langt raskere enn for eksempel lover og regler gjør. Dette kan føre til at KI kan produsere programvare og løsninger som ligger i gråsonen juridisk sett. 
+- Eksempler på hvor KI foreslo utdaterte eller dårlige løsninger:
+  - Et eksempel på når KI foreslår utdaterte eller dårlige løsninger er når KI vurderer kandidater for en stilling basert på informasjon som inneholder skjevheter. Det er velkjent at KI kan forsterke eksisterende bias knyttet til kjønn, hudfarge, religion og liknende. Når slike skjevheter ligger til grunn for vurderingene, risikerer allerede utsatte grupper å bli utsatt for ytterligere diskriminering, noe som kan forsterke ulikhet og urettferdighet i rekrutteringsprosessen.   
 - Viktigheten av å validere KI sine forslag
+  - Det er svært viktig å validere KI sine forslag av ulike grunner. For det første er det essensielt at man sjekker at KI generert kode ikke inneholder sikkerhetshull eller feil som kan føre til sikkerhetsbrudd. Videre kan man avdekke quality på koden som er generert og gjøre eventuelle forbedringer eller justeringer. 
 
 ### 6.3 Fremtidig utvikling
 - Hvordan tror dere KI vil påvirke programvareutvikling fremover?
@@ -192,8 +204,12 @@ Selv om KI ofte kom med nyttige forslag, kunne den også begrense kreativiteten.
 
 ### 7.4 Personlig refleksjon (individuelt)
 
-**[Navn på gruppemedlem 1]:**
-[Personlig refleksjon over egen læring og utvikling]
+**[Birgitte]:**
+På den positive siden har det vært svært spennende og lærerikt å utvikle en app fra start til slutt, med AI som en veiviser som håndterte det tekniske. Det var også tilfredsstillende å se og ta i bruk det ferdige produktet. I tillegg var det svært nyttig og lærerikt å komplementere Gemini CLI med bruken av eksterne AI-verktøy som Gemini, Perplexity og ChatGPT, som ga gode og som regel brukbare løsninger og var gode “sparringspartnere”. Det har også vært svært nyttig å lære hvordan Github fungerer i praksis og hvordan man jobber i brancher. 
+
+På den negative siden var det utfordrende å vite nøyaktig hvor jeg befant meg i BMAD-fasene og hva som var neste steg. Det tok tid å lære hvordan jeg begynte igjen etter å ah avsluttet siste work session/work flows. Videre fant jeg det utfordrende å vite hvor jeg skulle avslutte brancher og hvor jeg skulle starte på nye. Det føles også litt frustrerende at både github og BMAD metoden kunne vært utnyttet langt bedre for samarbeid og en teamstruktur dersom teamet hadde hatt god nok kunnskap om dette ved starten av prosjektet. Organiseringen av faget skapte også utfordringer, med motstridende tidsplaner mot forelesningene og sen informasjon om hvordan vi kunne ha strukturert prosjektet. Andre ulemper for dette prosjektet inkluderte lite tilbakemelding fra lærere og assistenter.  
+
+Til slutt vil jeg trekke frem hvor fascinerende og samtidig litt skremmende KI-utviklingen har blitt i 2025, med et enormt potensial og kraft. KI kan vise seg som et uvurderlig verktøy som komplementerer, ikke overtar, menneskelig kreativitet, innovasjon og problemløsning i prosjekter, slik som app-utvikling der det håndterer tekniske oppgaver effektivt. På den negative siden er det skummelt å tenke på at KI kan og vil overta roller som potensielt begrenser vår egen evne til kreativ tenkning og selvstendig utvikling, noe som understreker behovet for å behandle det som et støttende element snarere enn en erstatning. 
 
 **[Navn på gruppemedlem 2]:**
 [Personlig refleksjon over egen læring og utvikling]
