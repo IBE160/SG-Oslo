@@ -16,49 +16,15 @@
         {% endif %}
 
         <div class="mb-8">
-            <div class="flex border-b border-gray-200">
-                <button id="summary-btn" class="tab-btn active-tab" onclick="showTab('summary')">Summary</button>
-                <button id="flashcards-btn" class="tab-btn" onclick="showTab('flashcards')">Flashcards</button>
-                <button id="quiz-btn" class="tab-btn" onclick="showTab('quiz')">Quiz</button>
-            </div>
-        </div>
-
-        <div id="summary-content" class="tab-content">
-            <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Upload a File to Generate a Summary</h3>
-            <form action="/upload-summary" method="post" enctype="multipart/form-data" class="mb-8 space-y-4">
+            <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Upload a File to Generate Study Materials</h3>
+            <form action="/upload-document" method="post" enctype="multipart/form-data" class="mb-8 space-y-4">
                 <input type="file" name="file" accept=".pdf,.docx" required class="block w-full text-sm text-gray-500
                     file:mr-4 file:py-2 file:px-4
                     file:rounded-full file:border-0
                     file:text-sm file:font-semibold
                     file:bg-[#eaf8f4] file:text-[#2DC6A1]
                     hover:file:bg-[#d8f0e9]">
-                <button type="submit" class="bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Upload and Generate Summary</button>
-            </form>
-        </div>
-
-        <div id="flashcards-content" class="tab-content" style="display:none;">
-            <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Upload a File to Generate Flashcards</h3>
-            <form action="/upload-flashcards" method="post" enctype="multipart/form-data" class="mb-8 space-y-4">
-                <input type="file" name="file" accept=".pdf,.docx" required class="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-[#eaf8f4] file:text-[#2DC6A1]
-                    hover:file:bg-[#d8f0e9]">
-                <button type="submit" class="bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Upload and Generate Flashcards</button>
-            </form>
-        </div>
-
-        <div id="quiz-content" class="tab-content" style="display:none;">
-            <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Upload a File to Generate a Quiz</h3>
-            <form action="/upload-quiz" method="post" enctype="multipart/form-data" class="mb-8 space-y-4">
-                <input type="file" name="file" accept=".pdf,.docx" required class="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-[#eaf8f4] file:text-[#2DC6A1]
-                    hover:file:bg-[#d8f0e9]">
-                <button type="submit" class="bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Upload and Generate Quiz</button>
+                <button type="submit" class="bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Upload and Generate All Study Materials</button>
             </form>
         </div>
 
@@ -86,118 +52,36 @@
 </div>
 
 <style>
-    .tab-btn {
-        padding: 1rem 1.5rem;
-        cursor: pointer;
-        border: none;
-        background-color: transparent;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #6C7486;
-        transition: all 0.3s ease;
-    }
-    .active-tab {
-        color: #2DC6A1;
-        border-bottom: 2px solid #2DC6A1;
-    }
+    /* Removed tab-btn and active-tab styles as they are no longer needed for upload forms */
 </style>
 
 <script>
-    let activeTab = 'summary';
+    // activeTab will now default to 'summary' or the first type we want to display.
+    // The showTab function is no longer needed for upload forms, but still relevant for displaying content.
+    let activeTab = 'summary'; // Default to summary for displaying existing study sets.
 
-    function showTab(tabName) {
-        // Hide all tab content
-        const tabContents = document.querySelectorAll('.tab-content');
-        tabContents.forEach(content => {
-            content.style.display = 'none';
-        });
-
-        // Deactivate all tab buttons
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        tabButtons.forEach(button => {
-            button.classList.remove('active-tab');
-        });
-
-        // Show the selected tab content
-        document.getElementById(tabName + '-content').style.display = 'block';
-
-        // Activate the selected tab button
-        document.getElementById(tabName + '-btn').classList.add('active-tab');
-
-        activeTab = tabName;
-        document.getElementById('study-set-content-display').innerHTML = ''; // Clear content when switching tabs
-    }
+    // I will adjust the showTab function here slightly to reflect that it's only for content display now
+    // and that the tab buttons are part of study_session.html
+    // For dashboard, when clicking on a study set, it should default to displaying summary or a default.
 
     async function getStudySetContent(studySetId) {
         const display = document.getElementById('study-set-content-display');
         display.innerHTML = '<p>Loading...</p>';
 
         try {
-            const response = await fetch(`/get-study-set-content/${studySetId}/${activeTab}`);
+            // When clicking a study set from dashboard, default to summary content type
+            const response = await fetch(`/get-study-set-content/${studySetId}/summary`); // Always fetch summary first
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             const data = await response.json();
 
             let contentHtml = '';
-            if (activeTab === 'summary') {
-                const converter = new showdown.Converter();
-                contentHtml = converter.makeHtml(data.content);
-            } else if (activeTab === 'flashcards') {
-                data.content.forEach(card => {
-                    contentHtml += `
-                        <div class="flashcard card-hover-effect" onclick="this.classList.toggle('flipped')">
-                            <div class="flashcard-inner">
-                                <div class="flashcard-front bg-[#EDF5FD]">
-                                    <p class="text-[#0E0E12] font-medium"><strong>Q:</strong> ${card.question}</p>
-                                </div>
-                                <div class="flashcard-back bg-[#d8f0e9]">
-                                    <p class="text-[#0E0E12]"><strong>A:</strong> ${card.answer}</p>
-                                </div>
-                            </div>
-                        </div>`;
-                });
-                contentHtml = `<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">${contentHtml}</div>`;
-            } else if (activeTab === 'quiz') {
-                let questionsHtml = '';
-                data.content.forEach((item, index) => {
-                    let optionsHtml = '';
-                    item.options.forEach(option => {
-                        optionsHtml += `<label class="block"><input type="radio" name="question-${index}" value="${option}" class="mr-2">${option}</label>`;
-                    });
-                    questionsHtml += `
-                        <div class="mb-4">
-                            <p class="font-semibold">${index + 1}. ${item.question}</p>
-                            <div class="pl-4">${optionsHtml}</div>
-                            <p class="text-sm text-gray-500 mt-1" style="display:none;">Correct Answer: ${item.correct_answer}</p>
-                        </div>`;
-                });
-                contentHtml = `<form id="quiz-form">${questionsHtml}<button type="submit" class="bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary mt-4">Submit Quiz</button></form><div id="quiz-results" class="mt-4"></div>`;
-            }
-            display.innerHTML = contentHtml;
-
-            if (activeTab === 'quiz') {
-                const quizForm = document.getElementById('quiz-form');
-                quizForm.addEventListener('submit', function(event) {
-                    event.preventDefault();
-                    let score = 0;
-                    const totalQuestions = data.content.length;
-                    data.content.forEach((item, index) => {
-                        const selectedOption = quizForm.querySelector(\`input[name="question-\${index}"]:checked\`);
-                        const correctAnswer = item.correct_answer;
-                        const questionResult = quizForm.querySelectorAll('.text-sm')[index];
-                        questionResult.style.display = 'block';
-                        if (selectedOption && selectedOption.value === correctAnswer) {
-                            score++;
-                            selectedOption.parentElement.style.color = 'green';
-                        } else if(selectedOption) {
-                            selectedOption.parentElement.style.color = 'red';
-                        }
-                    });
-                    const resultsDiv = document.getElementById('quiz-results');
-                    resultsDiv.innerHTML = \`<p class="font-bold text-xl">You scored \${score} out of \${totalQuestions}</p>\`;
-                });
-            }
+            const converter = new showdown.Converter(); // Assuming showdown.js is included somewhere else or will be.
+            contentHtml = converter.makeHtml(data.content);
+            
+            // Redirect to study_session page with the ID and potentially default content type
+            window.location.href = `/study-sets/${studySetId}?default_tab=summary`;
 
         } catch (error) {
             display.innerHTML = '<p class="text-red-500">Error loading content.</p>';

@@ -11,59 +11,72 @@
             <p class="text-[#2DC6A1] mb-4">{{ message }}</p>
         {% endif %}
 
-        <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Summary</h2>
-        <div id="summary-content" class="bg-[#FFFFFF] p-4 rounded-lg shadow-sm mb-8 prose">
-            <!-- Summary will be rendered here by Showdown -->
-        </div>
-        <div id="summary-markdown" style="display:none;">{{ study_set.summary }}</div>
-
-
-        <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Flashcards</h2>
-        <div id="flashcards-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {% if study_set.flashcards %}
-                {% for card in study_set.flashcards %}
-                    <div class="flashcard card-hover-effect" onclick="this.classList.toggle('flipped')">
-                        <div class="flashcard-inner">
-                            <div class="flashcard-front bg-[#EDF5FD]">
-                                <p class="text-[#0E0E12] font-medium"><strong>Q:</strong> {{ card.question }}</p>
-                            </div>
-                            <div class="flashcard-back bg-[#d8f0e9]">
-                                <p class="text-[#0E0E12]"><strong>A:</strong> {{ card.answer }}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="text-gray-600 col-span-full">No flashcards available.</p>
-            {% endif %}
+        <div class="mb-8">
+            <div class="flex border-b border-gray-200">
+                <button id="summary-tab-btn" class="tab-btn active-tab" onclick="showTab('summary')">Summary</button>
+                <button id="flashcards-tab-btn" class="tab-btn" onclick="showTab('flashcards')">Flashcards</button>
+                <button id="quiz-tab-btn" class="tab-btn" onclick="showTab('quiz')">Quiz</button>
+            </div>
         </div>
 
-        <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Quiz</h2>
-        <div id="quiz-content" class="mb-8">
-            {% if study_set.quiz %}
-                <form id="quiz-form" class="space-y-6">
-                    {% for q in study_set.quiz %}
-                        {% set outer_loop = loop %}
-                        <div class="bg-[#FFFFFF] p-5 rounded-lg shadow-sm quiz-question" id="question-{{ outer_loop.index0 }}">
-                            <p class="text-[#0E0E12] font-medium mb-3"><strong>Q{{ outer_loop.index }}:</strong> {{ q.question }}</p>
-                            <ul class="space-y-2">
-                                {% for option in q.options %}
-                                    <li>
-                                        <label class="inline-flex items-center text-[#6C7486] cursor-pointer">
-                                            <input type="radio" id="q{{ outer_loop.index0 }}-opt{{ loop.index0 }}" name="question-{{ outer_loop.index0 }}" value="{{ option }}" class="form-radio h-4 w-4 text-[#2DC6A1] focus:ring-[#2DC6A1]">
-                                            <span class="ml-2">{{ option }}</span>
-                                        </label>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                            <div class="feedback mt-3 text-sm font-semibold" style="display: none;"></div>
+        <div id="summary-tab-content" class="tab-content">
+            <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Summary</h2>
+            <div id="summary-content" class="bg-[#FFFFFF] p-4 rounded-lg shadow-sm mb-8 prose">
+                <!-- Summary will be rendered here by Showdown -->
+            </div>
+            <div id="summary-markdown" style="display:none;">{{ study_set.summary }}</div>
+        </div>
+
+        <div id="flashcards-tab-content" class="tab-content" style="display:none;">
+            <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Flashcards</h2>
+            <div id="flashcards-content" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                {% if study_set.flashcards %}
+                    {% for card in study_set.flashcards %}
+                        <div class="flashcard card-hover-effect" onclick="this.classList.toggle('flipped')">
+                            <div class="flashcard-inner">
+                                <div class="flashcard-front bg-[#EDF5FD]">
+                                    <p class="text-[#0E0E12] font-medium"><strong>Q:</strong> {{ card.question }}</p>
+                                </div>
+                                <div class="flashcard-back bg-[#d8f0e9]">
+                                    <p class="text-[#0E0E12]"><strong>A:</strong> {{ card.answer }}</p>
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
-                    <button type="submit" class="hidden bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Submit Quiz</button>
-                </form>
-            {% else %}
-                <p class="text-gray-600">No quiz available.</p>
-            {% endif %}
+                {% else %}
+                    <p class="text-gray-600 col-span-full">No flashcards available.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div id="quiz-tab-content" class="tab-content" style="display:none;">
+            <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Quiz</h2>
+            <div id="quiz-content" class="mb-8">
+                {% if study_set.quiz %}
+                    <form id="quiz-form" class="space-y-6">
+                        {% for q in study_set.quiz %}
+                            {% set outer_loop = loop %}
+                            <div class="bg-[#FFFFFF] p-5 rounded-lg shadow-sm quiz-question" id="question-{{ outer_loop.index0 }}">
+                                <p class="text-[#0E0E12] font-medium mb-3"><strong>Q{{ outer_loop.index }}:</strong> {{ q.question }}</p>
+                                <ul class="space-y-2">
+                                    {% for option in q.options %}
+                                        <li>
+                                            <label class="inline-flex items-center text-[#6C7486] cursor-pointer">
+                                                <input type="radio" id="q{{ outer_loop.index0 }}-opt{{ loop.index0 }}" name="question-{{ outer_loop.index0 }}" value="{{ option }}" class="form-radio h-4 w-4 text-[#2DC6A1] focus:ring-[#2DC6A1]">
+                                                <span class="ml-2">{{ option }}</span>
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                                <div class="feedback mt-3 text-sm font-semibold" style="display: none;"></div>
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="hidden bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Submit Quiz</button>
+                    </form>
+                {% else %}
+                    <p class="text-gray-600">No quiz available.</p>
+                {% endif %}
+            </div>
         </div>
 
         <div class="flex justify-between items-center mt-8">
@@ -73,23 +86,114 @@
     </div>
 </div>
 
+<style>
+    .tab-btn {
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #6C7486;
+        transition: all 0.3s ease;
+    }
+    .active-tab {
+        color: #2DC6A1;
+        border-bottom: 2px solid #2DC6A1;
+    }
+    /* Flashcard styles */
+    .flashcard {
+        background-color: #EDF5FD;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        perspective: 1000px;
+        cursor: pointer;
+        height: 150px; /* Fixed height for flashcards */
+    }
+
+    .flashcard-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.6s;
+        transform-style: preserve-3d;
+    }
+
+    .flashcard.flipped .flashcard-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flashcard-front, .flashcard-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden; /* Safari */
+        backface-visibility: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        border-radius: 0.5rem;
+    }
+
+    .flashcard-front {
+        background-color: #EDF5FD;
+        color: #0E0E12;
+    }
+
+    .flashcard-back {
+        background-color: #d8f0e9;
+        color: #0E0E12;
+        transform: rotateY(180deg);
+    }
+</style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const defaultTab = urlParams.get('default_tab') || 'summary';
+        showTab(defaultTab);
+
         // Render summary markdown
         const summaryMarkdown = document.getElementById('summary-markdown').textContent;
         const summaryContent = document.getElementById('summary-content');
-        const converter = new showdown.Converter();
+        const converter = new showdown.Converter(); // Make sure showdown.js is loaded
         summaryContent.innerHTML = converter.makeHtml(summaryMarkdown);
 
+        function showTab(tabName) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.style.display = 'none';
+            });
+
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(button => {
+                button.classList.remove('active-tab');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabName + '-tab-content').style.display = 'block';
+
+            // Activate the selected tab button
+            document.getElementById(tabName + '-tab-btn').classList.add('active-tab');
+        }
+
+        // Quiz Logic
         const quizForm = document.getElementById('quiz-form');
-        let score = 0;
-        const totalQuestions = {{ study_set.quiz | length }};
-        const scoreDisplay = document.createElement('p');
-        scoreDisplay.id = 'score-display';
-        scoreDisplay.className = 'text-lg font-bold text-[#0E0E12] mb-4';
-        scoreDisplay.textContent = `Score: ${score} / ${totalQuestions}`;
         if (quizForm) {
+            let score = 0;
+            const quizData = {{ study_set.quiz | tojson | safe }}; // Quiz data from Jinja2 context
+            const totalQuestions = quizData.length;
+            const scoreDisplay = document.createElement('p');
+            scoreDisplay.id = 'score-display';
+            scoreDisplay.className = 'text-lg font-bold text-[#0E0E12] mb-4';
             quizForm.prepend(scoreDisplay); // Display score at the top of the quiz form
+            updateScoreDisplay(); // Initial display
+
+            function updateScoreDisplay() {
+                scoreDisplay.textContent = `Score: ${score} / ${totalQuestions}`;
+            }
 
             quizForm.addEventListener('change', function(event) {
                 if (event.target.type === 'radio') {
@@ -98,24 +202,20 @@
                     const questionIndex = parseInt(questionDiv.id.replace('question-', ''));
                     const selectedAnswer = event.target.value;
 
-                    // Access the correct answer from the Jinja2 context
-                    // Note: This assumes study_set.quiz is available in the JS context
-                    // and is a safe JSON string.
-                    const quizData = JSON.parse('{{ study_set.quiz | tojson | safe }}');
-                    const correctAnswer = quizData[questionIndex].correct_answer;
+                    // Only process if this question hasn't been answered correctly yet
+                    if (!questionDiv.dataset.answeredCorrectly) {
+                        const correctAnswer = quizData[questionIndex].correct_answer;
 
-                    // Prevent multiple selections for the same question from affecting score
-                    if (!questionDiv.dataset.answered) {
                         if (selectedAnswer === correctAnswer) {
-                            feedbackDiv.style.color = 'var(--vibrant-teal)';
+                            feedbackDiv.style.color = 'var(--vibrant-teal)'; /* Define this CSS variable in your main stylesheet */
                             feedbackDiv.textContent = 'Correct!';
                             score++;
+                            questionDiv.dataset.answeredCorrectly = 'true'; // Mark as answered correctly
                         } else {
-                            feedbackDiv.style.color = 'var(--warm-coral)';
+                            feedbackDiv.style.color = 'var(--warm-coral)'; /* Define this CSS variable in your main stylesheet */
                             feedbackDiv.textContent = `Incorrect. The correct answer was: ${correctAnswer}`;
                         }
-                        questionDiv.dataset.answered = 'true'; // Mark question as answered
-                        scoreDisplay.textContent = `Score: ${score} / ${totalQuestions}`;
+                        updateScoreDisplay();
                     }
                     feedbackDiv.style.display = 'block';
                 }

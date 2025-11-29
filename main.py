@@ -331,8 +331,8 @@ async def post_delete_study_set(request: Request, study_set_id: str):
 
     return RedirectResponse(url="/dashboard?message=Study set deleted successfully.", status_code=303)
 
-@app.post("/upload-summary")
-async def post_upload_summary(request: Request, file: UploadFile = File(...)):
+@app.post("/upload-document")
+async def post_upload_document(request: Request, file: UploadFile = File(...)):
     user = get_current_user(request)
     if not user:
         raise HTTPException(status_code=401, detail="Not authenticated")
@@ -355,119 +355,25 @@ async def post_upload_summary(request: Request, file: UploadFile = File(...)):
     try:
         extracted_text = await extract_text_from_file(file_location, file.content_type)
         
-        # Generate content
+        # Generate all three content types
         summary = await generate_content_with_gemini(extracted_text, "summary")
+        flashcards = await generate_content_with_gemini(extracted_text, "flashcards")
+        quiz = await generate_content_with_gemini(extracted_text, "quiz")
 
-        # Store in Firestore
+        # Store all in Firestore
         study_set_data = {
             "user_id": user["email"],
             "document_name": file.filename,
             "upload_timestamp": firestore.SERVER_TIMESTAMP,
             "status": "completed",
             "summary": summary,
-            "flashcards": [],
-            "quiz": [],
-        }
-        study_set_id = save_to_firestore("study_sets", study_set_data)
-        logger.info(f"Study set {study_set_id} with summary saved for user {user['email']}")
-
-        return RedirectResponse(url="/dashboard?message=File uploaded and summary generated.", status_code=303)
-    except HTTPException as e:
-        return RedirectResponse(url=f"/dashboard?error={e.detail}", status_code=303)
-    finally:
-        # Clean up the uploaded file
-        if os.path.exists(file_location):
-            os.remove(file_location)
-
-@app.post("/upload-flashcards")
-async def post_upload_flashcards(request: Request, file: UploadFile = File(...)):
-    user = get_current_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-
-    # File validation
-    allowed_types = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
-    if file.content_type not in allowed_types:
-        return RedirectResponse(url="/dashboard?error=Invalid file type. Only PDF and DOCX are allowed.", status_code=303)
-    
-    max_file_size = 5 * 1024 * 1024  # 5 MB
-    file_content = await file.read()
-    if len(file_content) > max_file_size:
-        return RedirectResponse(url=f"/dashboard?error=File too large. Maximum size is {max_file_size / (1024 * 1024)} MB.", status_code=303)
-
-    # Save file and process
-    file_location = os.path.join(UPLOAD_DIR, file.filename)
-    with open(file_location, "wb") as buffer:
-        buffer.write(file_content)
-
-    try:
-        extracted_text = await extract_text_from_file(file_location, file.content_type)
-        
-        # Generate content
-        flashcards = await generate_content_with_gemini(extracted_text, "flashcards")
-
-        # Store in Firestore
-        study_set_data = {
-            "user_id": user["email"],
-            "document_name": file.filename,
-            "upload_timestamp": firestore.SERVER_TIMESTAMP,
-            "status": "completed",
-            "summary": "",
             "flashcards": flashcards,
-            "quiz": [],
-        }
-        study_set_id = save_to_firestore("study_sets", study_set_data)
-        logger.info(f"Study set {study_set_id} with flashcards saved for user {user['email']}")
-
-        return RedirectResponse(url="/dashboard?message=File uploaded and flashcards generated.", status_code=303)
-    except HTTPException as e:
-        return RedirectResponse(url=f"/dashboard?error={e.detail}", status_code=303)
-    finally:
-        # Clean up the uploaded file
-        if os.path.exists(file_location):
-            os.remove(file_location)
-
-@app.post("/upload-quiz")
-async def post_upload_quiz(request: Request, file: UploadFile = File(...)):
-    user = get_current_user(request)
-    if not user:
-        raise HTTPException(status_code=401, detail="Not authenticated")
-
-    # File validation
-    allowed_types = ["application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]
-    if file.content_type not in allowed_types:
-        return RedirectResponse(url="/dashboard?error=Invalid file type. Only PDF and DOCX are allowed.", status_code=303)
-    
-    max_file_size = 5 * 1024 * 1024  # 5 MB
-    file_content = await file.read()
-    if len(file_content) > max_file_size:
-        return RedirectResponse(url=f"/dashboard?error=File too large. Maximum size is {max_file_size / (1024 * 1024)} MB.", status_code=303)
-
-    # Save file and process
-    file_location = os.path.join(UPLOAD_DIR, file.filename)
-    with open(file_location, "wb") as buffer:
-        buffer.write(file_content)
-
-    try:
-        extracted_text = await extract_text_from_file(file_location, file.content_type)
-        
-        # Generate content
-        quiz = await generate_content_with_gemini(extracted_text, "quiz")
-
-        # Store in Firestore
-        study_set_data = {
-            "user_id": user["email"],
-            "document_name": file.filename,
-            "upload_timestamp": firestore.SERVER_TIMESTAMP,
-            "status": "completed",
-            "summary": "",
-            "flashcards": [],
             "quiz": quiz,
         }
         study_set_id = save_to_firestore("study_sets", study_set_data)
-        logger.info(f"Study set {study_set_id} with quiz saved for user {user['email']}")
+        logger.info(f"Study set {study_set_id} with summary, flashcards, and quiz saved for user {user['email']}")
 
-        return RedirectResponse(url="/dashboard?message=File uploaded and quiz generated.", status_code=303)
+        return RedirectResponse(url="/dashboard?message=File uploaded and study materials generated.", status_code=303)
     except HTTPException as e:
         return RedirectResponse(url=f"/dashboard?error={e.detail}", status_code=303)
     finally:
