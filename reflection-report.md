@@ -120,6 +120,13 @@ Selv om KI ofte kom med nyttige forslag, kunne den også begrense kreativiteten.
 - Hva ville vært annerledes?
 - Hvilke deler av prosjektet ville vært vanskeligere/lettere?
 - Ville sluttresultatet vært bedre eller dårligere?
+  
+- Roller: Det ville vært behov for mennesker i rollene som utvikler, analytiker, produkteier og flere. I stedet for et team på tre personer, ville man hatt flere ganger så mange involverte, noe som ville krevd betydelig mer koordinering, kommunikasjon og planlegging.  Det ville nok ført til mer komplekse prosesser og hyppigere møter for å holde ting på rett spor. 
+
+- Dokumentasjon: Alle dokumenter ville ha blitt produsert manuelt av de ulike rollene i prosjektet, noe som kan være tidkrevende og variere i kvalitet.  Flere personer i teamet øker naturlig risikoen for menneskelige feil, og det ville vært mer tid brukt på feilsøking og synkronisering mellom teammedlemmer. 
+
+ Uten KI kunne prosjektet hatt et tettere fokus på brukerens ønsker, kanskje med mer nytenkning og innovasjon, siden gruppen måtte stole mer på egne ideer og refleksjoner. Til slutt, uten KI ville prosjektgruppen hatt større kontroll over hele prosessen og trolig lært mer om utviklingsfasene gjennom manuell håndtering. 
+
 
 ### 4.4 Samlet vurdering
 [Konklusjon: Hvordan påvirket KI sluttresultatet totalt sett?]
@@ -132,11 +139,14 @@ Selv om KI ofte kom med nyttige forslag, kunne den også begrense kreativiteten.
 
 ### 5.1 Ansvar og eierskap
 - Hvem er ansvarlig for koden når KI har bidratt?
+  - Den ansvarlige for koden når KI har bidratt er fremdeles de som har generert koden. I dette tilfellet er det vi som har kommandert KI til å generere kode for oss som er ansvarlige for hele prosjektet. 
 - Hvordan sikrer man kvalitet når KI genererer kode?
+  - Man kan sikre koden ved å for å gjennomgå koden og teste den før launch, samt vedlikeholde den og sørge for å forebygge, stoppe og ordne opp i bugs og problemer og sikkerhetsrelaterte feil og brudd.   
 - Diskuter spørsmål om opphavsrett og intellektuell eiendom
 
 ### 5.2 Transparens
 - Bør det være transparent at KI er brukt?
+  - Det bør definitivt være transparent at KI er brukt. Når man tar i bruk KI pålegges man et ansvar for hva som blir generert. Videre skaper en åpenhet om hvordan man jobber tillitt hos brukere.  
 - Hvordan dokumenterer man KI sin bidrag?
 - Hva er konsekvensene av å ikke være åpen om KI-bruk?
 
@@ -147,7 +157,9 @@ Selv om KI ofte kom med nyttige forslag, kunne den også begrense kreativiteten.
 
 ### 5.4 Arbeidsmarkedet
 - Hvordan kan utbredt KI-bruk påvirke fremtidige jobber i IT?
+  - Utbredt KI-bruk kan gjøre at enkelte oppgaver og roller innenfor IT blir automatisert og erstattet av KI. 
 - Hvilke roller vil bli viktigere/mindre viktige?
+  - Roller som har å gjøre med ren koding, sortering og oppbygging av arkitektur vil bli mindre relevant, mens det vil bli viktigere med en innsikt i og evnen til å følge opp hele prosessen. Videre vil roller som krever mer soft skills og gode interpersonlige ferdigheter fremdeles være relevante. Dette vil for eksempel bety roller der man har personalansvar, der man samarbeider med klienter eller på tvers av team.  
 - Deres refleksjoner om fremtidig karriere i en KI-drevet verden
 
 ### 5.5 Datasikkerhet og personvern
