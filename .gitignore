@@ -44,10 +44,11 @@ next-env.d.ts
 __pycache__/
 
 # Sensitive files
-serviceAccountKey.json
+/serviceAccountKey.json
 
 # Sensitive credentials
 /.logging/
+/API Keys/
 /backend/ai_service/venv/
 
 # Frontend logs
