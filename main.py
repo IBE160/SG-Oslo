@@ -122,7 +122,18 @@ async def generate_content_with_gemini(text: str, content_type: str):
     try:
         # Define prompts based on content type
         prompts = {
-            "summary": f"Please provide a detailed and easy-to-read summary of the following text. The summary should be well-structured, using Markdown for formatting. Use bullet points to list key information. Ensure there are line breaks between paragraphs and bullet points for readability. Do not use double asterisks for bolding. Do not include any promotional text or artifacts from the document's table of contents or index. Ensure the output is clean and does not contain any special characters like '***'.\n\n{text}",
+            "summary": f"Please provide a detailed, highly organized, easy-to-read, and scannable summary suitable for a technical overview of the following text. Use the following formatting rules:\n\n"
+                       f"1. Use Markdown headings (## and ###) for the main concepts and sub-sections.\n"
+                       f"2. If the text compares 'Procedural Programming' and 'Object-Oriented Programming', use a two-column Markdown table to clearly contrast them.\n"
+                       f"3. For 'Key OO Concepts' like Objects, Classes, Encapsulation, Inheritance, Polymorphism, and Composition, use bolded, distinct headings and bullet points.\n"
+                       f"4. Define and bold key terms like 'Attributes', 'Behaviors (Methods)', 'Superclass', 'Subclass', and the relationships ('Is-a', 'Has-a').\n"
+                       f"5. The summary should be well-structured, using Markdown for formatting.\n"
+                       f"6. Use bullet points to list key information.\n"
+                       f"7. Ensure there are line breaks between paragraphs and bullet points for readability.\n"
+                       f"8. Do not use double asterisks for bolding.\n"
+                       f"9. Do not include any promotional text or artifacts from the document's table of contents or index.\n"
+                       f"10. Ensure the output is clean and does not contain any special characters like '***'.\n\n"
+                       f"{text}",
             "flashcards": f"Generate a list of flashcards (question and answer pairs) from the following text. Provide the output as a JSON array of objects, where each object has 'question' and 'answer' keys:\n\n{text}",
             "quiz": f"Generate a multiple-choice quiz from the following text. Provide the output as a JSON array of objects, where each object has 'question', 'options' (an array of strings), and 'correct_answer' (string) keys:\n\n{text}"
         }
