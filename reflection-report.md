@@ -138,36 +138,45 @@ Selv om KI ofte kom med nyttige forslag, kunne den også begrense kreativiteten.
 ## 5. Etiske implikasjoner
 
 ### 5.1 Ansvar og eierskap
-- Hvem er ansvarlig for koden når KI har bidratt?
-  - Den ansvarlige for koden når KI har bidratt er fremdeles de som har generert koden. I dette tilfellet er det vi som har kommandert KI til å generere kode for oss som er ansvarlige for hele prosjektet. 
-- Hvordan sikrer man kvalitet når KI genererer kode?
-  - Man kan sikre koden ved å for å gjennomgå koden og teste den før launch, samt vedlikeholde den og sørge for å forebygge, stoppe og ordne opp i bugs og problemer og sikkerhetsrelaterte feil og brudd.   
-- Diskuter spørsmål om opphavsrett og intellektuell eiendom
+Når KI-verktøy som Gemini og ChatGPT bidrar i kodeutvikling, oppstår spørsmålet om ansvar og eierskap. KI genererer kode basert på treningsdata og mønstre, og det kan være vanskelig å vurdere hvor originalt resultatet er. Dette reiser spørsmål om opphavsrett: kan man si at koden fullt ut er laget av studentene når deler er foreslått av KI?
+
+Vi mener at ansvaret for koden alltid ligger hos utvikleren, også når KI har bidratt. KI er et støtteverktøy, ikke en selvstendig skaper. Forslag fra KI må vurderes kritisk, testes og tilpasses før de tas i bruk. Slik ivaretas både kvalitet og faglig eierskap.
+
+Samtidig er grensen mellom menneskelig og KI-generert innhold ikke alltid tydelig. I praksis blir eierskapet et samspill mellom menneskelig arbeid, teknologisk støtte og systemkunnskap. Etisk sett mener vi likevel at vi som studenter har det endelige ansvaret for funksjonalitet, kvalitet og konsekvenser av koden som implementeres.
 
 ### 5.2 Transparens
-- Bør det være transparent at KI er brukt?
-  - Det bør definitivt være transparent at KI er brukt. Når man tar i bruk KI pålegges man et ansvar for hva som blir generert. Videre skaper en åpenhet om hvordan man jobber tillitt hos brukere.  
-- Hvordan dokumenterer man KI sin bidrag?
-- Hva er konsekvensene av å ikke være åpen om KI-bruk?
+I dette prosjektet har vi vært åpne om bruken av Gemini og ChatGPT. Vi har dokumentert hvilke deler av koden som var foreslått av KI, og lagret prompter og svar i egne filer. Dette ga bedre oversikt, læring og kvalitetssikring, og gjorde det enklere å skille mellom egen innsats og KI-generert innhold.
+
+Vi mener transparens er avgjørende for å opprettholde tillit mellom studenter, lærere og brukere. Hvis KI-bruk holdes skjult, kan det skape tvil om hvor mye av arbeidet som faktisk er studentens eget, og undergrave læringsmål der metode og forståelse er like viktige som sluttresultatet.
+
+Samtidig kan det i arbeidslivet være lite praktisk å dokumentere hvert enkelt KI-forslag. Likevel mener vi at i akademiske prosjekter bør graden av KI-assistanse synliggjøres tydelig, av hensyn til etikk, faglig integritet og troverdighet.
 
 ### 5.3 Påvirkning på læring og kompetanse
-- Hvordan påvirker KI-avhengighet fremtidig kompetanse?
-- Hvilke ferdigheter risikerer man å ikke utvikle?
-- Balanse mellom effektivitet og læring
+Erfaringene våre viser at KI har stort potensial som læringsstøtte, men at bruken må balanseres. KI gjorde det mulig å jobbe effektivt med avanserte verktøy uten at alle hadde tung teknisk bakgrunn. Gemini og ChatGPT forklarte begreper, løste kodefeil og gjorde komplekse prosesser mer tilgjengelige, noe som ga raskere læringskurve og økt mestringsfølelse.
+
+Samtidig kan KI redusere behovet for aktiv problemløsning. Når man får raske svar og ferdige kodeforslag, kan den dype forståelsen av logikk og struktur svekkes. Dette opplevde vi særlig i starten, da mye arbeid ble gjort av KI uten tilstrekkelig refleksjon. Etter hvert begynte vi å bruke KI mer som veileder enn som “automatisert problemløser”.
+
+Generelt ser vi at KI i utdanning har både pedagogisk og etisk betydning. Den kan gi umiddelbar støtte i fag som programmering, språk og rapportskriving, men også skape risiko for passiv læring. Utfordringen fremover blir å bruke KI til aktiv læring, refleksjon og forståelse – ikke som snarvei til ferdige svar. Vår erfaring tilsier at KI fungerer best som en digital mentor som støtter studentenes egen tankeprosess, ikke erstatter den.
 
 ### 5.4 Arbeidsmarkedet
-- Hvordan kan utbredt KI-bruk påvirke fremtidige jobber i IT?
-  - Utbredt KI-bruk kan gjøre at enkelte oppgaver og roller innenfor IT blir automatisert og erstattet av KI. 
-- Hvilke roller vil bli viktigere/mindre viktige?
-  - Roller som har å gjøre med ren koding, sortering og oppbygging av arkitektur vil bli mindre relevant, mens det vil bli viktigere med en innsikt i og evnen til å følge opp hele prosessen. Videre vil roller som krever mer soft skills og gode interpersonlige ferdigheter fremdeles være relevante. Dette vil for eksempel bety roller der man har personalansvar, der man samarbeider med klienter eller på tvers av team.  
-- Deres refleksjoner om fremtidig karriere i en KI-drevet verden
+Generativ KI endrer allerede arbeidslivet i IT-sektoren. Oppgaver som koding, feilsøking og dokumentasjon kan delvis automatiseres gjennom verktøy som Gemini og ChatGPT. Utviklere blir ikke overflødige, men kompetansebehovet endres. Det blir viktigere å forstå, validere og forbedre KI-generert kode enn å kunne alt fra bunnen av.
+
+Prosjektet vårt illustrerer hvordan KI kan senke terskelen for å delta i tekniske prosjekter. Selv de uten programmeringserfaring kunne bidra fordi KI forklarte og skrev kode. I arbeidslivet kan dette gi mer tverrfaglig samarbeid, der ulike fagbakgrunner deltar i utviklingsprosesser.
+
+Samtidig øker kravet til kritisk tenkning, analytisk forståelse og evnen til å kommunisere presist med KI-verktøy. Utviklerrollen kan i større grad bli å fungere som KI-veileder og kvalitetssikrer. Fremtidens utviklere må kombinere teknologisk innsikt med refleksjon, kontroll og ansvarsfølelse.
+
+Vi tror ikke KI vil erstatte utviklere, men endre hva det vil si å være utvikler. Evnen til å samarbeide med intelligente systemer, forstå begrensningene deres og bruke dem strategisk, blir sentral i et mer KI-drevet arbeidsmarked.
 
 ### 5.5 Datasikkerhet og personvern
-- Hvilke data delte dere med KI-verktøy?
-- Potensielle risikoer ved å dele kode og data med KI
-- Hvordan skal man tenke på sikkerhet når man bruker KI?
+Bruk av KI-verktøy reiser viktige spørsmål om datasikkerhet og personvern. Når man deler kode, tekst eller dokumenter med eksterne KI-tjenester, sendes data til servere utenfor egen kontroll. Dette innebærer risiko for lagring, analyse og bruk til videre modelltrening.
 
--- -
+I dette prosjektet var vi bevisste på å ikke dele sensitiv eller identifiserbar informasjon med Gemini eller ChatGPT. Dokumenter og prompter inneholdt kun teknisk og faglig innhold uten persondata.
+
+Likevel er det lett å undervurdere datasikkerhet når man bruker KI. Mange brukere vet lite om hvordan data behandles, og hvilke rettigheter de har. Det finnes heller ikke alltid tydelige grenser for hvordan leverandører bruker innsendte data til modellforbedring. Dette viser behovet for kritisk bevissthet og kunnskap hos studenter og utviklere.
+
+Etisk sett ligger personvernansvaret hos brukeren, også når data sendes til tredjepart. I akademiske og profesjonelle sammenhenger bør man følge prinsippet om “data minimization” – kun dele det som er nødvendig for å få et relevant svar.
+
+Vi mener utdanningsinstitusjoner og utviklingsmiljøer bør etablere klare retningslinjer for sikker bruk av KI, inkludert transparens, datalagring og bruk av tredjepartstjenester. Dette er viktig for å sikre at innovasjon og læring skjer på en trygg og etisk måte.
 
 ## 6. Teknologiske implikasjoner
 
@@ -211,8 +220,21 @@ Selv om KI ofte kom med nyttige forslag, kunne den også begrense kreativiteten.
 ### 7.3 Anbefalinger
 [Deres anbefalinger til andre studenter som skal bruke KI i utvikling]
 - [Råd om effektiv bruk av KI]
+  - Bruk KI som samtalepartner og veileder, ikke som automatisk kodegenerator. Still spørsmål, be om forklaringer, og be KI utdype hvorfor en løsning fungerer.
+    Vær presis i promptene. Jo tydeligere problemet beskrives, desto mer relevante svar.
+    Kombiner gjerne flere KI-verktøy, for eksempel Gemini til kodeutvikling og ChatGPT til feilsøking og konseptforklaringer.
+    Dokumenter bruken. Lagre prompter og svar underveis for å kunne spore hvilke forslag som ble brukt.
 - [Fallgruver å unngå]
+  - Ikke stol blindt på kodeforslag. Selv små feil kan gi logiske problemer eller sikkerhetsbrudd. Test og forstå hva koden gjør.
+    Unngå å bruke KI som erstatning for egen læring. Reflekter over prosessen, ikke bare resultatet.
+    Vær forsiktig med hva du deler. Ikke legg inn sensitiv informasjon, passord eller nøkkelfiler i promptene.
 - [Beste praksis dere oppdaget]
+  - Start prosjektet med felles retningslinjer for hvordan gruppen skal bruke KI – når, til hva og hvordan det skal dokumenteres.
+    Bruk KI aktivt i brainstorming og idéutvikling for å utforske alternativer før dere velger retning.
+    Når KI genererer kode, be også om forklaringer linje for linje for å øke læringsverdien.
+    Sørg for at minst én i gruppen kvalitetssikrer alle forslag før de implementeres.
+
+- Oppsummert mener vi at nøkkelen til vellykket KI-bruk er balansen mellom effektivitet og forståelse. Når KI brukes bevisst, som støtte og ikke som erstatning, kan den både styrke læringsprosessen og øke kvaliteten på sluttproduktet.
 
 ### 7.4 Personlig refleksjon (individuelt)
 
@@ -226,10 +248,16 @@ Til slutt vil jeg trekke frem hvor fascinerende og samtidig litt skremmende KI-u
 **[Navn på gruppemedlem 2]:**
 [Personlig refleksjon over egen læring og utvikling]
 
-**[Navn på gruppemedlem 3]:**
-[Personlig refleksjon over egen læring og utvikling]
+**[Kine]:**
+Som nybegynner uten tidligere erfaring med koding har dette prosjektet vært både utfordrende og svært lærerikt. I starten opplevde jeg usikkerhet rundt mange tekniske begreper og verktøy, men bruken av KI – spesielt Gemini sammen med VSC og ChatGPT – gjorde det mulig for meg å forstå og lære i mitt eget tempo. KI hjalp meg med å oversette teknisk kode til forståelige forklaringer og gjorde det mulig å prøve, feile og lære underveis.
 
--- -
+Samtidig har prosjektet vist meg hvor avgjørende godt samarbeid er i et gruppeprosjekt. I begynnelsen oppsto det noen utfordringer med at enkelte gruppemedlemmer ikke møtte forberedt til møtene, og at avtalte møtetider ble endret på kort varsel. I en allerede travel hverdag ble det tydelig hvor viktig det er å holde avtaler og ta ansvar for gruppens fremdrift. Et gruppeprosjekt med flere deltakere krever at alle er dedikerte – når én gjør et valg, påvirker det alle. Denne erfaringen har lært meg mye om både struktur, kommunikasjon og respekt for andres tid.
+
+Det skal også nevnes at jeg har fått mye hjelp og støtte fra Birgitte og Hamdi, som har vært utrolig fleksible, tålmodige og hjelpsomme gjennom hele prosessen. Det har vært rom for å stille spørsmål og prøve seg frem selvom om man er usikker, det har alltid vært rom for å stille spørsmål, og vi har i flere møter jobbet sammen i VSC ved deling av skjerm for å lære.
+
+Selv om jeg har lært mye og fått bedre forståelse for hvordan programmering og KI fungerer, ser jeg fortsatt på meg selv som en nybegynner, bare med litt mer kunnskap enn før. Jeg har fortsatt ikke forstått alt, men nå vet jeg hvor jeg skal begynne for å lære mer. Programmering har alltid vært litt høytsvevede og gresk, og det at jeg når kan sitte i VSC og promte er gøy.
+
+Gjennom dette prosjektet har jeg ikke bare lært om programmering og KI, men også om samarbeid, ansvar og hvordan man kan vokse i møte med utfordringer. Erfaringen har gitt meg en ny forståelse av hvor mye man kan oppnå når man kombinerer teknologi, samarbeid og læringsvilje.
 
 ## 8. Vedlegg (valgfritt)
 
