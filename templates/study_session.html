@@ -150,6 +150,24 @@
 </style>
 
 <script>
+    function showTab(tabName) {
+        // Hide all tab content
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.style.display = 'none';
+        });
+
+        // Deactivate all tab buttons
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.classList.remove('active-tab');
+        });
+
+        // Show the selected tab content
+        document.getElementById(tabName + '-tab-content').style.display = 'block';
+
+        // Activate the selected tab button
+        document.getElementById(tabName + '-tab-btn').classList.add('active-tab');
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
         const defaultTab = urlParams.get('default_tab') || 'summary';
@@ -160,24 +178,6 @@
         const summaryContent = document.getElementById('summary-content');
         const converter = new showdown.Converter(); // Make sure showdown.js is loaded
         summaryContent.innerHTML = converter.makeHtml(summaryMarkdown);
-
-        function showTab(tabName) {
-            // Hide all tab content
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.style.display = 'none';
-            });
-
-            // Deactivate all tab buttons
-            document.querySelectorAll('.tab-btn').forEach(button => {
-                button.classList.remove('active-tab');
-            });
-
-            // Show the selected tab content
-            document.getElementById(tabName + '-tab-content').style.display = 'block';
-
-            // Activate the selected tab button
-            document.getElementById(tabName + '-tab-btn').classList.add('active-tab');
-        }
 
         // Quiz Logic
         const quizForm = document.getElementById('quiz-form');
