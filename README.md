@@ -2,6 +2,8 @@
 
 A smart learning assistant that transforms your study materials into interactive summaries, flashcards, and quizzes using the power of AI.
 
+StudyBuddy AI is a web application designed to help students learn more efficiently. By leveraging the power of Google's Gemini AI, this tool allows users to upload their own study materials, such as lecture notes or articles in PDF or DOCX format. The application then automatically generates concise summaries, interactive flashcards for active recall, and tailored multiple-choice quizzes to test comprehension. With features like content categorization and progress tracking, StudyBuddy AI provides a personalized and interactive learning experience, turning static documents into dynamic study sets.
+
 ## 🚀 Key Features
 
 - **AI-Powered Content Generation:** Automatically generate concise summaries, interactive flashcards, and multiple-choice quizzes from your documents.
