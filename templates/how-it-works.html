@@ -1,37 +1,130 @@
-{% extends "base.html" %}
-
-{% block title %}How it Works - StudyBuddy AI{% endblock %}
-
-{% block content %}
-<div class="container mx-auto px-4 py-8">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
-        <div id="markdown-content" class="prose lg:prose-xl">
-            <!-- Content will be rendered here by Showdown.js -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works - StudyBuddy AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --background-blue: #F0F4F8; /* Lighter blue for a cleaner look */
+            --vibrant-teal: #2DC6A1;
+            --ink-black: #0E0E12;
+            --slate-gray: #4A5568; /* Softer gray for text */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-blue);
+            color: var(--slate-gray);
+        }
+        h1, h2, h3 {
+            font-family: 'Merriweather Sans', sans-serif;
+            color: var(--ink-black);
+        }
+        .step-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .step-number {
+            background-color: var(--vibrant-teal);
+            color: white;
+            border-radius: 9999px;
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body>
+    <!-- Assuming nav is part of a base template, but including for context -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-3xl font-extrabold text-[#0E0E12] tracking-wide">StudyBuddy AI</a>
+            <a href="/dashboard" class="bg-[#2DC6A1] text-white px-5 py-2.5 rounded-lg hover:bg-opacity-90 btn-primary">Dashboard</a>
         </div>
-    </div>
-</div>
+    </nav>
 
-<!-- Raw markdown content passed from the server -->
-<div id="raw-markdown" style="display: none;">{{ markdown_content|safe }}</div>
+    <main class="container mx-auto px-4 py-12 md:py-20">
+        <div class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">How It Works</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto">
+                StudyBuddy AI transforms your study materials into powerful, personalized learning tools! Here’s how you can go from document to mastery in five simple steps.
+            </p>
+        </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // 1. Get the raw markdown content
-        const markdownText = document.getElementById('raw-markdown').textContent;
-        
-        // 2. Initialize Showdown converter
-        const converter = new showdown.Converter({
-            tables: true,
-            strikethrough: true,
-            tasklists: true,
-            simpleLineBreaks: true
-        });
-        
-        // 3. Convert markdown to HTML
-        const html = converter.makeHtml(markdownText);
-        
-        // 4. Render the HTML into the content div
-        document.getElementById('markdown-content').innerHTML = html;
-    });
-</script>
-{% endblock %}
+        <div class="space-y-12">
+            <!-- Step 1 -->
+            <div class="step-card">
+                <div class="flex items-center gap-6">
+                    <div class="step-number">1</div>
+                    <h2 class="text-3xl font-bold">Upload Your Study Material! 📄</h2>
+                </div>
+                <p class="mt-4 text-lg">
+                    Start by uploading your documents. We support both PDF and DOCX formats, whether it's lecture notes, articles, or textbook chapters. Just select the file from your device, and our platform will securely handle the rest.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card">
+                <div class="flex items-center gap-6">
+                    <div class="step-number">2</div>
+                    <h2 class="text-3xl font-bold">Smart Text Extraction! ⚙️</h2>
+                </div>
+                <p class="mt-4 text-lg">
+                    Once uploaded, our backend gets to work. It intelligently extracts all the text from your document and prepares it for analysis, cleaning and structuring it for the AI.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card">
+                <div class="flex items-center gap-6">
+                    <div class="step-number">3</div>
+                    <h2 class="text-3xl font-bold">AI-Powered Generation! ✨</h2>
+                </div>
+                <p class="mt-4 text-lg">
+                    This is where the magic happens. We send the text to Google's Gemini model, which reads and understands your material. It then generates three distinct learning aids for you:
+                </p>
+                <ul class="mt-4 space-y-2 list-disc list-inside text-lg">
+                    <li>📝 A concise <b>Summary</b> to give you a quick overview of key concepts.</li>
+                    <li>🃏 A set of interactive <b>Flashcards</b> for active recall and memorizing terms.</li>
+                    <li>🤔 A multiple-choice <b>Quiz</b> tailored to test your comprehension.</li>
+                </ul>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-card">
+                <div class="flex items-center gap-6">
+                    <div class="step-number">4</div>
+                    <h2 class="text-3xl font-bold">Interactive Learning! 🚀</h2>
+                </div>
+                <p class="mt-4 text-lg">
+                    Your new study set is now ready. Dive into a focused, user-friendly interface where you can flip through flashcards and take quizzes. The immediate feedback helps you identify what you know and where you need to improve, turning passive reading into active learning.
+                </p>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-card">
+                <div class="flex items-center gap-6">
+                    <div class="step-number">5</div>
+                    <h2 class="text-3xl font-bold">Responsible AI! ✅</h2>
+                </div>
+                <p class="mt-4 text-lg">
+                    StudyBuddy AI is designed to be your learning assistant, not a replacement for your own efforts. The AI structures and simplifies your content to aid comprehension and retention. We ensure our models act responsibly, sticking to the facts in your documents without fabricating information. However, **AI can make mistakes. Please verify important information!**
+                </p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
