@@ -1,6 +1,7 @@
 import os
 import uuid
 import shutil
+import random
 import google.generativeai as genai
 from google.api_core.exceptions import NotFound, InvalidArgument
 from io import BytesIO
@@ -134,7 +135,7 @@ async def generate_content_with_gemini(text: str, content_type: str):
                        f"9. Do not include any promotional text or artifacts from the document's table of contents or index.\n"
                        f"10. Ensure the output is clean and does not contain any special characters like '***'.\n\n"
                        f"{text}",
-            "flashcards": f"Generate a list of flashcards (question and answer pairs) from the following text. Provide the output as a JSON array of objects, where each object has 'question' and 'answer' keys:\n\n{text}",
+            "flashcards": f"Generate a list of flashcards (question and answer pairs) from the following text. The list must contain a minimum of 5 and a maximum of 10 flashcards. Provide the output as a JSON array of objects, where each object has 'question' and 'answer' keys:\n\n{text}",
             "quiz": f"Generate a multiple-choice quiz from the following text. Provide the output as a JSON array of objects, where each object has 'question', 'options' (an array of strings), and 'correct_answer' (string) keys:\n\n{text}"
         }
         prompt = prompts.get(content_type)
@@ -175,13 +176,14 @@ async def read_root(request: Request):
 @app.get("/how-it-works", response_class=HTMLResponse)
 async def get_how_it_works(request: Request):
     user = get_current_user(request)
-    try:
-        with open("docs/how_it_works.md", "r", encoding="utf-8") as f:
-            markdown_content = f.read()
-    except FileNotFoundError:
-        logger.error("docs/how_it_works.md not found.")
-        markdown_content = "# Page Not Found\n\nThe content for this page could not be located."
-    return templates.TemplateResponse("how-it-works.html", {"request": request, "user": user, "markdown_content": markdown_content})
+    # The content of how-it-works is now fully in the HTML file.
+    # If it were still markdown, the logic would be here.
+    return templates.TemplateResponse("how-it-works.html", {"request": request, "user": user})
+
+@app.get("/faq", response_class=HTMLResponse)
+async def get_faq(request: Request):
+    user = get_current_user(request)
+    return templates.TemplateResponse("faq.html", {"request": request, "user": user})
 
 @app.get("/register", response_class=HTMLResponse)
 async def get_register(request: Request):
@@ -230,6 +232,111 @@ async def post_logout(request: Request):
     response.delete_cookie(key="session_id", path="/")
     return response
 
+
+# --- Category Routes (New) ---
+@app.get("/categories")
+async def get_categories_api(request: Request):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    categories = []
+    if db:
+        categories_ref = db.collection("categories").where("user_id", "==", user["email"]).order_by("createdAt")
+        for doc in categories_ref.stream():
+            cat_data = doc.to_dict()
+            cat_data["id"] = doc.id
+            categories.append(cat_data)
+    return {"categories": categories}
+
+@app.post("/categories")
+async def post_category(request: Request, name: str = Form(...)):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    
+    if not name or len(name.strip()) == 0:
+        return RedirectResponse(url="/dashboard?error=Category name cannot be empty.", status_code=303)
+
+    if db:
+        category_data = {
+            "user_id": user["email"],
+            "name": name.strip(),
+            "createdAt": firestore.SERVER_TIMESTAMP
+        }
+        save_to_firestore("categories", category_data)
+        return RedirectResponse(url="/dashboard?message=Category created.", status_code=303)
+    
+    return RedirectResponse(url="/dashboard?error=Database not available.", status_code=303)
+# --- End of Category Routes ---
+
+
+# --- Progression Tracking Routes (New) ---
+@app.post("/quiz-results")
+async def post_quiz_result(request: Request,
+                           study_set_id: str = Form(...),
+                           score: float = Form(...),
+                           question_count: int = Form(...),
+                           correct_count: int = Form(...)):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    if not db:
+        raise HTTPException(status_code=503, detail="Database not available.")
+
+    # Verify user owns the study set
+    study_set_ref = db.collection("study_sets").document(study_set_id)
+    study_set = study_set_ref.get()
+    if not study_set.exists or study_set.to_dict().get("user_id") != user.get("email"):
+        raise HTTPException(status_code=404, detail="Study set not found")
+
+    result_data = {
+        "user_id": user["email"],
+        "studySetId": study_set_id,
+        "score": score,
+        "questionCount": question_count,
+        "correctCount": correct_count,
+        "completedAt": firestore.SERVER_TIMESTAMP
+    }
+    save_to_firestore("quiz_results", result_data)
+    
+    return {"message": "Quiz result saved successfully."}
+
+
+@app.get("/study-sets/{study_set_id}/progress")
+async def get_study_set_progress(request: Request, study_set_id: str):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    if not db:
+        raise HTTPException(status_code=503, detail="Database not available.")
+
+    # Verify user owns the study set first
+    study_set_ref = db.collection("study_sets").document(study_set_id)
+    study_set = study_set_ref.get()
+    if not study_set.exists or study_set.to_dict().get("user_id") != user.get("email"):
+        raise HTTPException(status_code=404, detail="Study set not found")
+
+    # Query for progress
+    progress_data = []
+    progress_query = db.collection("quiz_results") \
+        .where("user_id", "==", user["email"]) \
+        .where("studySetId", "==", study_set_id) \
+        .order_by("completedAt")
+    
+    for doc in progress_query.stream():
+        result = doc.to_dict()
+        # Firestore timestamps are not directly JSON serializable in this setup
+        if "completedAt" in result and hasattr(result["completedAt"], 'isoformat'):
+             result["completedAt"] = result["completedAt"].isoformat()
+        progress_data.append(result)
+        
+    return {"progress": progress_data}
+# --- End of Progression Tracking Routes ---
+
+
 @app.get("/dashboard", response_class=HTMLResponse)
 async def get_dashboard(request: Request):
     user = get_current_user(request)
@@ -238,16 +345,39 @@ async def get_dashboard(request: Request):
 
     message = request.query_params.get("message")
     error = request.query_params.get("error")
+    category_filter = request.query_params.get("category_filter")
 
     study_sets = []
+    categories = []
     if db:
-        study_sets_ref = db.collection("study_sets").where("user_id", "==", user["email"])
-        for doc in study_sets_ref.stream():
+        # Fetch categories first, as they are always needed
+        categories_ref = db.collection("categories").where("user_id", "==", user["email"]).order_by("name")
+        for doc in categories_ref.stream():
+            cat_data = doc.to_dict()
+            cat_data["id"] = doc.id
+            categories.append(cat_data)
+
+        # Fetch study sets based on the query
+        study_sets_query = db.collection("study_sets").where("user_id", "==", user["email"])
+        
+        # Apply category filter if one is provided and is not 'all'
+        if category_filter and category_filter != "all":
+            study_sets_query = study_sets_query.where("categoryId", "==", category_filter)
+
+        for doc in study_sets_query.stream():
             study_set_data = doc.to_dict()
             study_set_data["id"] = doc.id
             study_sets.append(study_set_data)
-
-    return templates.TemplateResponse("dashboard.html", {"request": request, "user": user, "message": message, "error": error, "study_sets": study_sets})
+        
+    return templates.TemplateResponse("dashboard.html", {
+        "request": request, 
+        "user": user, 
+        "message": message, 
+        "error": error, 
+        "study_sets": study_sets,
+        "categories": categories,
+        "current_filter": category_filter
+    })
 
 @app.get("/study-sets/{study_set_id}", response_class=HTMLResponse)
 async def get_study_set(request: Request, study_set_id: str):
@@ -268,6 +398,8 @@ async def get_study_set(request: Request, study_set_id: str):
     if study_set_data.get("user_id") != user.get("email"):
         raise HTTPException(status_code=403, detail="Not authorized to view this study set")
 
+    study_set_data["id"] = study_set_id  # Add the ID to the dictionary
+
     return templates.TemplateResponse("study_session.html", {"request": request, "user": user, "study_set": study_set_data})
 
 @app.get("/get-study-set-content/{study_set_id}/{content_type}")
@@ -278,6 +410,8 @@ async def get_study_set_content(request: Request, study_set_id: str, content_typ
 
     if not db:
         raise HTTPException(status_code=503, detail="Database not available.")
+
+    limit = request.query_params.get("limit")
 
     study_set_ref = db.collection("study_sets").document(study_set_id)
     study_set = study_set_ref.get()
@@ -293,7 +427,47 @@ async def get_study_set_content(request: Request, study_set_id: str, content_typ
     if content is None:
         raise HTTPException(status_code=404, detail="Content type not found")
 
+    # If it's a quiz and a limit is set, shuffle and slice the quiz
+    if content_type == 'quiz' and limit:
+        try:
+            limit = int(limit)
+            if isinstance(content, list):
+                random.shuffle(content)
+                content = content[:limit]
+        except (ValueError, TypeError):
+            # Ignore invalid limit, return full quiz
+            pass
+
     return {"content": content}
+
+
+@app.post("/study-sets/{study_set_id}/assign-category")
+async def post_assign_category(request: Request, study_set_id: str, category_id: str = Form(...)):
+    user = get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    if not db:
+        raise HTTPException(status_code=503, detail="Database not available.")
+
+    study_set_ref = db.collection("study_sets").document(study_set_id)
+    study_set = study_set_ref.get()
+
+    # Verify user owns the study set
+    if not study_set.exists or study_set.to_dict().get("user_id") != user.get("email"):
+        return RedirectResponse(url="/dashboard?error=Study set not found.", status_code=303)
+
+    # Verify user owns the category (unless it's "none")
+    if category_id != "none":
+        category_ref = db.collection("categories").document(category_id)
+        category = category_ref.get()
+        if not category.exists or category.to_dict().get("user_id") != user.get("email"):
+            return RedirectResponse(url="/dashboard?error=Category not found.", status_code=303)
+
+    update_data = {"categoryId": category_id if category_id != "none" else firestore.DELETE_FIELD}
+    study_set_ref.update(update_data)
+    
+    return RedirectResponse(url="/dashboard?message=Category updated.", status_code=303)
 
 
 @app.post("/save-study-set")

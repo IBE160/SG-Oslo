@@ -51,28 +51,17 @@
 
         <div id="quiz-tab-content" class="tab-content" style="display:none;">
             <h2 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Quiz</h2>
-            <div id="quiz-content" class="mb-8">
-                {% if study_set.quiz %}
-                    <form id="quiz-form" class="space-y-6">
-                        {% for q in study_set.quiz %}
-                            {% set outer_loop = loop %}
-                            <div class="bg-[#FFFFFF] p-5 rounded-lg shadow-sm quiz-question" id="question-{{ outer_loop.index0 }}">
-                                <p class="text-[#0E0E12] font-medium mb-3"><strong>Q{{ outer_loop.index }}:</strong> {{ q.question }}</p>
-                                <ul class="space-y-2">
-                                    {% for option in q.options %}
-                                        <li>
-                                            <label class="inline-flex items-center text-[#6C7486] cursor-pointer">
-                                                <input type="radio" id="q{{ outer_loop.index0 }}-opt{{ loop.index0 }}" name="question-{{ outer_loop.index0 }}" value="{{ option }}" class="form-radio h-4 w-4 text-[#2DC6A1] focus:ring-[#2DC6A1]">
-                                                <span class="ml-2">{{ option }}</span>
-                                            </label>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
-                                <div class="feedback mt-3 text-sm font-semibold" style="display: none;"></div>
-                            </div>
-                        {% endfor %}
-                        <button type="submit" class="hidden bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Submit Quiz</button>
-                    </form>
+            <div id="quiz-content" class="mb-8 text-center">
+                {% if study_set.quiz and study_set.quiz | length > 0 %}
+                    <div id="quiz-selection">
+                        <h3 class="text-xl font-semibold mb-4">Choose Your Quiz Length</h3>
+                        <div class="flex justify-center space-x-4">
+                            <button onclick="startQuiz(5)" class="bg-[#2DC6A1] text-white font-bold py-2 px-6 rounded-lg hover:bg-[#24a284] btn-primary">Quick (5)</button>
+                            <button onclick="startQuiz(10)" class="bg-[#2DC6A1] text-white font-bold py-2 px-6 rounded-lg hover:bg-[#24a284] btn-primary">Medium (10)</button>
+                            <button onclick="startQuiz()" class="bg-blue-500 text-white font-bold py-2 px-6 rounded-lg hover:bg-blue-600 btn-primary">Full Quiz</button>
+                        </div>
+                    </div>
+                    <div id="quiz-container" class="mt-8 text-left"></div>
                 {% else %}
                     <p class="text-gray-600">No quiz available.</p>
                 {% endif %}
@@ -150,6 +139,8 @@
 </style>
 
 <script>
+    const STUDY_SET_ID = "{{ study_set.id }}"; // Global constant for the Study Set ID
+
     function showTab(tabName) {
         // Hide all tab content
         document.querySelectorAll('.tab-content').forEach(content => {
@@ -168,6 +159,143 @@
         document.getElementById(tabName + '-tab-btn').classList.add('active-tab');
     }
 
+    async function startQuiz(limit) {
+        const quizContainer = document.getElementById('quiz-container');
+        const selectionDiv = document.getElementById('quiz-selection');
+        quizContainer.innerHTML = '<p>Loading quiz...</p>';
+        selectionDiv.style.display = 'none'; // Hide selection buttons
+
+        let url = `/get-study-set-content/${STUDY_SET_ID}/quiz`;
+        if (limit) {
+            url += `?limit=${limit}`;
+        }
+
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Failed to load quiz data.');
+            const data = await response.json();
+            const quizData = data.content;
+
+            if (!quizData || quizData.length === 0) {
+                quizContainer.innerHTML = '<p class="text-gray-600">No quiz questions were returned for this session length.</p>';
+                selectionDiv.style.display = 'block'; // Show selection again
+                return;
+            }
+
+            // Dynamically build the form
+            let formHtml = '<form id="quiz-form" class="space-y-6">';
+            quizData.forEach((q, index) => {
+                formHtml += `
+                    <div class="bg-white p-5 rounded-lg shadow-sm quiz-question" id="question-${index}">
+                        <p class="text-[#0E0E12] font-medium mb-3"><strong>Q${index + 1}:</strong> ${q.question}</p>
+                        <ul class="space-y-2">
+                            ${q.options.map((option, optIndex) => `
+                                <li>
+                                    <label class="inline-flex items-center text-[#6C7486] cursor-pointer">
+                                        <input type="radio" id="q${index}-opt${optIndex}" name="question-${index}" value="${option}" class="form-radio h-4 w-4 text-[#2DC6A1] focus:ring-[#2DC6A1]">
+                                        <span class="ml-2">${option}</span>
+                                    </label>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="feedback mt-3 text-sm font-semibold" style="display: none;"></div>
+                    </div>`;
+            });
+            formHtml += '<button type="submit" class="hidden bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Submit Quiz</button>';
+            formHtml += '</form>';
+            quizContainer.innerHTML = formHtml;
+
+            // Attach event listeners to the new form
+            attachQuizListeners(quizData, STUDY_SET_ID);
+
+        } catch (error) {
+            quizContainer.innerHTML = `<p class="text-red-500">${error.message}</p>`;
+            selectionDiv.style.display = 'block'; // Show selection again on error
+        }
+    }
+
+    function attachQuizListeners(quizData, studySetId) {
+        const quizForm = document.getElementById('quiz-form');
+        if (!quizForm) return;
+        
+        const totalQuestions = quizData.length;
+        const submitBtn = quizForm.querySelector('button[type="submit"]');
+        const scoreDisplay = document.createElement('p');
+        scoreDisplay.id = 'score-display';
+        scoreDisplay.className = 'text-lg font-bold text-[#0E0E12] mb-4';
+        quizForm.prepend(scoreDisplay);
+
+        let score = 0;
+        const answeredQuestions = new Set();
+        
+        function updateScoreDisplay() {
+            scoreDisplay.textContent = `Score: ${score} / ${totalQuestions}`;
+        }
+        updateScoreDisplay();
+
+        quizForm.addEventListener('change', function(event) {
+            if (event.target.type === 'radio') {
+                const questionDiv = event.target.closest('.quiz-question');
+                const feedbackDiv = questionDiv.querySelector('.feedback');
+                const questionIndex = parseInt(questionDiv.id.replace('question-', ''), 10);
+                
+                answeredQuestions.add(questionIndex);
+
+                if (!questionDiv.dataset.answeredCorrectly) {
+                    const correctAnswer = quizData[questionIndex].correct_answer;
+                    if (event.target.value === correctAnswer) {
+                        feedbackDiv.style.color = '#2DC6A1';
+                        feedbackDiv.textContent = 'Correct!';
+                        score++;
+                        questionDiv.dataset.answeredCorrectly = 'true';
+                    } else {
+                        feedbackDiv.style.color = '#FF6F61';
+                        feedbackDiv.textContent = `Incorrect. The correct answer was: ${correctAnswer}`;
+                    }
+                    updateScoreDisplay();
+                }
+                feedbackDiv.style.display = 'block';
+
+                if (answeredQuestions.size === totalQuestions) {
+                    submitBtn.classList.remove('hidden');
+                }
+            }
+        });
+
+        quizForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Saving...';
+
+            const formData = new FormData();
+            formData.append('study_set_id', studySetId);
+            formData.append('score', (score / totalQuestions) * 100);
+            formData.append('question_count', totalQuestions);
+            formData.append('correct_count', score);
+
+            try {
+                const response = await fetch('/quiz-results', { method: 'POST', body: formData });
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || 'Failed to save results.');
+                }
+                submitBtn.textContent = 'Results Saved!';
+                const resultMessage = document.createElement('p');
+                resultMessage.className = 'text-green-600 font-semibold mt-4';
+                resultMessage.textContent = 'Your quiz results have been saved successfully!';
+                quizForm.appendChild(resultMessage);
+            } catch (error) {
+                console.error(error);
+                submitBtn.textContent = 'Save Results';
+                submitBtn.disabled = false;
+                const errorMessage = document.createElement('p');
+                errorMessage.className = 'text-red-600 font-semibold mt-4';
+                errorMessage.textContent = `Error: ${error.message}`;
+                quizForm.appendChild(errorMessage);
+            }
+        });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         const urlParams = new URLSearchParams(window.location.search);
         const defaultTab = urlParams.get('default_tab') || 'summary';
@@ -176,50 +304,9 @@
         // Render summary markdown
         const summaryMarkdown = document.getElementById('summary-markdown').textContent;
         const summaryContent = document.getElementById('summary-content');
-        const converter = new showdown.Converter(); // Make sure showdown.js is loaded
-        summaryContent.innerHTML = converter.makeHtml(summaryMarkdown);
-
-        // Quiz Logic
-        const quizForm = document.getElementById('quiz-form');
-        if (quizForm) {
-            let score = 0;
-            const quizData = {{ study_set.quiz | safe }}; // Quiz data from Jinja2 context
-            const totalQuestions = quizData.length;
-            const scoreDisplay = document.createElement('p');
-            scoreDisplay.id = 'score-display';
-            scoreDisplay.className = 'text-lg font-bold text-[#0E0E12] mb-4';
-            quizForm.prepend(scoreDisplay); // Display score at the top of the quiz form
-            updateScoreDisplay(); // Initial display
-
-            function updateScoreDisplay() {
-                scoreDisplay.textContent = `Score: ${score} / ${totalQuestions}`;
-            }
-
-            quizForm.addEventListener('change', function(event) {
-                if (event.target.type === 'radio') {
-                    const questionDiv = event.target.closest('.quiz-question');
-                    const feedbackDiv = questionDiv.querySelector('.feedback');
-                    const questionIndex = parseInt(questionDiv.id.replace('question-', ''));
-                    const selectedAnswer = event.target.value;
-
-                    // Only process if this question hasn't been answered correctly yet
-                    if (!questionDiv.dataset.answeredCorrectly) {
-                        const correctAnswer = quizData[questionIndex].correct_answer;
-
-                        if (selectedAnswer === correctAnswer) {
-                            feedbackDiv.style.color = 'var(--vibrant-teal)'; /* Define this CSS variable in your main stylesheet */
-                            feedbackDiv.textContent = 'Correct!';
-                            score++;
-                            questionDiv.dataset.answeredCorrectly = 'true'; // Mark as answered correctly
-                        } else {
-                            feedbackDiv.style.color = 'var(--warm-coral)'; /* Define this CSS variable in your main stylesheet */
-                            feedbackDiv.textContent = `Incorrect. The correct answer was: ${correctAnswer}`;
-                        }
-                        updateScoreDisplay();
-                    }
-                    feedbackDiv.style.display = 'block';
-                }
-            });
+        if (summaryMarkdown && summaryContent && window.showdown) {
+            const converter = new showdown.Converter();
+            summaryContent.innerHTML = converter.makeHtml(summaryMarkdown);
         }
     });
 </script>

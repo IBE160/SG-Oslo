@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FAQ - StudyBuddy AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@800&family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --background-blue: #f0f4f8;
+        --vibrant-teal: #2dc6a1;
+        --ink-black: #0e0e12;
+        --slate-gray: #4a5568;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--background-blue);
+        color: var(--slate-gray);
+      }
+      h1,
+      h2,
+      h3 {
+        font-family: "Merriweather Sans", sans-serif;
+        color: var(--ink-black);
+      }
+      .faq-item {
+        border-bottom: 1px solid #e2e8f0;
+      }
+      .faq-question {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 0;
+      }
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+      }
+      .faq-answer p {
+        padding-bottom: 1.5rem;
+      }
+      .faq-item.open .faq-answer {
+        max-height: 200px; /* Adjust as needed */
+      }
+      .faq-toggle {
+        transition: transform 0.3s ease;
+      }
+      .faq-item.open .faq-toggle {
+        transform: rotate(45deg);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Assuming nav is part of a base template, but including for context -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-sm p-4 sticky top-0 z-50">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-3xl font-extrabold text-[#0E0E12] tracking-wide"
+          >StudyBuddy AI</a
+        >
+        <a
+          href="/dashboard"
+          class="bg-[#2DC6A1] text-white px-5 py-2.5 rounded-lg hover:bg-opacity-90 btn-primary"
+          >Dashboard</a
+        >
+      </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-12 md:py-20">
+      <div class="max-w-4xl mx-auto">
+        <div class="text-center mb-16">
+          <h1 class="text-4xl md:text-5xl font-extrabold mb-4">
+            Frequently Asked Questions
+          </h1>
+        </div>
+
+        <div class="bg-white p-8 rounded-2xl shadow-lg">
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3 class="text-xl font-bold">What is StudyBuddy AI? 🎓</h3>
+              <span class="faq-toggle text-3xl text-gray-400 font-light"
+                >+</span
+              >
+            </div>
+            <div class="faq-answer">
+              <p class="text-lg">
+                StudyBuddy AI is a smart learning assistant designed to help
+                students process study materials more efficiently! By uploading
+                your notes or readings, you can automatically generate
+                structured summaries, interactive flashcards, and custom
+                quizzes.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3 class="text-xl font-bold">Who is it for? 🎯</h3>
+              <span class="faq-toggle text-3xl text-gray-400 font-light"
+                >+</span
+              >
+            </div>
+            <div class="faq-answer">
+              <p class="text-lg">
+                Our primary users are university and college students who want a
+                faster, more engaging way to learn. If you deal with large
+                amounts of text and want to actively test your understanding,
+                StudyBuddy AI is for you!
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3 class="text-xl font-bold">
+                What file formats are supported? 💻
+              </h3>
+              <span class="faq-toggle text-3xl text-gray-400 font-light"
+                >+</span
+              >
+            </div>
+            <div class="faq-answer">
+              <p class="text-lg">
+                In the current version, we support PDF and DOCX documents. The
+                files must be text-based, as we do not yet support image-to-text
+                conversion (OCR) for scanned documents.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3 class="text-xl font-bold">
+                How is my data privacy and security handled? 🔒
+              </h3>
+              <span class="faq-toggle text-3xl text-gray-400 font-light"
+                >+</span
+              >
+            </div>
+            <div class="faq-answer">
+              <p class="text-lg">
+                We take your privacy seriously! All user data is tied to your
+                personal account and isolated from other users. We store a
+                minimum of personally identifiable information, and you have
+                full control to delete your uploaded documents and generated
+                study sets. The service is designed with GDPR principles in
+                mind.
+              </p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-question">
+              <h3 class="text-xl font-bold">
+                Do I need to be online to use the service? ☁️
+              </h3>
+              <span class="faq-toggle text-3xl text-gray-400 font-light"
+                >+</span
+              >
+            </div>
+            <div class="faq-answer">
+              <p class="text-lg">
+                Yes! The generation of summaries, flashcards, and quizzes
+                requires an active internet connection, as the processing is
+                done in the cloud using Google's AI models. However, you can
+                view previously saved study sets without needing to generate
+                them again.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const faqItems = document.querySelectorAll(".faq-item");
+        faqItems.forEach((item) => {
+          const question = item.querySelector(".faq-question");
+          question.addEventListener("click", () => {
+            // Close other open items
+            faqItems.forEach((otherItem) => {
+              if (otherItem !== item && otherItem.classList.contains("open")) {
+                otherItem.classList.remove("open");
+              }
+            });
+            // Toggle the clicked item
+            item.classList.toggle("open");
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

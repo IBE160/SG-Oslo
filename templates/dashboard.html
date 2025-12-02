@@ -15,6 +15,33 @@
             <p class="text-[#FF6F61] mb-4">{{ error }}</p>
         {% endif %}
 
+        <!-- Category Management Section -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div>
+                <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Create a New Category</h3>
+                <form action="/categories" method="post" class="space-y-4">
+                    <input type="text" name="name" placeholder="New category name" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2DC6A1]">
+                    <button type="submit" class="bg-[#2DC6A1] text-white font-bold py-2 px-4 rounded-lg hover:bg-[#24a284] btn-primary">Create Category</button>
+                </form>
+            </div>
+            <div>
+                <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Your Categories</h3>
+                {% if categories %}
+                    <ul class="space-y-2">
+                        {% for category in categories %}
+                            <li class="bg-gray-100 p-3 rounded-lg flex justify-between items-center">
+                                <span>{{ category.name }}</span>
+                                <!-- Delete button will be added later -->
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-gray-600">No categories created yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        <hr class="my-8">
+
         <div class="mb-8">
             <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Upload a File to Generate Study Materials</h3>
             <form action="/upload-document" method="post" enctype="multipart/form-data" class="mb-8 space-y-4">
@@ -28,16 +55,44 @@
             </form>
         </div>
 
+        <!-- Study Set Filter -->
+        <div class="mb-4">
+            <form id="filter-form" action="/dashboard" method="get" class="flex items-center space-x-2">
+                <label for="category_filter" class="font-semibold">Filter by Category:</label>
+                <select name="category_filter" id="category_filter" onchange="document.getElementById('filter-form').submit();" class="text-sm border rounded-lg py-1 px-2">
+                    <option value="all">-- All Categories --</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}" {% if current_filter == category.id %}selected{% endif %}>
+                            {{ category.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </form>
+        </div>
+
         <h3 class="text-2xl font-semibold text-[#2DC6A1] mb-4">Your Study Sets</h3>
         {% if study_sets %}
             <ul class="space-y-3">
                 {% for study_set in study_sets %}
-                    <li class="bg-white p-4 rounded-lg shadow-sm flex justify-between items-center card-hover-effect">
-                        <button onclick="getStudySetContent('{{ study_set.id }}')" class="text-[#2DC6A1] hover:underline text-lg font-medium">{{ study_set.document_name }}</button>
-                        <div class="flex items-center space-x-4">
-                            <span class="text-gray-500 text-sm">Uploaded: {{ study_set.upload_timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
-                            <form action="/delete-study-set/{{ study_set.id }}" method="post" onsubmit="return confirm('Are you sure you want to delete this study set?');">
+                    <li class="bg-gray-50 p-4 rounded-lg shadow-sm">
+                        <div class="flex justify-between items-center">
+                            <button onclick="getStudySetContent('{{ study_set.id }}', '{{ study_set.document_name | e }}')" class="text-[#2DC6A1] hover:underline text-lg font-medium text-left">{{ study_set.document_name }}</button>
+                            <form action="/delete-study-set/{{ study_set.id }}" method="post" onsubmit="return confirm('Are you sure you want to delete this study set?');" class="ml-4">
                                 <button type="submit" class="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 text-sm font-semibold">Delete</button>
+                            </form>
+                        </div>
+                        <div class="flex items-center space-x-4 mt-2">
+                            <span class="text-gray-500 text-sm">Uploaded: {{ study_set.upload_timestamp.strftime('%Y-%m-%d %H:%M') }}</span>
+                            <form action="/study-sets/{{ study_set.id }}/assign-category" method="post" class="flex items-center space-x-2">
+                                <select name="category_id" class="text-sm border rounded-lg py-1 px-2">
+                                    <option value="none">-- No Category --</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category.id }}" {% if study_set.categoryId == category.id %}selected{% endif %}>
+                                            {{ category.name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="text-sm bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600">Save</button>
                             </form>
                         </div>
                     </li>
@@ -52,40 +107,100 @@
 </div>
 
 <style>
-    /* Removed tab-btn and active-tab styles as they are no longer needed for upload forms */
+    .tab-btn {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border: none;
+        background-color: transparent;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #6C7486;
+        transition: all 0.3s ease;
+        border-bottom: 2px solid transparent;
+    }
+    .active-tab {
+        color: #2DC6A1;
+        border-bottom: 2px solid #2DC6A1;
+    }
 </style>
 
 <script>
-    // activeTab will now default to 'summary' or the first type we want to display.
-    // The showTab function is no longer needed for upload forms, but still relevant for displaying content.
-    let activeTab = 'summary'; // Default to summary for displaying existing study sets.
+    let currentChart = null; // Keep track of the current chart instance to destroy it before creating a new one
 
-    // I will adjust the showTab function here slightly to reflect that it's only for content display now
-    // and that the tab buttons are part of study_session.html
-    // For dashboard, when clicking on a study set, it should default to displaying summary or a default.
-
-    async function getStudySetContent(studySetId) {
+    async function getStudySetContent(studySetId, studySetName) {
         const display = document.getElementById('study-set-content-display');
-        display.innerHTML = '<p>Loading...</p>';
+        display.innerHTML = `
+            <div class="border-t pt-6 mt-6">
+                <h3 class="text-xl font-bold mb-4 text-[#0E0E12]">Selected: <span class="text-[#2DC6A1]">${studySetName}</span></h3>
+                <div class="flex border-b border-gray-200 mb-4">
+                    <button class="tab-btn active-tab" onclick="showStudySetTab(this, 'progress', '${studySetId}')">Progress Chart</button>
+                    <a href="/study-sets/${studySetId}" class="tab-btn">Go to Study Session &rarr;</a>
+                </div>
+                <div id="study-set-tab-content" class="p-4 bg-gray-50 rounded-lg">
+                    <!-- Content for progress or other tabs will be loaded here -->
+                </div>
+            </div>`;
+        
+        // Immediately show the progress tab's content
+        showStudySetTab(display.querySelector('.tab-btn'), 'progress', studySetId);
+    }
 
-        try {
-            // When clicking a study set from dashboard, default to summary content type
-            const response = await fetch(`/get-study-set-content/${studySetId}/summary`); // Always fetch summary first
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+    async function showStudySetTab(btn, tabName, studySetId) {
+        // Handle active tab button style
+        if (btn) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active-tab'));
+            btn.classList.add('active-tab');
+        }
+
+        const content = document.getElementById('study-set-tab-content');
+        if (currentChart) {
+            currentChart.destroy();
+        }
+
+        if (tabName === 'progress') {
+            content.innerHTML = '<p>Loading progress...</p>';
+            try {
+                const response = await fetch(`/study-sets/${studySetId}/progress`);
+                if (!response.ok) throw new Error('Failed to fetch progress data.');
+                const data = await response.json();
+                
+                if (data.progress && data.progress.length > 0) {
+                    content.innerHTML = '<canvas id="progressChart"></canvas>';
+                    const ctx = document.getElementById('progressChart').getContext('2d');
+                    
+                    const labels = data.progress.map(p => new Date(p.completedAt).toLocaleDateString());
+                    const scores = data.progress.map(p => p.score);
+
+                    currentChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Quiz Score (%)',
+                                data: scores,
+                                borderColor: '#2DC6A1',
+                                backgroundColor: 'rgba(45, 198, 161, 0.1)',
+                                fill: true,
+                                tension: 0.1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    content.innerHTML = '<p class="text-gray-600">No quiz results found for this study set. Take a quiz to see your progress!</p>';
+                }
+            } catch (error) {
+                content.innerHTML = `<p class="text-red-500">${error.message}</p>`;
             }
-            const data = await response.json();
-
-            let contentHtml = '';
-            const converter = new showdown.Converter(); // Assuming showdown.js is included somewhere else or will be.
-            contentHtml = converter.makeHtml(data.content);
-            
-            // Redirect to study_session page with the ID and potentially default content type
-            window.location.href = `/study-sets/${studySetId}?default_tab=summary`;
-
-        } catch (error) {
-            display.innerHTML = '<p class="text-red-500">Error loading content.</p>';
-            console.error('There was a problem with the fetch operation:', error);
         }
     }
 </script>
