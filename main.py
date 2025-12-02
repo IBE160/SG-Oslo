@@ -172,6 +172,17 @@ async def read_root(request: Request):
     user = get_current_user(request)
     return templates.TemplateResponse("home.html", {"request": request, "user": user})
 
+@app.get("/how-it-works", response_class=HTMLResponse)
+async def get_how_it_works(request: Request):
+    user = get_current_user(request)
+    try:
+        with open("docs/how_it_works.md", "r", encoding="utf-8") as f:
+            markdown_content = f.read()
+    except FileNotFoundError:
+        logger.error("docs/how_it_works.md not found.")
+        markdown_content = "# Page Not Found\n\nThe content for this page could not be located."
+    return templates.TemplateResponse("how-it-works.html", {"request": request, "user": user, "markdown_content": markdown_content})
+
 @app.get("/register", response_class=HTMLResponse)
 async def get_register(request: Request):
     user = get_current_user(request)
@@ -211,10 +222,13 @@ async def post_login(response: Response, email: str = Form(...), password: str =
         return RedirectResponse(url=f"/login?error=An unexpected login error occurred.", status_code=303)
 
 @app.post("/logout")
-async def post_logout(response: Response):
-    response_obj = RedirectResponse(url="/", status_code=303)
-    response_obj.delete_cookie(key="session_id", path="/")
-    return response_obj
+async def post_logout(request: Request):
+    session_id = request.cookies.get("session_id")
+    if session_id and session_id in sessions:
+        del sessions[session_id]
+    response = RedirectResponse(url="/", status_code=303)
+    response.delete_cookie(key="session_id", path="/")
+    return response
 
 @app.get("/dashboard", response_class=HTMLResponse)
 async def get_dashboard(request: Request):

@@ -1,43 +1,37 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block title %}How It Works - StudyBuddy AI{% endblock %}
+{% block title %}How it Works - StudyBuddy AI{% endblock %}
 
 {% block content %}
 <div class="container mx-auto px-4 py-8">
-    <div class="bg-white p-8 rounded-2xl shadow-md">
-        <h1 class="text-4xl font-bold text-[#0E0E12] mb-6 text-center">How It Works</h1>
-
-        <div class="space-y-12">
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 p-4">
-                    <h2 class="text-3xl font-semibold text-[#2DC6A1] mb-4">Step 1: Upload Your Document</h2>
-                    <p class="text-lg text-[#6C7486]">Simply upload your study materials in PDF or DOCX format. This could be anything from lecture notes and textbook chapters to research papers and articles.</p>
-                </div>
-                <div class="md:w-1/2 p-4 flex justify-center">
-                    <img src="/static/images/computers.png" alt="Upload a document" class="rounded-lg shadow-lg max-w-sm">
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row-reverse items-center">
-                <div class="md:w-1/2 p-4">
-                    <h2 class="text-3xl font-semibold text-[#2DC6A1] mb-4">Step 2: AI-Powered Content Generation</h2>
-                    <p class="text-lg text-[#6C7486]">Our intelligent algorithms analyze your document and automatically generate a concise summary, a set of flashcards for key terms and concepts, and a multiple-choice quiz to test your knowledge.</p>
-                </div>
-                <div class="md:w-1/2 p-4 flex justify-center">
-                    <img src="/static/images/books.png" alt="AI generates content" class="rounded-lg shadow-lg max-w-sm">
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center">
-                <div class="md:w-1/2 p-4">
-                    <h2 class="text-3xl font-semibold text-[#2DC6A1] mb-4">Step 3: Study and Master</h2>
-                    <p class="text-lg text-[#6C7486]">Use the generated materials to study smarter, not harder. Review the summary for a quick overview, test your memory with the flashcards, and assess your understanding with the quiz. You can save your study sets to your dashboard for easy access anytime.</p>
-                </div>
-                <div class="md:w-1/2 p-4 flex justify-center">
-                    <img src="/static/images/hero-illustration.png" alt="Study the generated materials" class="rounded-lg shadow-lg max-w-sm">
-                </div>
-            </div>
+    <div class="bg-white p-8 rounded-lg shadow-lg max-w-4xl mx-auto">
+        <div id="markdown-content" class="prose lg:prose-xl">
+            <!-- Content will be rendered here by Showdown.js -->
         </div>
     </div>
 </div>
+
+<!-- Raw markdown content passed from the server -->
+<div id="raw-markdown" style="display: none;">{{ markdown_content|safe }}</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // 1. Get the raw markdown content
+        const markdownText = document.getElementById('raw-markdown').textContent;
+        
+        // 2. Initialize Showdown converter
+        const converter = new showdown.Converter({
+            tables: true,
+            strikethrough: true,
+            tasklists: true,
+            simpleLineBreaks: true
+        });
+        
+        // 3. Convert markdown to HTML
+        const html = converter.makeHtml(markdownText);
+        
+        // 4. Render the HTML into the content div
+        document.getElementById('markdown-content').innerHTML = html;
+    });
+</script>
 {% endblock %}
