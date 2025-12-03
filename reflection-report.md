@@ -153,16 +153,21 @@ Basert på vår erfaring anbefaler vi å bruke KI som støtteverktøy, ikke som 
 
 [Liste de 3-5 viktigste tingene dere lærte gjennom prosjektet]
 
-1. [Lærdom 1]
-2. [Lærdom 2]
-3. [Lærdom 3]
+1. Ta det stegvis og feilsøk underveis. Lag sammendrag for hver fase.
+
+2. Bruk god tid på å sette kontekst og rammer for KI-en, for å prompte bedre og få bedre resultater.
+
+3. Gruppen fant ut at vi foretrakk en agil tilnærming til utviklingen. At man ikke bruker så mye tid på den tidligere brainstormingsfasen, men heller komme tilbake til det når man har en fungerende prototype.
 
 ### 7.2 Hva ville dere gjort annerledes?
 
 [Reflekter over hva dere ville endret hvis dere skulle startet på nytt]
-• [Tekniske valg]
-• [Bruk av KI]
-• [Samarbeid og organisering]
+
+1. [Tekniske valg] Merge til main etter hver fase er avsluttet. Dette sikrer kontinuitet og reduserer fare for store merge-konflikter. Vi drøftet også muligheten for ekstern lagring av filene som blir lastet opp, men det hadde vi ikke tid til. Så vi brukte google sin Firebase-løsning.
+
+2. [Bruk av KI] Bruke Chatgpt/Gemini i starten for å formulere prompts som senere legges inn Gemini CLI.
+
+3. [Samarbeid og organisering] Når det gjelder organisering, ser vi at det ville vært lettere å fordele roller og ansvar tidligere i prosessen. Nå som vi kjenner hverandres styrker og svakheter bedre, kunne en tydeligere rollefordeling gjort arbeidsflyten mer effektiv og redusert overlapp i oppgavene.
 
 ### 7.3 Anbefalinger
 
